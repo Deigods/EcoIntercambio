@@ -1,0 +1,4 @@
+pillow
+django-admin-iterface
+crispy-bootstrap5
+django == 5.0.4

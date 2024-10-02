@@ -1,0 +1,221 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Evita el desplazamiento por las olas */
+}
+
+body {
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: #e8f5e9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative; /* Necesario para el posicionamiento absoluto de las olas */
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    position: relative;
+    z-index: 10; /* Asegura que el contenedor esté sobre las olas */
+}
+
+.form-group label {
+    color: #388e3c;
+}
+
+.form-control {
+    border-radius: 20px;
+    border-color: #4caf50;
+}
+
+.btn-primary {
+    background-color: #4caf50;
+    border: none;
+    border-radius: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #388e3c;
+}
+
+.form-text {
+    color: #388e3c;
+}
+
+.form-check-label {
+    color: #388e3c;
+}
+
+img {
+    width: 80%;
+    height: auto;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.col-md-6 img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+/* Estilo de olas */
+.container-waves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 20vh;
+    background: #e8f5e9;
+    overflow: hidden;
+}
+
+.container-waves .wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url("../images/wave.png"); /* Ruta relativa al archivo CSS */
+    background-size: 1000px 100px;
+}
+
+.container-waves .wave.wave1 {
+    animation: animate 30s linear infinite;
+    z-index: 1000;
+    opacity: 1;
+    animation-delay: 0s;
+}
+
+.container-waves .wave.wave2 {
+    animation: animate2 15s linear infinite;
+    z-index: 999;
+    opacity: 0.5;
+    animation-delay: -5s;
+    bottom: 10px;
+}
+
+.container-waves .wave.wave3 {
+    animation: animate3 30s linear infinite;
+    z-index: 998;
+    opacity: 0.2;
+    animation-delay: -2s;
+    bottom: 15px;
+}
+
+.container-waves .wave.wave4 {
+    animation: animate3 5s linear infinite;
+    z-index: 997;
+    opacity: 0.7;
+    animation-delay: -5s;
+    bottom: 15px;
+}
+
+/* Media Queries */
+@media (max-width: 770px) {
+    label{
+        padding-bottom: 8px;
+    }
+
+    .form-check{
+        padding-top: 10px;
+    }
+}
+
+@keyframes animate {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: 1000px;
+    }
+}
+
+@keyframes animate2 {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+@keyframes animate3 {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    color: #4caf50;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: color 0.3s ease-in-out;
+}
+
+.back-button svg {
+    margin-right: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.back-button:hover {
+    color: #388e3c;
+}
+
+.back-button:hover svg {
+    transform: translateX(-5px);
+}
+
+.form-group-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.btn-primary {
+    width: 48%;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #388e3c;
+}
+
+.btn-secondary {
+    width: 48%;
+    background-color: #8BC34A;
+    border: none;
+    border-radius: 20px;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #388e3c;
+    color: white;
+}
+
+.btn-register {
+    margin-left: 10px;
+    text-align: center;
+    background-color: #8BC34A;
+}
+

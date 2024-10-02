@@ -1,0 +1,73 @@
+{% extends 'app/index.html' %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+{% block contenido %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Productos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'app/css/lista.css' %}">
+
+    <!-- SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+{% load crispy_forms_tags %}
+
+<body>
+    <div class="container">
+        <!-- Mostrar el formulario usando crispy forms -->
+        <h2>Lista de Productos</h2>
+        <ul class="product-list">
+            {% for producto in entity %}
+            <li class="product-item">
+                <div class="product-info">
+                    <h3>{{ producto.nombre }}</h3>
+                    <p><strong>Estado:</strong> {{ producto.estado }}</p>
+                    <p><strong>Color:</strong> {{ producto.color }}</p>
+                    <p><strong>Tipo:</strong> {{ producto.tipo }}</p>
+                    <p><strong>Ubicación:</strong> {{ producto.ubicacion }}</p>
+                    <p><strong>Fecha de Publicación:</strong> {{ producto.fecha_publicacion }}</p>
+                </div>
+                <div class="product-actions">
+                    <a href="{% url 'modificar-producto' producto.id %}" class="btn-edit">Editar</a>
+                    <a href="#" onclick="eliminarProducto({{ producto.id }})" class="btn-delete">Eliminar</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'agregar_producto' %}" class="btn-home">Agregar Producto</a>
+            <a href="{% url 'home' %}" class="btn-home">Volver al Home</a>
+        </div>
+    </div>
+
+    <div>
+        {% include 'app/paginator.html' %}
+    </div>
+
+    <script>
+        function eliminarProducto(id){
+            Swal.fire({
+                "title": "¿Estás seguro?",
+                "Text": "Esta acción no se puede deshacer",
+                "icon": "warning",
+                "showCancelButton": true,
+                "cancelButtonText": "No, Cancelar",
+                "confirmButtonText": "Si, Eliminar", 
+                "confirmButtonColor": "#dc3545"
+            })
+            .then(function(result) {
+                if(result.isConfirmed){
+                    window.location.href = "/eliminar-producto/"+id+"/"
+                }
+            })
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes</title>
+
+
+    <link rel="stylesheet" href="{% static 'app/css/detailms.css' %}">
+    <script src="{% static 'app/js/mensajes.js' %}"></script>
+</head>
+
+<body>
+    <h3>Identificador del canal: {{object.id}}</h3>
+
+	<h1>Mensajes del canal</h1>
+
+    <!-- Botón de volver atrás -->
+    <a href="javascript:history.back()" class="btn back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+            d="M5.854 3.646a.5.5 0 0 1 0 .708L3.207 7.5H14.5a.5.5 0 0 1 0 1H3.207l2.647 3.146a.5.5 0 0 1-.708.708l-3.5-4a.5.5 0 0 1 0-.708l3.5-4a.5.5 0 0 1 .708 0z" />
+        </svg>
+        Volver
+    </a>
+
+    <div id="contenedor_ms">
+        {% for mensaje in mensaje_canal %}  <!-- Asegúrate de que se está usando 'mensaje_canal' -->
+            <div class="div_ms {% if request.user == mensaje.usuario %}mis_mensajes{% else %}tus_mensajes{% endif %}">
+                <small>{{ mensaje.usuario }}</small>
+                <p>{{ mensaje.texto }}</p>
+                <small>{{ mensaje.tiempo }}</small>
+            </div>
+        {% empty %}
+            <p>No hay mensajes en este canal.</p>  <!-- Mensaje si no hay mensajes -->
+        {% endfor %}
+    </div>
+    
+    
+
+	<div class="div_form_ms">
+		<form id="form_submit" action="{{ request.path }}" method="POST">
+			{% csrf_token %}
+
+			{{form.as_p}}
+
+			<button type="submit" class="btn_enviar">
+				Enviar
+			</button>
+	</form>
+
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,236 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+{% block contenido %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoIntercambio</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <!-- ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'app/css/cssbase.css' %}">
+
+    <!-- JS -->
+    <script src="{% static 'app/js/jsbase.js' %}"></script>
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+
+    <!-- SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+
+    <!-- ============================================ NAVBAR ==================================================== -->
+
+    <!-- ============================================ NAVBAR ==================================================== -->
+
+    <nav class="navbar navbar-expand-lg" style="background-color: #5de080">
+        <div class="container-fluid">
+
+            <a class="navbar-brand d-lg-none" href="#">
+                <img src="{% static 'app/images/Logo.png' %}" style="border-radius: 20px; height: 120px;" alt="">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
+                aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll mx-auto"
+                    style="--bs-scroll-height: 100px;">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Contacto</a>
+                    </li>
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'agregar_producto' %}">Agregar Producto</a>
+                    </li>
+
+                    {% endif %}
+
+                    <a class="navbar-brand d-none d-lg-block" href="#">
+                        <img src="{% static 'app/images/Logo.png' %}" style="border-radius: 20px; height: 120px;"
+                            alt="">
+                    </a>
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'listar-productos' %}">Listar Productos</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Consejos</a>
+                    </li>
+
+                    {% if user.is_authenticated %}
+
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Opciones
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'inbox' %}" class="dropdown-item-custom"><i class="bi bi-envelope" style="margin-right: 5px;"></i></i>Inbox {{ user }}</a>
+                            </li>
+                            <li>
+                                <form id="logout-form" method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item dropdown-item-custom logout-button" style="border: none; background: none; padding: 0;">
+                                        Cerrar sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
+                    </li>
+                    {% endif %}
+
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ============================================ BARRA DE BÚSQUEDA ========================================== -->
+
+    <!-- Búsqueda -->
+<div class="search-bar-container">
+    <div class="search-bar">
+        <form class="d-flex" method="GET" action="{% url 'home' %}" role="search">
+            <input class="form-control me-2" type="search" name="query" placeholder="Buscar" aria-label="Search" value="{{ query|default_if_none:'' }}">
+            <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+</div>
+
+
+
+
+    <!-- ============================================ PRODUCT SECTION ============================================== -->
+
+    {% load humanize %}
+
+    <div class="container my-5">
+        <div class="row container-cards">
+            {% for p in productos %}
+            <!-- Tarjeta 1 -->
+            <div class="col-md-4 media-card">
+                <div class="card mb-3">
+                    {% if p.imagen %}
+                    <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ p.nombre | title }}</h5>
+                        <p class="text-muted text-center">Producto agregado por: {{ p.usuario.username }}</p> <!-- Aquí se muestra el nombre del usuario -->
+                        <a href="{% url 'producto' id=p.id %}" class="btn btn-success">Ver</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+
+    <!-- =================================================== ABOUT US ============================================== -->
+
+    <section>
+        <div class="container text-center">
+            <h1 class="sobre-nosotros">SOBRE NOSOTROS</h1>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-6 div-nosotros-media text-start">
+                    <p>
+                        En EcoIntercambio, creemos en la importancia de darle una segunda vida a los objetos que ya no
+                        utilizamos. Nuestra misión es conectar a personas con una visión sostenible, quienes desean
+                        contribuir al cuidado del medio ambiente a través del reciclaje y la reutilización de recursos.
+
+                        Desde nuestro inicio, nos hemos comprometido a reducir la huella de carbono, creando una
+                        comunidad en la que cada acción cuenta. Entendemos que cada objeto tiene un valor, y nuestro
+                        objetivo es facilitar su intercambio de manera segura y conveniente.
+
+                        Estamos aquí para transformar la manera en que las personas perciben el reciclaje,
+                        proporcionando una plataforma donde cualquier persona pueda encontrar un nuevo hogar para esos
+                        artículos que ya no necesita, evitando que terminen en vertederos y fomentando una cultura de
+                        responsabilidad y cuidado del planeta.
+
+                        EcoIntercambio es más que una aplicación; es un movimiento hacia un futuro más verde y
+                        consciente. Únete a nosotros y sé parte del cambio que el mundo necesita.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center div-nosotros-media">
+                    <img src="{% static 'app/images/sobre-nosotros-multivende.png' %}" alt="Sobre Nosotros"
+                        style="max-width: 100%; height: auto;">
+                </div>
+            </div>
+            <img src="{% static 'app/images/retiro-de-reciclaje-gratis.png' %}" alt="Camión de reciclaje"
+                style="padding-top: 50px;" class="camion-nosotros">
+        </div>
+    </section>
+
+
+    <!-- =================================================== FOOTER ================================================ -->
+
+    <section class="container-waves">
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+        <div class="wave wave3"></div>
+        <div class="wave wave4"></div>
+    </section>
+
+    <div class="text-center p-4">
+        © 2024 Copyright:
+        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">EcoIntercambio.com</a>
+    </div>
+
+    {% endblock %}
+
+    {% if messages %}
+    {% for m in messages %}
+    <script>
+        Swal.fire({
+            "title": "Felicitaciones",
+            "text": "{{ m }}",
+            "icon": "success"
+        });
+    </script>
+    {% endfor %}
+    {% endif %}
+
+</body>
+
+
+</html>

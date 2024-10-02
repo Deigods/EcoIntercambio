@@ -1,0 +1,65 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox</title>
+
+    <link rel="stylesheet" href="{% static 'app/css/inbox.css' %}">
+</head>
+<body>
+    <h1>Bienvenido {{ user }} a su inbox</h1>
+
+    <!-- Botón de volver atrás -->
+    <a href="javascript:history.back()" class="btn back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-left"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M5.854 3.646a.5.5 0 0 1 0 .708L3.207 7.5H14.5a.5.5 0 0 1 0 1H3.207l2.647 3.146a.5.5 0 0 1-.708.708l-3.5-4a.5.5 0 0 1 0-.708l3.5-4a.5.5 0 0 1 .708 0z" />
+        </svg>
+        Volver
+    </a>
+
+    {% if inbox %}
+        {% if inbox|length == 0 %}
+            <h2>Inbox vacío</h2>
+        {% else %}
+            {% for inbox_item in inbox %}
+                <div class="div_inbox">
+                    {% if inbox_item.canalmensaje_set.count > 0 %}
+                        {% for second_user in inbox_item.canalusuario_set.all %}
+                            {% if second_user.usuario != request.user %}
+                                <a href="{% url 'detailms' second_user.usuario.username %}">
+                                    <p>
+                                        {{ second_user.usuario }}
+                                    </p>
+                                    <small>
+                                        ({{ inbox_item.canalmensaje_set.count }}) Mensajes
+                                    </small>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="div_ms_inbox">
+                            {% with ultimo_mensaje=inbox_item.canalmensaje_set.last %}
+                                <p>
+                                    Mensaje: {{ ultimo_mensaje.texto }}
+                                </p>
+                                <p>
+                                    Usuario: {{ ultimo_mensaje.usuario }}
+                                </p>
+                            {% endwith %}
+                        </div>	
+                    {% else %}
+                        <p>No hay mensajes en este canal.</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% else %}
+        <h2>Inbox vacío</h2>
+    {% endif %}
+</body>
+</html>
