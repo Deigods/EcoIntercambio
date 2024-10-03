@@ -1,4 +1,6 @@
 pillow
-django-admin-iterface
 crispy-bootstrap5
-django == 5.0.4
+Django==5.0.4
+mysqlclient
+channels==4.0.0
+channels-redis==4.2.0
