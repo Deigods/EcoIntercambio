@@ -9,6 +9,17 @@ body {
     padding: 0;
     height: 100%;
 }
+#notification-badge {
+    position: absolute; /* Para que se posicione sobre el texto */
+    top: 0;
+    right: 0;
+    border-radius: 50%; /* Hacerlo redondo */
+    padding: 2px 5px; /* Ajusta el tamaño del badge */
+    font-size: 0.8em; /* Tamaño del texto */
+    display: inline-block; /* Asegúrate de que el badge se muestre correctamente */
+    background-color: #dc3545; /* Color de fondo rojo */
+    color: white; /* Color del texto */
+}
 
 body {
     background-image: url();

@@ -1,14 +1,24 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inbox</title>
 
     <link rel="stylesheet" href="{% static 'app/css/inbox.css' %}">
+    <script>
+        // Este script recargará la página al volver
+        window.onpageshow = function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+    </script>
 </head>
+
 <body>
     <h1>Bienvenido {{ user }} a su inbox</h1>
 
@@ -51,7 +61,7 @@
                                     Usuario: {{ ultimo_mensaje.usuario }}
                                 </p>
                             {% endwith %}
-                        </div>	
+                        </div>    
                     {% else %}
                         <p>No hay mensajes en este canal.</p>
                     {% endif %}

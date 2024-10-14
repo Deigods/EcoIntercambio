@@ -1,5 +1,8 @@
 from django.contrib import admin
 from .models import Estado, Tipo, Ubicacion, Producto, CanalUsuario, CanalMensaje, Canal
+from .models import Notificacion
+
+admin.site.register(Notificacion)
 
 # Register your models here.
 

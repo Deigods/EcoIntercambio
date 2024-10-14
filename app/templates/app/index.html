@@ -37,7 +37,14 @@
 
     <!-- SWEET ALERT -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <script>
+        // Este script recargará la página al volver
+        window.onpageshow = function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+    </script>
 </head>
 
 <body>
@@ -98,7 +105,14 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a class="dropdown-item" href="{% url 'inbox' %}" class="dropdown-item-custom"><i class="bi bi-envelope" style="margin-right: 5px;"></i></i>Inbox {{ user }}</a>
+                                <a class="dropdown-item" href="{% url 'inbox' %}" class="dropdown-item-custom">
+                                    <i class="bi bi-envelope" style="margin-right: 5px;"></i>
+                                    Inbox {{ user.username }} 
+                                    {% if notificaciones_no_leidas > 0 %}
+                                    <span class="badge bg-danger" id="notification-badge">{{ notificaciones_no_leidas }}</span>
+                                    {% endif %}
+                                </a>
+                                
                             </li>
                             <li>
                                 <form id="logout-form" method="post" action="{% url 'logout' %}">
@@ -110,6 +124,7 @@
                             </li>
                         </ul>
                     </li>
+                    
                     {% endif %}
                     
                     {% else %}

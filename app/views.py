@@ -15,21 +15,25 @@ from django.views.generic.edit import FormMixin
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import FormMixin
-
+from django.contrib.auth.decorators import login_required
+from .models import Notificacion
 from django.views.generic import View
-
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+from .models import Notificacion
 class Inbox(View):
-	def get(self, request):
+    def get(self, request):
+        # Marcar notificaciones como leídas al acceder al inbox
+        Notificacion.objects.filter(usuario=request.user, leido=False).update(leido=True)
 
-		inbox = Canal.objects.filter(canalusuario__usuario__in=[request.user.id])
+        inbox = Canal.objects.filter(canalusuario__usuario__in=[request.user.id])
+        context = {
+            "inbox": inbox,
+            "notificaciones_no_leidas": Notificacion.objects.filter(usuario=request.user, leido=False).count(),
+        }
 
+        return render(request, 'mensajes/inbox.html', context)
 
-		context = {
-
-			"inbox":inbox
-		}
-
-		return render(request, 'mensajes/inbox.html', context)
 
 class CanalFormMixin(FormMixin):
     form_class = FormMensajes
@@ -49,6 +53,10 @@ class CanalFormMixin(FormMixin):
             mensaje = form.cleaned_data.get("mensaje")
             canal_obj = CanalMensaje.objects.create(canal=canal, usuario=usuario, texto=mensaje)
 
+            # Crear la notificación
+            for miembro in canal.usuarios.exclude(id=usuario.id):  # Notificar a otros usuarios en el canal
+                Notificacion.objects.create(usuario=miembro, mensaje=f"{usuario.username} te ha enviado un mensaje.")
+
             # Verificar si la solicitud es AJAX
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return JsonResponse({
@@ -59,7 +67,6 @@ class CanalFormMixin(FormMixin):
             # Si no es una solicitud AJAX, continuar con el flujo normal
             return super().form_valid(form)
         
-        # Si el formulario no es válido
         return super().form_invalid(form)
 
 
@@ -113,17 +120,22 @@ class DetailMs(LoginRequiredMixin, CanalFormMixin, DetailView):
 
 
 
+@login_required
 def home(request):
-    query = request.GET.get('query', '')  # Obtiene el valor de búsqueda
+    query = request.GET.get('query', '')
     productos = Producto.objects.all()
 
-    # Filtrar solo si hay una consulta
+    # Contar notificaciones no leídas
+    notificaciones_no_leidas = Notificacion.objects.filter(usuario=request.user, leido=False).count()
+
+    # Filtrar productos si hay una consulta
     if query:
-        productos = productos.filter(nombre__istartswith=query)  # Filtrar por nombres que comiencen con el término
+        productos = productos.filter(nombre__istartswith=query)
 
     return render(request, 'app/index.html', {
         'productos': productos,
-        'query': query  # Pasar la consulta para que se mantenga en la barra de búsqueda
+        'query': query,
+        'notificaciones_no_leidas': notificaciones_no_leidas,  # Pasar el conteo a la plantilla
     })
 
 def register(request):
