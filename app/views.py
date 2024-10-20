@@ -142,12 +142,15 @@ def register(request):
     return render(request, 'app/register.html');
 
 def producto(request, id):
-    entidad = get_object_or_404(Producto, id = id)
+    entidad = get_object_or_404(Producto, id=id)
 
+    # Asegúrate de que `latitud` y `longitud` estén presentes en el modelo `Producto`
     data = {
-        'entidad': entidad
+        'entidad': entidad,
+        'latitud': entidad.latitud,
+        'longitud': entidad.longitud,
     }
-    return render(request, 'app/producto.html', data);
+    return render(request, 'app/producto.html', data)
 
 def registro(request):
     data = {
@@ -173,23 +176,38 @@ def registro(request):
     return render(request, 'registration/register.html', data);
 
 def agregar_producto(request):
-    
     data = {
-        'form': ProductoForm(user=request.user)  # Pasar el usuario aquí
+        'form': ProductoForm(user=request.user)
     }
 
     if request.method == 'POST':
         formulario = ProductoForm(data=request.POST, files=request.FILES, user=request.user)
 
         if formulario.is_valid():
-            formulario.instance.usuario = request.user  # Asignar el usuario actual
+            formulario.instance.usuario = request.user
+
+            # Obtener y limpiar latitud y longitud
+            latitude = request.POST.get('latitude', '').strip()
+            longitude = request.POST.get('longitude', '').strip()
+
+            # Verificar si los valores son válidos y convertir a float
+            try:
+                formulario.instance.latitud = float(latitude)
+                formulario.instance.longitud = float(longitude)
+            except ValueError:
+                messages.error(request, "Latitud y longitud deben ser números válidos.")
+                data['form'] = formulario
+                return render(request, 'app/producto/agregar.html', data)
+
             formulario.save()
             messages.success(request, "Agregado correctamente")
-            return redirect('listar-productos')  # Redirige a la lista de productos
+            return redirect('listar-productos')
         else:
             data["form"] = formulario
 
     return render(request, 'app/producto/agregar.html', data)
+
+
 
 def listar_productos(request):
     productos = Producto.objects.all()
@@ -253,3 +271,6 @@ def mensajes_privados(request, username, *args, **kwargs):
     }
 
     return render(request, 'mensajes/detail.html', context)
+
+def prueba_mapa(request):
+    return render(request, 'app/producto/mapa.html') 

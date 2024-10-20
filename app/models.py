@@ -37,13 +37,15 @@ class Ubicacion(models.Model):
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
-    estado = models.ForeignKey(Estado, on_delete=models.PROTECT)
+    estado = models.ForeignKey('Estado', on_delete=models.PROTECT)
     color = models.CharField(max_length=30)
-    tipo = models.ForeignKey(Tipo, on_delete=models.PROTECT)
-    ubicacion = models.ForeignKey(Ubicacion, on_delete=models.PROTECT)
+    tipo = models.ForeignKey('Tipo', on_delete=models.PROTECT)
+    ubicacion = models.ForeignKey('Ubicacion', on_delete=models.PROTECT)
     fecha_publicacion = models.DateField()
     imagen = models.ImageField(upload_to='productos', null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Asume que el usuario con ID 1 es un admin o similar
+    latitud = models.FloatField(null=True, blank=True)  # Nuevo campo para latitud
+    longitud = models.FloatField(null=True, blank=True)  # Nuevo campo para longitud
 
     def __str__(self):
         return self.nombre

@@ -43,17 +43,13 @@ body {
 .carousel-item img {
     width: 100%;
     height: 350px;
-    /* Ajusta el tamaño del contenedor */
     object-fit: cover;
-    /* Mantiene las proporciones */
     border-radius: 20px;
-    /* Opcional: mismo borde redondeado para consistencia */
 }
 
 .carousel-control-prev,
 .carousel-control-next {
     filter: invert(100%);
-    /* Opcional: para mejor visibilidad de controles en fondos oscuros */
 }
 
 .product-image:hover {
@@ -67,7 +63,7 @@ h2 {
 
 .list-group-item {
     border: none;
-    padding: 15px 20px;
+    padding: 10px 15px;
     font-size: 16px;
     color: #4caf50;
 }
@@ -113,7 +109,6 @@ h2 {
     }
 }
 
-
 .back-button {
     display: flex;
     align-items: center;
@@ -134,105 +129,59 @@ h2 {
 }
 
 .back-button:hover svg {
-    transform: translateX(-5px);
+    transform: translateX(-3px);
 }
-
-.list-group {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-
-.list-group-item {
-    word-wrap: break-word;
-    padding: 8px 10px;
-    font-size: 16px;
-}
-
-.product-details {
-    min-width: 440px;
-    max-width: 440px;
-}
-
-.carouselExampleIndicators, .carousel-inner  {
-    max-width: 450px;
-    min-width: 450px;
-    height: auto;
-}
-
-
-
-
-
-
-
-
 
 @media (max-width: 930px) {
+    .row {
+        flex-direction: column;
+    }
+
     .col-6 {
         width: 100%;
-        margin-bottom: 20px;
-        text-align: center;
+        margin-bottom: 20px; 
     }
 
-    .row {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
-@media (max-width: 790px) {
-    .product-details {
-        min-width: 100%;
-        max-width: 100%;
-        padding: 10px;
-    }
-}
-
-@media (max-width: 670px) {
-    .product-details {
-        min-width: 100%;
-        max-width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-    }
-}
-
-@media (max-width: 412px) {
-    .product-details {
-        min-width: 100%;
-        max-width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
-        box-sizing: border-box;
+    #map {
+        height: 300px; 
     }
 
-    .carouselExampleIndicators, .carousel-inner {
-        max-width: 100%;
-        min-width: 100%;
+    .carousel-inner img {
+        width: 100%;
         height: auto;
+        max-height: 350px;
+        object-fit: cover;
     }
 
-    .row {
+    .carousel-item {
+        height: auto; 
+    }
+
+    .container-fluid {
+        display: flex;
         flex-direction: column;
-        align-items: center;
     }
 
-    .container {
-        padding: 10px;
+    #carr {
+        order: 2;
+    }
+    
+    #lista {
+        order: 1;
     }
 
-
-    .back-button {
-        display: block;
+    .container-fluid h2 {
         text-align: center;
-        margin: 10px auto;
-        width: 90%;
-        max-width: 350px;
     }
+
+    .back-button{
+        margin-top: 400px;
+        padding: 20px;
+    }
+}
+
+#map {
+    width: 100%;
+    height: 400px;
+    margin-bottom: 20px;
 }
