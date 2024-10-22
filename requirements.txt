@@ -2,5 +2,6 @@ pillow
 crispy-bootstrap5
 Django==5.0.4
 mysqlclient
+PyMySQL
 channels==4.0.0
 channels-redis==4.2.0
