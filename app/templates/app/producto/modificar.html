@@ -10,20 +10,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Producto</title>
     <link rel="stylesheet" href="{% static 'app/css/agregar.css' %}">
-
+    <!-- Mapbox CSS -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js'></script>
     <!-- SWEET ALERT -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 </head>
 
-{% load crispy_forms_tags %}
-
 <body>
+    {% load crispy_forms_tags %}
     <div class="container">
         <h2>Editar Producto</h2>
         <form action="" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form | crispy }}
+
+            <!-- Barra de búsqueda -->
+            <div id="geocoder" class="geocoder"></div>
+            <div id="map" style="width: 100%; height: 400px;"></div>
+
+            <!-- Inputs ocultos para latitud y longitud -->
+            <input type="hidden" id="latitude" name="latitude" value="{{ entidad.latitud }}">
+            <input type="hidden" id="longitude" name="longitude" value="{{ entidad.longitud }}">
+            <p>Latitud: {{ entidad.latitud }}</p>
+            <p>Longitud: {{ entidad.longitud }}</p>
 
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn-submit">Modificar Producto</button>
@@ -38,6 +50,66 @@
         <div class="wave wave3"></div>
         <div class="wave wave4"></div>
     </section>
-    {% endblock %}
+
+    <!-- Mapbox Script -->
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZGVpZ28wMSIsImEiOiJjbTJmNW9hYTMwNXE2Mm1vbXJ4eWptY3NjIn0.mV36MUpkaaMXHZgv1_bDug';
+
+        // Obtener las coordenadas del input
+        const latitudeStr = document.getElementById('latitude').value.trim().replace(',', '.');
+        const longitudeStr = document.getElementById('longitude').value.trim().replace(',', '.');
+
+        // Convertir las coordenadas a números
+        const latitude = parseFloat(latitudeStr);
+        const longitude = parseFloat(longitudeStr);
+
+        // Verifica que las coordenadas sean válidas
+        if (isNaN(latitude) || isNaN(longitude)) {
+            console.error("Las coordenadas no son válidas");
+        } else {
+            const coordinates = [longitude, latitude];
+
+            // Crear el mapa
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/deigo01/cm2gk8sve000901pebrgx74cy',
+                center: coordinates,
+                zoom: 10
+            });        
+
+            // Añadir marcador y hacerlo arrastrable
+            var marker = new mapboxgl.Marker({
+                draggable: true
+            })
+            .setLngLat(coordinates)
+            .addTo(map);
+
+            // Actualiza los campos ocultos al mover el marcador
+            marker.on('dragend', function () {
+                var lngLat = marker.getLngLat();
+                document.getElementById('latitude').value = lngLat.lat;
+                document.getElementById('longitude').value = lngLat.lng;
+            });
+
+            // Inicializar el geocoder
+            const geocoder = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                mapboxgl: mapboxgl,
+                marker: false, // Evita el marcador por defecto
+            });
+
+            // Añadir la barra de búsqueda al mapa
+            map.addControl(geocoder);
+
+            // Al seleccionar una dirección, actualizar el marcador y las coordenadas
+            geocoder.on('result', function(ev) {
+                const coords = ev.result.geometry.coordinates;
+                marker.setLngLat(coords);
+                document.getElementById('latitude').value = coords[1]; // Latitud
+                document.getElementById('longitude').value = coords[0]; // Longitud
+            });
+        }
+    </script>
+{% endblock %}
 </body>
 </html>

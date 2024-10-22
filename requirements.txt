@@ -1,5 +1,6 @@
 pillow
 crispy-bootstrap5
+crispy
 Django==5.0.4
 mysqlclient
 PyMySQL

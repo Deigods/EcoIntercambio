@@ -226,23 +226,39 @@ def listar_productos(request):
     return render(request, 'app/producto/listar.html', data)
 
 def modificar_producto(request, id):
-
     producto = get_object_or_404(Producto, id=id)
 
     data = {
-        'form': ProductoForm(instance = producto)
+        'form': ProductoForm(instance=producto),
+        'entidad': producto  # Para pasar los valores de latitud y longitud al template
     }
 
     if request.method == 'POST':
         formulario = ProductoForm(data=request.POST, instance=producto, files=request.FILES)
         if formulario.is_valid():
+            # Obtener y limpiar latitud y longitud
+            latitude = request.POST.get('latitude', '').strip()
+            longitude = request.POST.get('longitude', '').strip()
+
+            # Verificar si los valores son válidos y convertir a float
+            try:
+                if latitude:
+                    producto.latitud = float(latitude)
+                if longitude:
+                    producto.longitud = float(longitude)
+            except ValueError:
+                messages.error(request, "Latitud y longitud deben ser números válidos.")
+                data['form'] = formulario
+                return render(request, 'app/producto/modificar.html', data)
+
             formulario.save()
             messages.success(request, "Modificado correctamente")
-            return redirect(to='listar-productos')
+            return redirect('listar-productos')
         else:
             data["form"] = formulario
 
-    return render(request, 'app/producto/modificar.html', data);
+    return render(request, 'app/producto/modificar.html', data)
+
 
 def eliminar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
