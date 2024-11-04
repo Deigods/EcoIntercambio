@@ -21,6 +21,10 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from .models import Notificacion
+from django.core.paginator import Paginator
+from django.http import Http404
+from .models import Producto
+
 class Inbox(View):
     def get(self, request):
         # Marcar notificaciones como leídas al acceder al inbox
@@ -210,7 +214,13 @@ def agregar_producto(request):
 
 
 def listar_productos(request):
+    query = request.GET.get('query', '')  # Obtiene el valor de búsqueda
     productos = Producto.objects.all()
+
+    # Filtrar solo si hay una consulta
+    if query:
+        productos = productos.filter(nombre__istartswith=query)  # Filtrar solo por nombres que comiencen con el término
+
     page = request.GET.get('page', 1)
 
     try:
@@ -220,10 +230,12 @@ def listar_productos(request):
         raise Http404
 
     data = {
-        'entity' : productos,
-        'paginator' : paginator
+        'entity': productos,
+        'paginator': paginator,
+        'query': query  # Pasar la consulta para que se mantenga en la barra de búsqueda
     }
     return render(request, 'app/producto/listar.html', data)
+
 
 def modificar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)

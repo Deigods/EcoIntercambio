@@ -24,6 +24,15 @@ h2 {
     color: #4CAF50;
     margin-bottom: 20px;
 }
+.search-bar button.btn-success {
+    background-color: #28a745; /* Ajusta el tono de verde aquí */
+    border-color: #28a745;
+}
+
+.search-bar button.btn-success:hover {
+    background-color: #218838; /* Color para el hover */
+    border-color: #1e7e34;
+}
 
 .product-list {
     list-style: none;

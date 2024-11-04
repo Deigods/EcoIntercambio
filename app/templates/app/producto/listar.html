@@ -22,6 +22,14 @@
     <div class="container">
         <!-- Mostrar el formulario usando crispy forms -->
         <h2>Lista de Productos</h2>
+        <div class="search-bar-container mb-4">
+            <div class="search-bar input-group">
+                <form class="d-flex w-100" method="GET" action="{% url 'listar-productos' %}" role="search">
+                    <input class="form-control" type="search" name="query" placeholder="Buscar productos por nombre" aria-label="Buscar" value="{{ query|default_if_none:'' }}">
+                    <button class="btn btn-success" type="submit"><i class="bi bi-search"></i> Buscar</button>
+                </form>
+            </div>
+        </div>
         <ul class="product-list">
             {% for producto in entity %}
             <li class="product-item">
