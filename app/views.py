@@ -15,13 +15,12 @@ from django.views.generic.edit import FormMixin
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.views.generic.edit import FormMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import Notificacion
 from django.views.generic import View
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView
 from .models import Notificacion
-from django.core.paginator import Paginator
 from django.http import Http404
 from .models import Producto
 
@@ -74,7 +73,6 @@ class CanalFormMixin(FormMixin):
         return super().form_invalid(form)
 
 
-
 class CanalDetailView(LoginRequiredMixin, CanalFormMixin, DetailView):
     template_name = 'mensajes/detail.html'
     queryset = Canal.objects.all()
@@ -82,22 +80,26 @@ class CanalDetailView(LoginRequiredMixin, CanalFormMixin, DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
-        obj = context['object']
-        print(obj)
+        canal = context['object']
 
-        if self.request.user not in obj.usuarios.all():
-            raise PermissionDenied
-        
-        context['canal_miembro'] = self.request.user in obj.usuarios.all()
+        # Verificar si el usuario actual es miembro del canal
+        if self.request.user not in canal.usuarios.all():
+            raise PermissionDenied("No tienes permiso para ver este canal.")
+
+        context['canal_miembro'] = self.request.user in canal.usuarios.all()
         return context
 
-    def get_queryset(self):
+    def get_object(self, *args, **kwargs):
+        username = self.kwargs.get("username")
+        mi_username = self.request.user.username
 
-        usuario = self.request.user
-        username = usuario.username
+        # Si el canal es de este usuario o pertenece a ambos, entonces lo mostramos
+        canal, created = Canal.objects.obtener_o_crear_canal_ms(mi_username, username)
 
-        qs = Canal.objects.all().filtrar_por_username(username)
-        return qs
+        if not canal or self.request.user not in canal.usuarios.all():
+            raise Http404("Este canal no existe o no tienes acceso.")
+
+        return canal
 
 class DetailMs(LoginRequiredMixin, CanalFormMixin, DetailView):
     template_name = 'mensajes/detail.html'
@@ -136,8 +138,17 @@ def home(request):
     if query:
         productos = productos.filter(nombre__istartswith=query)
 
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(productos, 6)
+        productos = paginator.page(page)
+    except:
+        raise Http404
+
     return render(request, 'app/index.html', {
-        'productos': productos,
+        'entity': productos,
+        'paginator': paginator,
         'query': query,
         'notificaciones_no_leidas': notificaciones_no_leidas,  # Pasar el conteo a la plantilla
     })
@@ -145,15 +156,10 @@ def home(request):
 def register(request):
     return render(request, 'app/register.html');
 
+@login_required
 def producto(request, id):
     entidad = get_object_or_404(Producto, id=id)
-
-    # Asegúrate de que `latitud` y `longitud` estén presentes en el modelo `Producto`
-    data = {
-        'entidad': entidad,
-        'latitud': entidad.latitud,
-        'longitud': entidad.longitud,
-    }
+    data = {'entidad': entidad, 'latitud': entidad.latitud, 'longitud': entidad.longitud}
     return render(request, 'app/producto.html', data)
 
 def registro(request):
@@ -179,6 +185,7 @@ def registro(request):
 
     return render(request, 'registration/register.html', data);
 
+@login_required
 def agregar_producto(request):
     data = {
         'form': ProductoForm(user=request.user)
@@ -212,33 +219,33 @@ def agregar_producto(request):
     return render(request, 'app/producto/agregar.html', data)
 
 
-
+@login_required
 def listar_productos(request):
-    query = request.GET.get('query', '')  # Obtiene el valor de búsqueda
-    productos = Producto.objects.all()
+    # Filtrar los productos según el usuario
+    if request.user.is_superuser:
+        productos = Producto.objects.all()  # Si es superusuario, obtiene todos los productos
+    else:
+        productos = Producto.objects.filter(usuario=request.user)  # Si no, solo sus productos
 
-    # Filtrar solo si hay una consulta
+    # Opción de búsqueda (si tienes la funcionalidad de búsqueda habilitada)
+    query = request.GET.get('query')
     if query:
-        productos = productos.filter(nombre__istartswith=query)  # Filtrar solo por nombres que comiencen con el término
+        productos = productos.filter(nombre__icontains=query)
 
-    page = request.GET.get('page', 1)
-
-    try:
-        paginator = Paginator(productos, 5)
-        productos = paginator.page(page)
-    except:
-        raise Http404
-
-    data = {
+    context = {
         'entity': productos,
-        'paginator': paginator,
-        'query': query  # Pasar la consulta para que se mantenga en la barra de búsqueda
+        'query': query,
     }
-    return render(request, 'app/producto/listar.html', data)
+    return render(request, 'app/producto/listar.html', context)
 
 
+@login_required
 def modificar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
+
+    # Verificar si el usuario actual es el dueño del producto o es un superusuario
+    if request.user != producto.usuario and not request.user.is_superuser:
+        raise PermissionDenied("No tienes permiso para modificar este producto.")
 
     data = {
         'form': ProductoForm(instance=producto),
@@ -271,14 +278,19 @@ def modificar_producto(request, id):
 
     return render(request, 'app/producto/modificar.html', data)
 
-
+@login_required
 def eliminar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
+    # Verificar si el usuario tiene permiso para eliminar
+    if request.user != producto.usuario and not request.user.is_superuser:
+        raise PermissionDenied("No tienes permiso para eliminar este producto.")
+    
     producto.delete()
-    messages.success(request, "Eliminado correctamente")
-    return redirect(to='listar-productos')
+    messages.success(request, "Producto eliminado correctamente")
+    return redirect('listar-productos')
 
 
+@login_required
 def mensajes_privados(request, username, *args, **kwargs):
     if not request.user.is_authenticated:
         return HttpResponse("Prohibido")
@@ -299,6 +311,3 @@ def mensajes_privados(request, username, *args, **kwargs):
     }
 
     return render(request, 'mensajes/detail.html', context)
-
-def prueba_mapa(request):
-    return render(request, 'app/producto/mapa.html') 

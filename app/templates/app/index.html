@@ -171,22 +171,34 @@
 
     <div class="container my-5">
         <div class="row container-cards">
-            {% for p in productos %}
-            <!-- Tarjeta 1 -->
-            <div class="col-md-4 media-card">
-                <div class="card mb-3">
-                    {% if p.imagen %}
-                    <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">
-                    {% endif %}
-                    <div class="card-body">
-                        <h5 class="card-title text-center">{{ p.nombre | title }}</h5>
-                        <p class="text-muted text-center">Producto agregado por: {{ p.usuario.username }}</p> <!-- Aquí se muestra el nombre del usuario -->
-                        <a href="{% url 'producto' id=p.id %}" class="btn btn-success">Ver</a>
+            {% if entity %}
+                {% for p in entity %}
+                <!-- Tarjeta de producto -->
+                <div class="col-md-4 media-card">
+                    <div class="card mb-3">
+                        {% if p.imagen %}
+                        <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title text-center">{{ p.nombre | title }}</h5>
+                            <p class="text-muted text-center">Producto agregado por: {{ p.usuario.username }}</p>
+                            <a href="{% url 'producto' id=p.id %}" class="btn btn-success">Ver</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">No hay productos disponibles en este momento.</p>
+                </div>
+            {% endif %}
         </div>
+    </div>
+    
+
+
+    <div>
+        {% include 'app/paginator.html' %}
     </div>
     
 
