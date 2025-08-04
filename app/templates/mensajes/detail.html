@@ -9,8 +9,8 @@
     <title>Mensajes</title>
 
 
-    <link rel="stylesheet" href="{% static 'app/css/detailms.css' %}">
-    <script src="{% static 'app/js/mensajes.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/detailms.css' %}">
+    <!-- <script src="{% static 'app/js/mensajes.js' %}"></script> -->
 </head>
 
 <body>
@@ -36,7 +36,7 @@
                 <small>{{ mensaje.tiempo }}</small>
             </div>
         {% empty %}
-            <p>No hay mensajes en este canal.</p>  <!-- Mensaje si no hay mensajes -->
+            <p style="text-align:center">No hay mensajes en este canal.</p>  <!-- Mensaje si no hay mensajes -->
         {% endfor %}
     </div>
     
@@ -56,5 +56,53 @@
 	</div>
 
 </body>
+
+<script>
+    const canalId = "{{ object.id }}";
+    const usuarioActual = "{{ request.user.username }}";
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + canalId + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const divMs = document.createElement('div');
+        divMs.classList.add('div_ms');
+
+        if (data.username === usuarioActual) {
+            divMs.classList.add('mis_mensajes');
+        } else {
+            divMs.classList.add('tus_mensajes');
+        }
+
+        divMs.innerHTML = `
+            <small>${data.username}</small>
+            <p>${data.mensaje}</p>
+            <small>${data.timestamp || ''}</small>
+        `;
+
+        document.querySelector('#contenedor_ms').appendChild(divMs);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat cerrado inesperadamente');
+    };
+
+    // Evitar el envío clásico y usar WebSocket
+    document.querySelector('#form_submit').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const inputField = document.querySelector('#id_mensaje');
+
+        const mensaje = inputField.value;
+
+        if (mensaje.trim() !== '') {
+            chatSocket.send(JSON.stringify({
+                'mensaje': mensaje
+            }));
+            inputField.value = '';
+        }
+    });
+</script>
+
 
 </html>

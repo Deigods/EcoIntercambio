@@ -1,6 +1,5 @@
-{% extends 'app/index.html' %}
-
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -10,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Productos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'app/css/lista.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lista.css' %}">
 
     <!-- SWEET ALERT -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -25,28 +24,44 @@
         <div class="search-bar-container mb-4">
             <div class="search-bar input-group">
                 <form class="d-flex w-100" method="GET" action="{% url 'listar-productos' %}" role="search">
-                    <input class="form-control" type="search" name="query" placeholder="Buscar productos por nombre" aria-label="Buscar" value="{{ query|default_if_none:'' }}">
+                    <input class="form-control me-2 min-w-100" type="search" name="query" placeholder="Buscar productos" aria-label="Buscar" value="{{ query|default_if_none:'' }}">
+                    <select class="form-select me-2" name="tipo">
+                        <option value="">Todos los tipos</option>
+                        {% for t in tipos %}
+                            <option value="{{ t.id }}" {% if t.id|stringformat:"s" == tipo_seleccionado %}selected{% endif %}>{{ t.tipo_objeto }}</option>
+                        {% endfor %}
+                    </select>
+                    <select class="form-select me-2" name="ubicacion">
+                        <option value="">Todas las regiones</option>
+                        {% for u in ubicaciones %}
+                            <option value="{{ u.id }}" {% if u.id|stringformat:"s" == ubicacion_seleccionada %}selected{% endif %}>{{ u.ubicacion_name }}</option>
+                        {% endfor %}
+                    </select>
                     <button class="btn btn-success" type="submit"><i class="bi bi-search"></i> Buscar</button>
                 </form>
             </div>
         </div>
         <ul class="product-list">
-            {% for producto in entity %}
-            <li class="product-item">
-                <div class="product-info">
-                    <h3>{{ producto.nombre }}</h3>
-                    <p><strong>Estado:</strong> {{ producto.estado }}</p>
-                    <p><strong>Color:</strong> {{ producto.color }}</p>
-                    <p><strong>Tipo:</strong> {{ producto.tipo }}</p>
-                    <p><strong>Ubicación:</strong> {{ producto.ubicacion }}</p>
-                    <p><strong>Fecha de Publicación:</strong> {{ producto.fecha_publicacion }}</p>
-                </div>
-                <div class="product-actions">
-                    <a href="{% url 'modificar-producto' producto.id %}" class="btn-edit">Editar</a>
-                    <a href="#" onclick="eliminarProducto({{ producto.id }})" class="btn-delete">Eliminar</a>
-                </div>
-            </li>
-            {% endfor %}
+            {% if entity %}
+                {% for producto in entity %}
+                <li class="product-item">
+                    <div class="product-info">
+                        <h3>{{ producto.nombre }}</h3>
+                        <p><strong>Estado:</strong> {{ producto.estado }}</p>
+                        <p><strong>Color:</strong> {{ producto.color }}</p>
+                        <p><strong>Tipo:</strong> {{ producto.tipo }}</p>
+                        <p><strong>Ubicación:</strong> {{ producto.ubicacion }}</p>
+                        <p><strong>Fecha de Publicación:</strong> {{ producto.fecha_publicacion }}</p>
+                    </div>
+                    <div class="product-actions">
+                        <a href="{% url 'modificar-producto' producto.id %}" class="btn-edit">Editar</a>
+                        <a href="#" onclick="eliminarProducto({{ producto.id }})" class="btn-delete">Eliminar</a>
+                    </div>
+                </li>
+                {% endfor %}
+            {% else %}
+                <li class="product-item" style="justify-content: center;">No se encontraron productos.</li>
+            {% endif %}
         </ul>
         <div class="d-flex justify-content-center">
             <a href="{% url 'agregar_producto' %}" class="btn-home">Agregar Producto</a>

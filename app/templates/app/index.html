@@ -20,10 +20,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'app/css/cssbase.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cssbase.css' %}">
 
     <!-- JS -->
-    <script src="{% static 'app/js/jsbase.js' %}"></script>
+    <script src="{% static 'js/jsbase.js' %}"></script>
 
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +66,7 @@
         <div class="container-fluid">
 
             <a class="navbar-brand d-lg-none" href="#">
-                <img src="{% static 'app/images/Logo.png' %}" style="border-radius: 20px; height: 120px;" alt="">
+                <img src="{% static 'images/Logo.png' %}" style="border-radius: 20px; height: 120px;" alt="">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
@@ -91,7 +91,7 @@
                     {% endif %}
 
                     <a class="navbar-brand d-none d-lg-block" href="#">
-                        <img src="{% static 'app/images/Logo.png' %}" style="border-radius: 20px; height: 120px;"
+                        <img src="{% static 'images/Logo.png' %}" style="border-radius: 20px; height: 120px;"
                             alt="">
                     </a>
 
@@ -153,10 +153,22 @@
     <!-- ============================================ BARRA DE BÚSQUEDA ========================================== -->
 
     <!-- Búsqueda -->
-<div class="search-bar-container">
+<div class="search-bar-container" style="margin-top: 25px;">
     <div class="search-bar">
         <form class="d-flex" method="GET" action="{% url 'home' %}" role="search">
             <input class="form-control me-2" type="search" name="query" placeholder="Buscar" aria-label="Search" value="{{ query|default_if_none:'' }}">
+            <select class="form-select me-2" name="tipo">
+                <option value="">Todos los tipos</option>
+                {% for t in tipos %}
+                    <option value="{{ t.id }}" {% if t.id|stringformat:"s" == tipo_seleccionado %}selected{% endif %}>{{ t.tipo_objeto }}</option>
+                {% endfor %}
+            </select>
+            <select class="form-select me-2" name="ubicacion">
+                <option value="">Todas las regiones</option>
+                {% for u in ubicaciones %}
+                    <option value="{{ u.id }}" {% if u.id|stringformat:"s" == ubicacion_seleccionada %}selected{% endif %}>{{ u.ubicacion_name }}</option>
+                {% endfor %}
+            </select>
             <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
         </form>
     </div>
@@ -181,7 +193,10 @@
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title text-center">{{ p.nombre | title }}</h5>
-                            <p class="text-muted text-center">Producto agregado por: {{ p.usuario.username }}</p>
+                            {% comment %} <p class="text-muted text-center">Producto agregado por: {{ p.usuario.username }}</p> {% endcomment %}
+                            <p class="text-muted text-center">Ubicación: {{ p.ubicacion.ubicacion_name }}</p>
+                            <p class="text-muted text-center">Fecha de publicación: {{ p.fecha_publicacion }}</p>
+                            <p class="text-muted text-center">Estado: {{ p.estado }}</p>
                             <a href="{% url 'producto' id=p.id %}" class="btn btn-success">Ver</a>
                         </div>
                     </div>
@@ -228,11 +243,11 @@
                     </p>
                 </div>
                 <div class="col-md-6 text-center div-nosotros-media">
-                    <img src="{% static 'app/images/sobre-nosotros-multivende.png' %}" alt="Sobre Nosotros"
+                    <img src="{% static 'images/sobre-nosotros-multivende.png' %}" alt="Sobre Nosotros"
                         style="max-width: 100%; height: auto;">
                 </div>
             </div>
-            <img src="{% static 'app/images/retiro-de-reciclaje-gratis.png' %}" alt="Camión de reciclaje"
+            <img src="{% static 'images/retiro-de-reciclaje-gratis.png' %}" alt="Camión de reciclaje"
                 style="padding-top: 50px;" class="camion-nosotros">
         </div>
     </section>

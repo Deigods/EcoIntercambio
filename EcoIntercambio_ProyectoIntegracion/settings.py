@@ -30,6 +30,9 @@ ALLOWED_HOSTS = []
 
 MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
+WSGI_APPLICATION = 'EcoIntercambio_ProyectoIntegracion.wsgi.application'
+ASGI_APPLICATION = 'EcoIntercambio_ProyectoIntegracion.asgi.application'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,11 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
     'app',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.humanize',
+    'channels',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -79,8 +84,11 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'EcoIntercambio_ProyectoIntegracion.wsgi.application'
-
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -131,9 +139,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICSFILES_DIRS = (os.path.join(BASE_DIR, 'app/static'))
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -16,7 +16,7 @@
         crossorigin="anonymous"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'app/css/cssproducto.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cssproducto.css' %}">
 
     <!-- Mapbox CSS -->
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
@@ -24,7 +24,7 @@
         href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
         type="text/css">
 
-    <script defer src="{% static 'app/js/jsproducto.js' %}"></script>
+    <script defer src="{% static 'js/jsproducto.js' %}"></script>
 
     <!-- Mapbox JS -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
@@ -89,7 +89,7 @@
                     </div>
                     {% if entidad.usuario != request.user %}
                     <button class="btn btn-primary contact-button mt-3"
-                        onclick="window.location.href='{% url 'detailms' entidad.usuario.username %}'">
+                        onclick="window.location.href='{% url 'detailms' entidad.usuario.username %}'" style="width: 100%;">
                         Contactar al Ofertante
                     </button>
                     {% endif %}

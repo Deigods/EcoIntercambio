@@ -1,0 +1,210 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: auto; /* Permite el desplazamiento */
+}
+
+body {
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: #e8f5e9;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinea el contenido al inicio */
+    min-height: 100vh; /* Asegura que el contenido se ajuste a la pantalla */
+    margin: 0;
+    position: relative;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    position: relative;
+    z-index: 10;
+    max-width: 1320px;
+    width: 100%;
+    min-height: 300px; /* Altura mínima para el contenedor, ajusta según sea necesario */
+    margin-bottom: 60px; /* Espacio para el botón de volver al home */
+    margin-top: 20px; /* Asegura que el contenedor tenga espacio desde el principio */
+}
+
+.form-group label {
+    color: #388e3c;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.form-control {
+    border-radius: 20px;
+    border-color: #4caf50;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.btn-primary {
+    background-color: #4caf50;
+    border: none;
+    border-radius: 20px;
+}
+
+button {
+    margin-top: 10px;
+}
+
+label {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #388e3c;
+}
+
+.form-text {
+    color: #388e3c;
+}
+
+.form-check-label {
+    color: #388e3c;
+}
+
+img {
+    width: 80%;
+    height: auto;
+    max-height: 100%; /* Asegura que la imagen no exceda la altura disponible */
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.col-md-6 img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 1320px) {
+    label {
+        padding-bottom: 8px;
+    }
+
+    .form-check {
+        padding-top: 10px;
+    }
+
+    /* Asegura que la imagen no se agrande demasiado */
+    img {
+        max-width: 100%;
+        width: 250px; /* Ajusta el ancho según sea necesario */
+        height: auto;
+        margin: 0 auto; /* Centra la imagen */
+        display: block;
+    }
+
+    /* Ajusta el formulario para que ocupe el ancho completo en pantallas pequeñas */
+    .col-md-6 {
+        width: 100%;
+        padding: 20px; /* Añade padding para que no quede tan pegado a los bordes */
+    }
+
+    .container {
+        max-width: 100%;
+        min-width: 100%;
+        max-height: none; /* Remueve la restricción de altura */
+    }
+}
+
+@keyframes animate {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: 1000px;
+    }
+}
+
+@keyframes animate2 {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+@keyframes animate3 {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    color: #4caf50;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 20px;
+    margin-top: 40px;
+    transition: color 0.3s ease-in-out;
+}
+
+.back-button svg {
+    margin-right: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.back-button:hover {
+    color: #388e3c;
+}
+
+.back-button:hover svg {
+    transform: translateX(-5px);
+}
+
+
+
+.form-group-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.btn-primary {
+    width: 48%;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #388e3c;
+}
+
+.btn-secondary {
+    width: 48%;
+    background-color: #8BC34A;
+    border: none;
+    border-radius: 20px;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #388e3c;
+    color: white;
+}
+
+.btn-register {
+    margin-left: 10px;
+    text-align: center;
+}

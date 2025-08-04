@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from .forms import CustomUserCreationForm, ProductoForm, FormMensajes
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from .models import Producto, CanalMensaje, CanalUsuario, Canal
+from .models import Producto, CanalMensaje, CanalUsuario, Canal, Ubicacion
 from django.core.paginator import Paginator
 from django.http import Http404, JsonResponse
 
@@ -22,7 +22,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView
 from .models import Notificacion
 from django.http import Http404
-from .models import Producto
+from .models import Producto, Tipo
 
 class Inbox(View):
     def get(self, request):
@@ -129,6 +129,8 @@ class DetailMs(LoginRequiredMixin, CanalFormMixin, DetailView):
 @login_required
 def home(request):
     query = request.GET.get('query', '')
+    tipo_id = request.GET.get('tipo', '')
+    ubicacion_id = request.GET.get('ubicacion', '')
     productos = Producto.objects.all()
 
     # Contar notificaciones no leídas
@@ -137,6 +139,13 @@ def home(request):
     # Filtrar productos si hay una consulta
     if query:
         productos = productos.filter(nombre__istartswith=query)
+    if tipo_id:
+        productos = productos.filter(tipo_id=tipo_id)
+    if ubicacion_id:
+        productos = productos.filter(ubicacion_id=ubicacion_id)
+
+    tipos = Tipo.objects.all()
+    ubicaciones = Ubicacion.objects.all()  # Para el filtro de región
 
     page = request.GET.get('page', 1)
 
@@ -150,7 +159,11 @@ def home(request):
         'entity': productos,
         'paginator': paginator,
         'query': query,
-        'notificaciones_no_leidas': notificaciones_no_leidas,  # Pasar el conteo a la plantilla
+        'tipos': tipos,
+        'tipo_seleccionado': tipo_id,
+        'notificaciones_no_leidas': notificaciones_no_leidas,
+        'ubicaciones': ubicaciones,
+        'ubicacion_seleccionada': ubicacion_id,
     })
 
 def register(request):
@@ -223,18 +236,40 @@ def agregar_producto(request):
 def listar_productos(request):
     # Filtrar los productos según el usuario
     if request.user.is_superuser:
-        productos = Producto.objects.all()  # Si es superusuario, obtiene todos los productos
+        productos = Producto.objects.all()
     else:
-        productos = Producto.objects.filter(usuario=request.user)  # Si no, solo sus productos
+        productos = Producto.objects.filter(usuario=request.user)
 
-    # Opción de búsqueda (si tienes la funcionalidad de búsqueda habilitada)
-    query = request.GET.get('query')
+    query = request.GET.get('query', '')
+    tipo_id = request.GET.get('tipo', '')
+    ubicacion_id = request.GET.get('ubicacion', '')
+
     if query:
-        productos = productos.filter(nombre__icontains=query)
+        productos = productos.filter(nombre__istartswith=query)
+    if tipo_id:
+        productos = productos.filter(tipo_id=tipo_id)
+    if ubicacion_id:
+        productos = productos.filter(ubicacion_id=ubicacion_id)
+
+    tipos = Tipo.objects.all()
+    ubicaciones = Ubicacion.objects.all()
+
+    page = request.GET.get('page', 1)
+
+    try:
+        paginator = Paginator(productos, 5)
+        productos = paginator.page(page)
+    except:
+        raise Http404
 
     context = {
         'entity': productos,
         'query': query,
+        'paginator': paginator,
+        'tipos': tipos,
+        'tipo_seleccionado': tipo_id,
+        'ubicaciones': ubicaciones,
+        'ubicacion_seleccionada': ubicacion_id,
     }
     return render(request, 'app/producto/listar.html', context)
 
