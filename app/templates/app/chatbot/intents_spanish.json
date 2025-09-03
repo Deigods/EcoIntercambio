@@ -1,0 +1,166 @@
+{
+    "intents": [
+        {
+            "tag": "saludos",
+            "patterns": [
+                "Hola",
+                "Buenos días",
+                "Buenas tardes",
+                "Buenas noches",
+                "¿Qué tal?",
+                "¿Hay alguien ahí?",
+                "Saludos",
+                "Hey",
+                "¡Qué tal!"
+            ],
+            "responses": [
+                "¡Hola! ¿En qué puedo ayudarte?",
+                "¡Bienvenido a EcoIntercambio! ¿Cómo puedo asistirte?",
+                "Hola, ¿cómo puedo ayudarte hoy?",
+                "¡Hola! Espero que tengas un gran día. ¿En qué puedo ayudarte?"
+            ]
+        },
+        {
+            "tag": "despedidas",
+            "patterns": [
+                "Adiós",
+                "Hasta luego",
+                "Nos vemos",
+                "Chao",
+                "Gracias, eso es todo",
+                "Me voy",
+                "Hasta pronto",
+                "Nos vemos luego"
+            ],
+            "responses": [
+                "¡Hasta luego! Si necesitas algo más, aquí estaré.",
+                "Gracias por visitarnos, ¡que tengas un buen día!",
+                "Adiós, vuelve pronto a EcoIntercambio.",
+                "¡Nos vemos! Recuerda que siempre puedes volver para más información."
+            ]
+        },
+        {
+            "tag": "productos",
+            "patterns": [
+                "¿Qué productos ofrecen?",
+                "¿Tienen algún plan?",
+                "¿Qué puedo comprar aquí?",
+                "¿Venden algo?",
+                "¿Qué incluye el plan premium?",
+                "Quiero conocer sus servicios",
+                "¿Qué opciones hay disponibles?"
+            ],
+            "responses": [
+                "Actualmente ofrecemos un único producto: el plan premium.",
+                "Puedes adquirir nuestro plan premium para acceder a todos los beneficios de EcoIntercambio.",
+                "Solo tenemos disponible el plan premium, que incluye acceso completo a nuestra plataforma.",
+                "Nuestro plan premium te permite acceder a todos los recursos de EcoIntercambio de manera exclusiva."
+            ]
+        },
+        {
+            "tag": "precio",
+            "patterns": [
+                "¿Cuánto cuesta el plan premium?",
+                "¿Cuál es el precio?",
+                "¿Cuánto tengo que pagar?",
+                "¿El plan premium es caro?",
+                "¿Hay algún costo?",
+                "Quiero saber el precio",
+                "Costo del plan"
+            ],
+            "responses": [
+                "El precio del plan premium lo puedes consultar en la sección de compra de nuestra página.",
+                "Para conocer el costo actualizado del plan premium, visita nuestra página de compra.",
+                "El plan premium tiene un costo único, revisa los detalles en nuestra web.",
+                "El precio del plan premium es competitivo y te brinda acceso a todos nuestros servicios."
+            ]
+        },
+        {
+            "tag": "horarios",
+            "patterns": [
+                "¿Cuál es su horario de atención?",
+                "¿A qué hora abren?",
+                "¿Están disponibles las 24 horas?",
+                "¿Cuándo puedo contactarlos?",
+                "Horario de atención",
+                "¿Cuándo puedo recibir ayuda?"
+            ],
+            "responses": [
+                "Nuestra plataforma está disponible las 24 horas, todos los días.",
+                "Puedes acceder a EcoIntercambio en cualquier momento.",
+                "Estamos disponibles en línea siempre que lo necesites.",
+                "No importa la hora, siempre puedes usar nuestra plataforma."
+            ]
+        },
+        {
+            "tag": "ubicacion",
+            "patterns": [
+                "¿Dónde están ubicados?",
+                "¿Tienen una tienda física?",
+                "¿Dónde puedo encontrarlos?",
+                "¿Tienen dirección?",
+                "Ubicación de EcoIntercambio",
+                "¿Puedo visitar su oficina?"
+            ],
+            "responses": [
+                "EcoIntercambio es una plataforma en línea, no contamos con tienda física.",
+                "Puedes acceder a todos nuestros servicios desde cualquier lugar a través de nuestra web.",
+                "No tenemos ubicación física, todo es 100% digital.",
+                "Nuestra plataforma está diseñada para que la uses desde cualquier lugar del mundo."
+            ]
+        },
+        {
+            "tag": "informacion_general",
+            "patterns": [
+                "¿Qué es EcoIntercambio?",
+                "¿Cómo funciona la plataforma?",
+                "¿Para qué sirve esta página?",
+                "¿Me puedes dar información general?",
+                "¿Qué beneficios ofrece?",
+                "Cuéntame sobre EcoIntercambio",
+                "Explícame cómo funciona"
+            ],
+            "responses": [
+                "EcoIntercambio es una plataforma digital que te permite acceder a recursos y servicios exclusivos mediante nuestro plan premium.",
+                "Nuestra página ofrece acceso a contenido y herramientas ecológicas para usuarios premium.",
+                "Con EcoIntercambio puedes disfrutar de beneficios exclusivos al adquirir el plan premium.",
+                "EcoIntercambio te permite acceder a información y servicios ecológicos de manera fácil y rápida."
+            ]
+        },
+        {
+            "tag": "soporte",
+            "patterns": [
+                "Necesito ayuda",
+                "¿Cómo puedo contactar soporte?",
+                "Tengo un problema",
+                "¿Dónde puedo pedir ayuda?",
+                "¿Tienen atención al cliente?",
+                "Soporte técnico",
+                "Quiero asistencia"
+            ],
+            "responses": [
+                "Puedes contactarnos a través del formulario de contacto en nuestra página.",
+                "Si necesitas ayuda, visita la sección de soporte en nuestro sitio web.",
+                "Estamos disponibles para ayudarte, solo escríbenos desde la página de contacto.",
+                "Nuestro equipo de soporte está listo para asistirte cuando lo necesites."
+            ]
+        },
+        {
+            "tag": "metodos_pago",
+            "patterns": [
+                "¿Qué métodos de pago aceptan?",
+                "¿Puedo pagar con tarjeta?",
+                "¿Aceptan PayPal?",
+                "¿Cómo puedo pagar el plan premium?",
+                "Formas de pago",
+                "Opciones de pago disponibles"
+            ],
+            "responses": [
+                "Aceptamos varios métodos de pago, incluyendo tarjetas de crédito y débito.",
+                "Puedes pagar el plan premium con tarjeta o mediante los métodos disponibles en nuestra página.",
+                "Consulta los métodos de pago aceptados en la sección de compra.",
+                "Nuestros métodos de pago son seguros y fáciles de usar."
+            ]
+        }
+    ]
+}

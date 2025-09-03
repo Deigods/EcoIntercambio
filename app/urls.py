@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.urls import path, re_path
 from .views import home, register, producto, registro, agregar_producto, listar_productos, modificar_producto, eliminar_producto, mensajes_privados, DetailMs, CanalDetailView, Inbox
+from .chatbot_view import chatbot_view, chatbot_response
+import json
 
 UUID_CANAL_REGEX = r'canal/(?P<pk>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})'
 
@@ -17,4 +19,6 @@ urlpatterns = [
     path('ms/<str:username>', DetailMs.as_view(), name="detailms"),
     re_path(UUID_CANAL_REGEX, CanalDetailView.as_view()),
     path("inbox", Inbox.as_view(), name="inbox"),
+    path('chatbot/', chatbot_view, name='chatbot'),
+    path('chatbot/response/', chatbot_response, name='chatbot_response'),
 ]
