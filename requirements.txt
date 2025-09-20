@@ -10,3 +10,5 @@ daphne
 keras
 nltk
 tensorflow
+paypal-checkout-serversdk==1.0.1
+

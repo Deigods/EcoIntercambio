@@ -455,3 +455,7 @@ h1::after {
     transform: scale3d(1, 1, 1);
   }
 }
+/* --- Fix modal sobreposición --- */
+.modal { z-index: 2000; }
+.modal-backdrop { z-index: 1990; }
+

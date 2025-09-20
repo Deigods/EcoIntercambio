@@ -1,3 +1,5 @@
+from . import views
+
 from django.contrib import admin
 from django.urls import path, re_path
 from .views import home, register, producto, registro, agregar_producto, listar_productos, modificar_producto, eliminar_producto, mensajes_privados, DetailMs, CanalDetailView, Inbox
@@ -21,4 +23,8 @@ urlpatterns = [
     path("inbox", Inbox.as_view(), name="inbox"),
     path('chatbot/', chatbot_view, name='chatbot'),
     path('chatbot/response/', chatbot_response, name='chatbot_response'),
+    path("paypal/create/", views.paypal_create_order, name="paypal-create"),
+    path("paypal/capture/", views.paypal_capture_order, name="paypal-capture"),
+    path("suscripcion/exito/", views.subscription_success, name="subscription-success"),
+
 ]

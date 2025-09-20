@@ -130,3 +130,35 @@ class Canal(ChatModel):
     usuarios = models.ManyToManyField(User, blank=True, through=CanalUsuario)
 
     objects = CanalManager()
+
+
+from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    is_premium = models.BooleanField(default=False)
+    premium_since = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Perfil de {self.user.username}"
+
+class SubscriptionPayment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_id = models.CharField(max_length=100, unique=True)
+    status = models.CharField(max_length=50)
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    currency = models.CharField(max_length=10, default="USD")
+    raw = models.JSONField(default=dict, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.status} - {self.amount} {self.currency}"
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)

@@ -79,6 +79,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "app.context_processors.subscription_context",
             ],
         },
     },
@@ -149,3 +150,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from decimal import Decimal
+
+# ===== PayPal (usa SANDBOX primero) =====
+PAYPAL_CLIENT_ID = "TU_SANDBOX_CLIENT_ID"
+PAYPAL_CLIENT_SECRET = "TU_SANDBOX_CLIENT_SECRET"
+PAYPAL_ENV = "sandbox"   # cambia a "live" cuando pases a producción
+
+# ===== Suscripción =====
+SUBSCRIPTION_PRICE = Decimal("2000.00")
+SUBSCRIPTION_CURRENCY = "USD"   # Cambia si lo necesitas: MXN, PEN, ARS, etc.
+SUBSCRIPTION_DESCRIPTION = "Suscripción mensual a EcoIntercambio"

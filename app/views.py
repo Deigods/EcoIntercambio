@@ -346,3 +346,87 @@ def mensajes_privados(request, username, *args, **kwargs):
     }
 
     return render(request, 'mensajes/detail.html', context)
+
+
+
+import json
+from decimal import Decimal
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.utils import timezone
+
+from .models import SubscriptionPayment
+from .paypal_client import get_paypal_client
+
+from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
+
+@login_required
+def paypal_create_order(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    client = get_paypal_client()
+    create_request = OrdersCreateRequest()
+    create_request.prefer("return=representation")
+    create_request.request_body({
+        "intent": "CAPTURE",
+        "purchase_units": [{
+            "amount": {
+                "currency_code": settings.SUBSCRIPTION_CURRENCY,
+                "value": str(settings.SUBSCRIPTION_PRICE.quantize(Decimal('1.00'))),
+            },
+            "description": "Suscripción Premium EcoIntercambio"
+        }]
+    })
+
+    response = client.execute(create_request)
+    order = response.result
+    return JsonResponse({"id": order.id})
+
+@login_required
+def paypal_capture_order(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    body = json.loads(request.body.decode("utf-8"))
+    order_id = body.get("orderID")
+    if not order_id:
+        return JsonResponse({"error": "Missing orderID"}, status=400)
+
+    client = get_paypal_client()
+    capture_request = OrdersCaptureRequest(order_id)
+    capture_request.request_body({})
+
+    try:
+        response = client.execute(capture_request)
+        result = response.result
+        status = getattr(result, "status", "")
+        amount = settings.SUBSCRIPTION_PRICE
+        currency = settings.SUBSCRIPTION_CURRENCY
+
+        SubscriptionPayment.objects.create(
+            user=request.user,
+            order_id=order_id,
+            status=status,
+            amount=amount,
+            currency=currency,
+            raw=json.loads(result.json())
+        )
+
+        if status == "COMPLETED":
+            profile = request.user.profile
+            profile.is_premium = True
+            profile.premium_since = timezone.now()
+            profile.save()
+            return JsonResponse({"status": "COMPLETED"})
+        else:
+            return JsonResponse({"status": status})
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+@login_required
+def subscription_success(request):
+    return render(request, "app/subscription_success.html")
