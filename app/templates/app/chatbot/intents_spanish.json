@@ -1,237 +1,550 @@
 {
-    "intents": [
-        {
-            "tag": "saludos",
-            "patterns": [
-                "Hola",
-                "Buenos días",
-                "Buenas tardes",
-                "Buenas noches",
-                "Qué tal?",
-                "Hay alguien ahí?",
-                "Saludos",
-                "Hey",
-                "¡Qué tal!",
-                "Qué onda",
-                "Qué hay",
-                "Hola, ¿cómo estás?",
-                "¡Saludos cordiales!"
-            ],
-            "responses": [
-                "¡Hola! ¿En qué puedo ayudarte?",
-                "¡Bienvenido a EcoIntercambio! ¿Cómo puedo asistirte?",
-                "Hola, ¿cómo puedo ayudarte hoy?",
-                "¡Hola! Espero que tengas un gran día. ¿En qué puedo ayudarte?"
-            ]
-        },
-        {
-            "tag": "despedidas",
-            "patterns": [
-                "Adiós",
-                "Hasta luego",
-                "Nos vemos",
-                "Chao",
-                "Gracias, eso es todo",
-                "Me voy",
-                "Hasta pronto",
-                "Nos vemos luego",
-                "Gracias por la ayuda",
-                "Adiós, que estén bien"
-            ],
-            "responses": [
-                "¡Hasta luego! Si necesitas algo más, aquí estaré.",
-                "Gracias por visitarnos, ¡que tengas un buen día!",
-                "Adiós, vuelve pronto a EcoIntercambio.",
-                "¡Nos vemos! Recuerda que siempre puedes volver para más información."
-            ]
-        },
-        {
-            "tag": "productos",
-            "patterns": [
-                "Qué productos ofrecen?",
-                "Tienen algún plan?",
-                "Qué puedo comprar aquí?",
-                "Venden algo?",
-                "Qué incluye el plan premium?",
-                "Quiero conocer sus servicios",
-                "Qué opciones hay disponibles?",
-                "Háblame del plan premium"
-            ],
-            "responses": [
-                "Actualmente ofrecemos un único producto: el plan premium.",
-                "Puedes adquirir nuestro plan premium para acceder a todos los beneficios de EcoIntercambio.",
-                "Solo tenemos disponible el plan premium, que incluye acceso completo a nuestra plataforma.",
-                "Nuestro plan premium te permite acceder a todos los recursos de EcoIntercambio de manera exclusiva."
-            ]
-        },
-        {
-            "tag": "precio",
-            "patterns": [
-                "Cuánto cuesta el plan premium?",
-                "Cuál es el precio?",
-                "Cuánto tengo que pagar?",
-                "El plan premium es caro?",
-                "Hay algún costo?",
-                "Quiero saber el precio",
-                "Costo del plan"
-            ],
-            "responses": [
-                "El precio del plan premium es de 1500 CLP. Es un pago único que te da acceso completo a todas las funciones de EcoIntercambio.",
-                "Nuestro plan premium tiene un costo de 1500 CLP. ¡Un solo pago y listo!",
-                "El plan premium cuesta 1500 CLP. Puedes encontrar más detalles en la sección de compra de nuestra página."
-            ]
-        },
-        {
-            "tag": "horarios",
-            "patterns": [
-                "Cuál es su horario de atención?",
-                "A qué hora abren?",
-                "Están disponibles las 24 horas?",
-                "Cuándo puedo contactarlos?",
-                "Horario de atención",
-                "Cuándo puedo recibir ayuda?",
-                "Están abiertos?",
-                "A qué hora cierran?"
-            ],
-            "responses": [
-                "Nuestra plataforma está disponible las 24 horas, todos los días.",
-                "Puedes acceder a EcoIntercambio en cualquier momento.",
-                "Estamos disponibles en línea siempre que lo necesites.",
-                "No importa la hora, siempre puedes usar nuestra plataforma."
-            ]
-        },
-        {
-            "tag": "ubicacion",
-            "patterns": [
-                "Dónde están ubicados?",
-                "Tienen una tienda física?",
-                "Dónde puedo encontrarlos?",
-                "Tienen dirección?",
-                "Ubicación de EcoIntercambio",
-                "Puedo visitar su oficina?",
-                "Hay sucursales?"
-            ],
-            "responses": [
-                "EcoIntercambio es una plataforma en línea, no contamos con tienda física.",
-                "Puedes acceder a todos nuestros servicios desde cualquier lugar a través de nuestra web.",
-                "No tenemos ubicación física, todo es 100% digital.",
-                "Nuestra plataforma está diseñada para que la uses desde cualquier lugar del mundo."
-            ]
-        },
-        {
-            "tag": "informacion_general",
-            "patterns": [
-                "Qué es EcoIntercambio?",
-                "Cómo funciona la plataforma?",
-                "Para qué sirve esta página?",
-                "Me puedes dar información general?",
-                "Qué beneficios ofrece?",
-                "Cuéntame sobre EcoIntercambio",
-                "Explícame cómo funciona",
-                "De qué se trata esto?"
-            ],
-            "responses": [
-                "EcoIntercambio es una plataforma digital que te permite intercambiar, vender o regalar objetos para fomentar la reutilización y la economía circular.",
-                "Nuestra plataforma te conecta con otros usuarios para darle una segunda vida a tus objetos. Es una forma de reducir residuos.",
-                "Con EcoIntercambio puedes encontrar un nuevo hogar para tus cosas y contribuir a un futuro más sostenible."
-            ]
-        },
-        {
-            "tag": "soporte",
-            "patterns": [
-                "Necesito ayuda",
-                "Cómo puedo contactar soporte?",
-                "Tengo un problema",
-                "Dónde puedo pedir ayuda?",
-                "Tienen atención al cliente?",
-                "Soporte técnico",
-                "Quiero asistencia"
-            ],
-            "responses": [
-                "Puedes contactarnos a través del formulario de contacto en nuestra página.",
-                "Si necesitas ayuda, visita la sección de soporte en nuestro sitio web.",
-                "Estamos disponibles para ayudarte, solo escríbenos desde la página de contacto.",
-                "Nuestro equipo de soporte está listo para asistirte cuando lo necesites."
-            ]
-        },
-        {
-            "tag": "metodos_pago",
-            "patterns": [
-                "Qué métodos de pago aceptan?",
-                "Puedo pagar con tarjeta?",
-                "Aceptan PayPal?",
-                "Cómo puedo pagar el plan premium?",
-                "Formas de pago",
-                "Opciones de pago disponibles"
-            ],
-            "responses": [
-                "Aceptamos varios métodos de pago, incluyendo tarjetas de crédito y débito. Revisa la sección de compra para ver las opciones.",
-                "Puedes pagar el plan premium con tarjeta.",
-                "Consulta los métodos de pago aceptados en la sección de compra. Son seguros y fáciles de usar."
-            ]
-        },
-        {
-            "tag": "intercambio_objetos",
-            "patterns": [
-                "Cómo puedo intercambiar objetos?",
-                "Puedo vender cosas?",
-                "Se pueden regalar objetos?",
-                "Cómo se hace el intercambio?",
-                "Vender cosas",
-                "Regalar objetos"
-            ],
-            "responses": [
-                "Nuestra plataforma te permite intercambiar, vender o regalar objetos. El acuerdo lo gestionan los usuarios directamente, ¡nosotros solo los conectamos!",
-                "La plataforma fomenta la reutilización. Puedes acordar con otro usuario si quieres intercambiar, regalar o vender un objeto.",
-                "La economía circular es nuestro objetivo. Los usuarios pueden decidir libremente cómo quieren pasar sus objetos a otra persona."
-            ]
-        },
-        {
-            "tag": "economia_circular",
-            "patterns": [
-                "Qué es la economía circular?",
-                "Cómo contribuyen a la economía circular?",
-                "Qué es un desecho?",
-                "Fomentan la reducción de residuos?",
-                "Por qué es importante la economía circular?"
-            ],
-            "responses": [
-                "Fomentamos la economía circular dándole una segunda vida a los objetos, reduciendo la necesidad de producir cosas nuevas y, por ende, disminuyendo los residuos.",
-                "La economía circular es clave para la sostenibilidad. En EcoIntercambio te ayudamos a reutilizar y a que tus objetos no terminen en la basura.",
-                "Nuestro objetivo es reducir los residuos. Cuando intercambias, regalas o vendes algo, estás evitando que se convierta en basura."
-            ]
-        },
-        {
-            "tag": "responsabilidad_legal",
-            "patterns": [
-                "Qué hacen si me estafan?",
-                "Se hacen cargo de las transacciones?",
-                "Qué pasa si el otro usuario no cumple?",
-                "Son responsables del intercambio?",
-                "Tienen responsabilidad legal?"
-            ],
-            "responses": [
-                "No nos hacemos responsables de las transacciones entre usuarios. La plataforma es un punto de encuentro para fomentar la reutilización, pero el acuerdo lo gestionan ustedes de forma independiente.",
-                "Nuestra función es conectar a las personas. La venta, intercambio o regalo de objetos se realiza bajo la responsabilidad de los usuarios.",
-                "EcoIntercambio no se hace responsable de los acuerdos entre usuarios. Les recomendamos ser cuidadosos al realizar cualquier transacción."
-            ]
-        },
-        {
-            "tag": "funciones",
-            "patterns": [
-                "Qué funciones tiene la app?",
-                "Para qué sirve el plan premium?",
-                "Qué puedo hacer con el plan?",
-                "Hay un chat?",
-                "Tienen geolocalización?",
-                "Qué me ofrece el plan premium?",
-                "Funciones de la plataforma"
-            ],
-            "responses": [
-                "El plan premium te da acceso a todas las funciones, incluyendo geolocalización con Mapbox, un chat en tiempo real con Django Channels y Websockets, y la posibilidad de ver perfiles de otros usuarios.",
-                "Con el plan premium puedes usar nuestra geolocalización para encontrar a otros usuarios cerca de ti y chatear con ellos en tiempo real.",
-                "Las funciones exclusivas del plan premium son: chat en tiempo real, geolocalización y acceso completo a los perfiles de los usuarios."
-            ]
-        }
-    ]
+  "intents": [
+    {
+      "tag": "saludos",
+      "patterns": [
+        "Hola",
+        "Hola!",
+        "Holaaa",
+        "Buenos días",
+        "Buenas tardes",
+        "Buenas noches",
+        "Qué tal?",
+        "Hay alguien ahí?",
+        "Saludos",
+        "Hey",
+        "¡Qué tal!",
+        "Qué onda",
+        "Qué hay",
+        "Hola, ¿cómo estás?",
+        "¡Saludos cordiales!",
+        "Holi",
+        "Wenas",
+        "Buenas!",
+        "Buen día",
+        "Qué más?"
+      ],
+      "responses": [
+        "¡Hola! ¿En qué puedo ayudarte hoy?",
+        "¡Bienvenido a EcoIntercambio! ¿Qué necesitas?",
+        "Hola, ¿te ayudo a encontrar algo o a publicar un objeto?",
+        "¡Hola! Dime qué buscas y te guío paso a paso."
+      ]
+    },
+    {
+      "tag": "smalltalk_estado",
+      "patterns": [
+        "Cómo estás?",
+        "Qué tal tu día?",
+        "Todo bien?",
+        "Cómo va?",
+        "Cómo te encuentras?"
+      ],
+      "responses": [
+        "¡Todo bien por aquí! ¿Y tú? ¿En qué puedo ayudarte en EcoIntercambio?",
+        "¡De maravilla! ¿Buscas algo, quieres vender o regalar un objeto?"
+      ]
+    },
+    {
+      "tag": "agradecimientos",
+      "patterns": [
+        "Gracias",
+        "Muchas gracias",
+        "Te lo agradezco",
+        "Gracias por la ayuda",
+        "Buen soporte",
+        "Bacán, gracias"
+      ],
+      "responses": [
+        "¡Con gusto! ¿Necesitas algo más?",
+        "¡Felices de ayudar! Si quieres, te explico el siguiente paso."
+      ]
+    },
+    {
+      "tag": "afirmacion",
+      "patterns": [
+        "Sí",
+        "Sip",
+        "Sii",
+        "Claro",
+        "Obvio",
+        "De acuerdo",
+        "Vale",
+        "Me parece",
+        "Ok",
+        "Okey",
+        "Dale"
+      ],
+      "responses": [
+        "¡Perfecto! Avancemos. ¿Qué te gustaría hacer ahora?",
+        "Genial. Dime el detalle y lo resolvemos."
+      ]
+    },
+    {
+      "tag": "negacion",
+      "patterns": [
+        "No",
+        "Nop",
+        "Nel",
+        "No gracias",
+        "Ahora no",
+        "Prefiero que no"
+      ],
+      "responses": [
+        "Entendido. Si cambias de idea, aquí estoy.",
+        "Vale, ¿hay algo más en lo que te pueda ayudar?"
+      ]
+    },
+    {
+      "tag": "despedidas",
+      "patterns": [
+        "Adiós",
+        "Hasta luego",
+        "Nos vemos",
+        "Chao",
+        "Eso es todo",
+        "Me voy",
+        "Hasta pronto",
+        "Nos vemos luego",
+        "Gracias por la ayuda",
+        "Adiós, que estén bien",
+        "Bye"
+      ],
+      "responses": [
+        "¡Hasta luego! Si necesitas algo más, aquí estaré.",
+        "Gracias por visitarnos, ¡que tengas un buen día!",
+        "Adiós, vuelve pronto a EcoIntercambio.",
+        "¡Nos vemos! Recuerda que siempre puedes volver para más información."
+      ]
+    },
+    {
+      "tag": "informacion_general",
+      "patterns": [
+        "Qué es EcoIntercambio?",
+        "Cómo funciona la plataforma?",
+        "Para qué sirve esta página?",
+        "Me puedes dar información general?",
+        "Qué beneficios ofrece?",
+        "Cuéntame sobre EcoIntercambio",
+        "Explícame cómo funciona",
+        "De qué se trata esto?",
+        "Quiero saber de la plataforma"
+      ],
+      "responses": [
+        "EcoIntercambio te permite intercambiar, vender o regalar objetos para fomentar la reutilización y la economía circular.",
+        "La plataforma te conecta con otros usuarios para darle una segunda vida a tus objetos y reducir residuos.",
+        "Puedes publicar objetos, buscarlos por ubicación y chatear para coordinar el intercambio."
+      ]
+    },
+    {
+      "tag": "funciones",
+      "patterns": [
+        "Qué funciones tiene la app?",
+        "Para qué sirve el plan premium?",
+        "Qué puedo hacer con el plan?",
+        "Hay un chat?",
+        "Tienen geolocalización?",
+        "Qué me ofrece el plan premium?",
+        "Funciones de la plataforma",
+        "Qué incluye el mapa?",
+        "Puedo ver perfiles?"
+      ],
+      "responses": [
+        "Con Premium accedes a geolocalización con Mapbox, chat en tiempo real (Django Channels/WebSockets) y perfiles completos.",
+        "Sí, tenemos chat en tiempo real y un mapa para encontrar publicaciones cercanas.",
+        "Puedes publicar objetos, buscar por filtros y ubicación, y coordinar por chat de forma segura."
+      ]
+    },
+    {
+      "tag": "productos",
+      "patterns": [
+        "Qué productos ofrecen?",
+        "Tienen algún plan?",
+        "Qué puedo comprar aquí?",
+        "Venden algo?",
+        "Qué incluye el plan premium?",
+        "Quiero conocer sus servicios",
+        "Qué opciones hay disponibles?",
+        "Háblame del plan premium"
+      ],
+      "responses": [
+        "Actualmente ofrecemos un único producto: el plan Premium.",
+        "Nuestro plan Premium te da acceso completo a todas las funciones de EcoIntercambio.",
+        "Con Premium obtienes chat en tiempo real, geolocalización y perfiles completos."
+      ]
+    },
+    {
+      "tag": "precio",
+      "patterns": [
+        "Cuánto cuesta el plan premium?",
+        "Cuál es el precio?",
+        "Cuánto tengo que pagar?",
+        "El plan premium es caro?",
+        "Hay algún costo?",
+        "Quiero saber el precio",
+        "Costo del plan",
+        "Precio del premium"
+      ],
+      "responses": [
+        "El plan Premium cuesta 1500 CLP. Es un pago único con acceso completo.",
+        "Nuestro Premium vale 1500 CLP: un solo pago y listo.",
+        "El plan Premium cuesta 1500 CLP. Puedes comprarlo desde la sección de pago."
+      ]
+    },
+    {
+      "tag": "descuentos",
+      "patterns": [
+        "Tienen descuentos?",
+        "Hay rebajas?",
+        "Algún cupón?",
+        "Promociones disponibles",
+        "Hay ofertas?"
+      ],
+      "responses": [
+        "Por ahora no tenemos descuentos activos. Si se habilitan, los verás en la sección de compra.",
+        "No hay promociones vigentes en este momento, pero pronto podríamos tener novedades."
+      ]
+    },
+    {
+      "tag": "reembolsos",
+      "patterns": [
+        "Puedo pedir reembolso?",
+        "Qué pasa si no me gusta?",
+        "Devolución de dinero",
+        "Reembolso del premium"
+      ],
+      "responses": [
+        "Si tu compra tuvo un error técnico, contáctanos por soporte con el comprobante para revisar tu caso.",
+        "Los reembolsos se evalúan caso a caso por incidencias técnicas. Escríbenos desde la sección de soporte."
+      ]
+    },
+    {
+      "tag": "metodos_pago",
+      "patterns": [
+        "Qué métodos de pago aceptan?",
+        "Puedo pagar con tarjeta?",
+        "Aceptan PayPal?",
+        "Cómo puedo pagar el plan premium?",
+        "Formas de pago",
+        "Opciones de pago disponibles",
+        "Puedo pagar con débito?"
+      ],
+      "responses": [
+        "Aceptamos varios métodos de pago, incluyendo tarjetas de crédito y débito (según disponibilidad en tu país).",
+        "La compra del Premium se realiza desde la sección de pago con medios seguros.",
+        "Si ves PayPal disponible en tu país, también podrás usarlo."
+      ]
+    },
+    {
+      "tag": "compra_proceso",
+      "patterns": [
+        "Cómo compro el premium?",
+        "Dónde compro el premium?",
+        "Quiero comprar el plan",
+        "Ayuda para pagar",
+        "Paso a paso para comprar"
+      ],
+      "responses": [
+        "Ingresa a tu cuenta, ve a la sección de Compra/Premium y sigue los pasos del checkout.",
+        "Desde tu perfil verás la opción de actualizar a Premium. Selecciónala y completa el pago."
+      ]
+    },
+    {
+      "tag": "soporte",
+      "patterns": [
+        "Necesito ayuda",
+        "Cómo puedo contactar soporte?",
+        "Tengo un problema",
+        "Dónde puedo pedir ayuda?",
+        "Tienen atención al cliente?",
+        "Soporte técnico",
+        "Quiero asistencia",
+        "No me funciona el chat",
+        "No se ve el mapa",
+        "Error al pagar"
+      ],
+      "responses": [
+        "Contáctanos desde la sección de Soporte en el sitio y cuéntanos el problema con capturas si es posible.",
+        "Estamos disponibles para ayudarte. Abre un ticket en la página de contacto con el detalle del error."
+      ]
+    },
+    {
+      "tag": "cuenta_crear",
+      "patterns": [
+        "Cómo creo una cuenta?",
+        "Quiero registrarme",
+        "No tengo cuenta",
+        "Registrarse",
+        "Crear perfil"
+      ],
+      "responses": [
+        "Ve a Registro, completa tus datos y confirma tu correo para activar tu cuenta.",
+        "Para crear tu cuenta, usa el formulario de registro y sigue las instrucciones del email de verificación."
+      ]
+    },
+    {
+      "tag": "cuenta_acceso",
+      "patterns": [
+        "No puedo iniciar sesión",
+        "Olvidé mi contraseña",
+        "No me llega el correo",
+        "Problemas para entrar",
+        "No puedo loguearme"
+      ],
+      "responses": [
+        "Usa la opción '¿Olvidaste tu contraseña?' para restablecerla. Revisa spam si no ves el correo.",
+        "Si el problema continúa, abre un ticket en Soporte con tu correo y detalle del error."
+      ]
+    },
+    {
+      "tag": "publicar_objeto",
+      "patterns": [
+        "Cómo publico un objeto?",
+        "Quiero vender algo",
+        "Quiero regalar algo",
+        "Subir producto",
+        "Publicar anuncio",
+        "Crear publicación"
+      ],
+      "responses": [
+        "Desde tu perfil, pulsa 'Publicar', agrega título, fotos, descripción y categoría. Luego confirma la ubicación.",
+        "Para publicar: ve a 'Crear publicación', completa los campos y guarda. ¡Listo!"
+      ]
+    },
+    {
+      "tag": "buscar_objetos",
+      "patterns": [
+        "Cómo busco objetos?",
+        "Quiero encontrar algo",
+        "Buscar por categoría",
+        "Filtrar resultados",
+        "Hay filtros?"
+      ],
+      "responses": [
+        "Usa la barra de búsqueda y los filtros por categoría, estado y distancia.",
+        "Puedes filtrar por ubicación en el mapa y ajustar el radio para ver publicaciones cercanas."
+      ]
+    },
+    {
+      "tag": "mapa_geolocalizacion",
+      "patterns": [
+        "No me carga el mapa",
+        "Cómo activo la ubicación?",
+        "Problemas con el mapa",
+        "No puedo seleccionar ubicación",
+        "Geolocalización no funciona"
+      ],
+      "responses": [
+        "Activa los permisos de ubicación del navegador y recarga la página.",
+        "Si el mapa no carga, borra caché o prueba en modo incógnito. Si sigue igual, contáctanos por Soporte."
+      ]
+    },
+    {
+      "tag": "chat_funciona",
+      "patterns": [
+        "Cómo funciona el chat?",
+        "No me llega el mensaje",
+        "El chat no envía",
+        "Puedo hablar con otros?",
+        "Mensajes en tiempo real?"
+      ],
+      "responses": [
+        "El chat es en tiempo real. Abre la publicación y usa 'Contactar' para iniciar la conversación.",
+        "Si un mensaje no se envía, revisa tu conexión y vuelve a intentar. Si persiste, escríbenos a Soporte."
+      ]
+    },
+    {
+      "tag": "seguridad_privacidad",
+      "patterns": [
+        "Es seguro?",
+        "Qué hacen con mis datos?",
+        "Privacidad de la cuenta",
+        "Protegen mi información?",
+        "Datos personales"
+      ],
+      "responses": [
+        "Cuidamos tu privacidad y seguimos buenas prácticas de seguridad.",
+        "Usamos tus datos solo para operar la plataforma. Revisa nuestra política de privacidad en el sitio."
+      ]
+    },
+    {
+      "tag": "responsabilidad_legal",
+      "patterns": [
+        "Qué hacen si me estafan?",
+        "Se hacen cargo de las transacciones?",
+        "Qué pasa si el otro usuario no cumple?",
+        "Son responsables del intercambio?",
+        "Tienen responsabilidad legal?"
+      ],
+      "responses": [
+        "No nos hacemos responsables de las transacciones entre usuarios; somos un punto de encuentro.",
+        "Te recomendamos acordar claramente las condiciones y revisar reputaciones antes de concretar."
+      ]
+    },
+    {
+      "tag": "reportes_usuarios",
+      "patterns": [
+        "Cómo reporto un usuario?",
+        "Me habló mal alguien",
+        "Publicación sospechosa",
+        "Quiero denunciar",
+        "Reportar abuso"
+      ],
+      "responses": [
+        "Desde la publicación o el chat, usa 'Reportar' y cuéntanos qué pasó.",
+        "Gracias por avisar. Revisaremos el caso y tomaremos medidas según las políticas."
+      ]
+    },
+    {
+      "tag": "disponibilidad_paises",
+      "patterns": [
+        "Funciona en mi país?",
+        "Está disponible en Chile?",
+        "Puedo usarlo fuera de Chile?",
+        "En qué países operan?"
+      ],
+      "responses": [
+        "Puedes usar EcoIntercambio desde cualquier lugar. Algunas funciones pueden variar por región.",
+        "La disponibilidad de métodos de pago depende del país."
+      ]
+    },
+    {
+      "tag": "horarios",
+      "patterns": [
+        "Cuál es su horario de atención?",
+        "A qué hora abren?",
+        "Están disponibles las 24 horas?",
+        "Cuándo puedo contactarlos?",
+        "Horario de atención",
+        "Cuándo puedo recibir ayuda?",
+        "Están abiertos?",
+        "A qué hora cierran?"
+      ],
+      "responses": [
+        "La plataforma está disponible 24/7.",
+        "Puedes acceder en cualquier momento y abrir tickets de soporte cuando lo necesites."
+      ]
+    },
+    {
+      "tag": "ubicacion",
+      "patterns": [
+        "Dónde están ubicados?",
+        "Tienen una tienda física?",
+        "Dónde puedo encontrarlos?",
+        "Tienen dirección?",
+        "Ubicación de EcoIntercambio",
+        "Puedo visitar su oficina?",
+        "Hay sucursales?"
+      ],
+      "responses": [
+        "Somos 100% online y no contamos con tienda física.",
+        "Accede a todos los servicios desde la web, desde donde estés."
+      ]
+    },
+    {
+      "tag": "politicas_objetos",
+      "patterns": [
+        "Qué objetos están prohibidos?",
+        "Puedo publicar alimentos?",
+        "Se puede vender electrónica?",
+        "Hay restricciones para publicar?"
+      ],
+      "responses": [
+        "No se permiten artículos ilegales, peligrosos o que infrinjan derechos. Revisa la lista en las políticas del sitio.",
+        "Algunos rubros tienen requisitos adicionales; consulta las políticas antes de publicar."
+      ]
+    },
+    {
+      "tag": "estado_objetos",
+      "patterns": [
+        "Puedo publicar objetos usados?",
+        "Debo indicar el estado?",
+        "Qué condición debo elegir?",
+        "Cómo describo el estado?"
+      ],
+      "responses": [
+        "Sí, puedes publicar objetos usados. Indica su estado (nuevo, como nuevo, usado, para repuestos).",
+        "Mientras más clara sea la descripción y fotos, mejor para concretar."
+      ]
+    },
+    {
+      "tag": "costos_envio",
+      "patterns": [
+        "Hacen envíos?",
+        "Quién paga el envío?",
+        "Se puede coordinar delivery?",
+        "Cómo se entrega?"
+      ],
+      "responses": [
+        "La entrega la acuerdan directamente los usuarios (retiro en persona o envío).",
+        "Los costos y modalidades de envío deben acordarse en el chat antes de cerrar."
+      ]
+    },
+    {
+      "tag": "tiempos_respuesta",
+      "patterns": [
+        "Cuánto tardan en responder?",
+        "No me contestan",
+        "El vendedor no responde",
+        "Silencio en el chat"
+      ],
+      "responses": [
+        "Los tiempos dependen de cada usuario. Si no te responden, intenta con otras publicaciones.",
+        "Puedes marcar la conversación y volver más tarde; a veces el otro usuario está ocupado."
+      ]
+    },
+    {
+      "tag": "errores_comunes",
+      "patterns": [
+        "No carga la página",
+        "Error 500",
+        "Me sale un error",
+        "Se cayó el sitio",
+        "No se guardan los cambios"
+      ],
+      "responses": [
+        "Prueba recargar, limpiar caché o cambiar de navegador. Si continúa, repórtalo en Soporte con una captura.",
+        "Puede ser temporal. Si persiste, envíanos el detalle (hora y acción que estabas haciendo)."
+      ]
+    },
+    {
+      "tag": "faq",
+      "patterns": [
+        "Preguntas frecuentes",
+        "FAQ",
+        "Dudas comunes",
+        "Ayuda rápida",
+        "No sé por dónde empezar"
+      ],
+      "responses": [
+        "¿Quieres publicar, buscar o comprar Premium? Dime cuál y te doy los pasos.",
+        "Puedo ayudarte con: publicar objetos, filtrar por mapa, activar Premium, reportar usuarios y más."
+      ]
+    },
+    {
+      "tag": "fallback_pedido_aclaracion",
+      "patterns": [
+        "No entiendo",
+        "No se entiende",
+        "Explícate mejor",
+        "Qué?",
+        "Eh?",
+        "No queda claro"
+      ],
+      "responses": [
+        "Creo que no entendí del todo. ¿Puedes contarme con más detalle qué quieres hacer (publicar, buscar, comprar Premium, soporte)?",
+        "¿Te refieres a publicar un objeto, a un problema técnico, o a comprar el plan? Dame un poco más de contexto."
+      ]
+    },
+    {
+      "tag": "fallback_no_entendido",
+      "patterns": [
+        "*"
+      ],
+      "responses": [
+        "Quiero ayudarte, pero no me quedó claro. ¿Puedes decirme si quieres publicar, buscar, usar el mapa, chatear o comprar Premium?",
+        "No entendí del todo. Prueba con una frase breve, por ejemplo: 'publicar un objeto' o 'activar Premium'."
+      ]
+    }
+  ]
 }
