@@ -353,66 +353,59 @@ import json
 from decimal import Decimal
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.utils import timezone
 
 from .models import SubscriptionPayment
-from .paypal_client import get_paypal_client
+from .paypal_client import create_order, capture_order
 
-from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 
+# ================================
+#   ENDPOINT: Crear orden PayPal
+# ================================
+@require_POST
 @login_required
 def paypal_create_order(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+    """
+    Crea la orden en PayPal (usa app/paypal_client.py).
+    Devuelve JSON con 'id' para que el SDK continúe.
+    """
+    try:
+        order = create_order()
+        return JsonResponse(order, status=201)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
-    client = get_paypal_client()
-    create_request = OrdersCreateRequest()
-    create_request.prefer("return=representation")
-    create_request.request_body({
-        "intent": "CAPTURE",
-        "purchase_units": [{
-            "amount": {
-                "currency_code": settings.SUBSCRIPTION_CURRENCY,
-                "value": str(settings.SUBSCRIPTION_PRICE.quantize(Decimal('1.00'))),
-            },
-            "description": "Suscripción Premium EcoIntercambio"
-        }]
-    })
 
-    response = client.execute(create_request)
-    order = response.result
-    return JsonResponse({"id": order.id})
-
+# ================================
+#   ENDPOINT: Capturar orden PayPal
+# ================================
+@require_POST
 @login_required
 def paypal_capture_order(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Method not allowed"}, status=405)
-
-    body = json.loads(request.body.decode("utf-8"))
-    order_id = body.get("orderID")
-    if not order_id:
-        return JsonResponse({"error": "Missing orderID"}, status=400)
-
-    client = get_paypal_client()
-    capture_request = OrdersCaptureRequest(order_id)
-    capture_request.request_body({})
-
+    """
+    Captura la orden aprobada por el usuario en PayPal.
+    Espera body JSON: {"orderID": "<id>"}.
+    """
     try:
-        response = client.execute(capture_request)
-        result = response.result
-        status = getattr(result, "status", "")
-        amount = settings.SUBSCRIPTION_PRICE
-        currency = settings.SUBSCRIPTION_CURRENCY
+        body = json.loads(request.body.decode("utf-8"))
+        order_id = body.get("orderID")
+        if not order_id:
+            return JsonResponse({"error": "Missing orderID"}, status=400)
 
+        capture = capture_order(order_id)
+        status = capture.get("status", "")
+
+        # Guardar el pago en DB
         SubscriptionPayment.objects.create(
             user=request.user,
             order_id=order_id,
             status=status,
-            amount=amount,
-            currency=currency,
-            raw=json.loads(result.json())
+            amount=1500,       # Fijo, en CLP
+            currency="CLP",
+            raw=capture
         )
 
         if status == "COMPLETED":
@@ -427,6 +420,13 @@ def paypal_capture_order(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
+
+# ================================
+#   SUCCESS VIEW
+# ================================
 @login_required
 def subscription_success(request):
+    """
+    Vista a mostrar cuando PayPal confirma pago.
+    """
     return render(request, "app/subscription_success.html")
