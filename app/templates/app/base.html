@@ -21,7 +21,7 @@
     {% block extra_css %}{% endblock %}
 
     <script>
-        // evita pantallas cacheadas al volver atrás
+        // Evita pantallas cacheadas al volver atrás
         window.onpageshow = function(e){ if(e.persisted){ location.reload(); } };
     </script>
 </head>
@@ -29,7 +29,7 @@
 <body>
     <nav class="navbar navbar-expand-lg" style="background-color:#5de080">
         <div class="container-fluid">
-            <a class="navbar-brand d-lg-none" href="#"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
+            <a class="navbar-brand d-lg-none" href="{% url 'home' %}"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -133,7 +133,6 @@
         </div>
     </div>
     
-    {% block sobre_nosotros %}{% endblock %}
 
     <section class="container-waves">
         <div class="wave wave1"></div>
@@ -153,40 +152,47 @@
     {% block extra_js %}{% endblock %}
 
     <script>
-        // ==== CHATBOT simple (no interfiere con PayPal) ====
+        // === FUNCIONES DE UTILIDAD ===
+        // Definimos la función getCookie y el token CSRF una sola vez y al principio.
+        function getCookie(name){
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const csrftoken = getCookie('csrftoken');
+
+
+        // ==== SCRIPT DEL CHATBOT ====
         (function () {
             const chatboxMessages = document.getElementById('chatbox-messages');
             const chatboxForm = document.getElementById('chatbox-form');
             const chatboxInput = document.getElementById('chatbox-input');
 
-            function appendChatMessage(sender, text) {
-                const row = document.createElement('div');
-                row.style.display = 'flex';
-                row.style.gap = '8px';
-                row.style.margin = '8px 0';
-                row.style.alignItems = 'flex-start';
-                row.style.justifyContent = sender === 'Bot' ? 'flex-start' : 'flex-end';
+        function appendChatMessage(sender, text) {
+            const row = document.createElement('div');
+            row.classList.add('chatbox-message-row');
+            row.classList.add(sender === 'Bot' ? 'bot' : 'user');
 
-                const bubble = document.createElement('div');
-                bubble.style.maxWidth = '80%';
-                bubble.style.padding = '10px 12px';
-                bubble.style.borderRadius = '12px';
-                bubble.style.whiteSpace = 'pre-wrap';
-                bubble.textContent = text;
+            const bubble = document.createElement('div');
+            bubble.classList.add('chatbox-bubble');
+            bubble.textContent = text;
+            
+            const icon = document.createElement('i');
+            icon.classList.add('bi');
 
-                if (sender === 'Bot') {
-                    bubble.style.background = '#fff';
-                    bubble.style.border = '1px solid #e5e7eb';
-                    row.appendChild(bubble);
-                } else {
-                    bubble.style.background = '#22c55e';
-                    bubble.style.color = '#fff';
-                    row.appendChild(bubble);
-                }
-
-                chatboxMessages.appendChild(row);
-                chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+            if (sender === 'Bot') {
+                row.style.justifyContent = 'flex-start';
+                row.appendChild(icon);
+                row.appendChild(bubble);
+            } else {
+                row.style.justifyContent = 'flex-end';
+                row.appendChild(bubble);
+                row.appendChild(icon);
             }
+
+            chatboxMessages.appendChild(row);
+            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+        }
 
             appendChatMessage('Bot', '¡Hola! ¿Cómo puedo ayudarte?');
 
@@ -202,27 +208,29 @@
                     try {
                         const res = await fetch('/chatbot/response/', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrftoken // Ahora usa la variable global
+                            },
                             body: JSON.stringify({ message })
                         });
+                        
+                        if (!res.ok) {
+                            throw new Error(`Server responded with status: ${res.status}`);
+                        }
+
                         const data = await res.json();
                         appendChatMessage('Bot', data.response || '…');
                     } catch (err) {
-                        appendChatMessage('Bot', 'Ups, hubo un error al responder.');
-                        console.error('Chatbot error:', err);
+                        appendChatMessage('Bot', 'Ups, hubo un error al responder. Por favor, intenta más tarde.');
+                        console.error('Chatbot fetch error:', err);
                     }
                 });
             }
         })();
 
-        // ==== PAYPAL ====
-        function getCookie(name){
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-        const csrftoken = getCookie('csrftoken');
-
+        // === SCRIPT DE PAYPAL ===
+        // Esta sección también usa la variable csrftoken definida al principio.
         (function(){
             let rendered = false;
             const modalEl = document.getElementById('premiumModal');
@@ -264,3 +272,26 @@
                                 if(msg) msg.innerText = "Pago no completado: " + (data.status || data.error || "desconocido");
                             }
                         })
+                        .catch(err => {
+                            if(msg) msg.innerText = "Error: " + err;
+                        });
+                    },
+
+                    onCancel: function(){
+                        const msg = document.getElementById('premiumMsg');
+                        if(msg) msg.innerText = "Pago cancelado por el usuario.";
+                    },
+
+                    onError: function(err){
+                        const msg = document.getElementById('premiumMsg');
+                        if(msg) msg.innerText = "No se pudo iniciar el pago. Revisa la consola del navegador.";
+                        console.error('[PayPal] onError:', err);
+                    }
+                }).render('#paypal-button-container-modal');
+
+                rendered = true;
+            });
+        })();
+    </script>
+</body>
+</html>

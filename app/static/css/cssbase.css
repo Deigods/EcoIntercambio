@@ -459,3 +459,44 @@ h1::after {
 .modal { z-index: 2000; }
 .modal-backdrop { z-index: 1990; }
 
+
+.chatbot-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000; /* Asegura que esté por encima de otros elementos */
+}
+
+.chatbot-fab:hover {
+    transform: scale(1.1); /* Optional: makes the button slightly larger on hover */
+}
+
+/* Espaciado de las burbujas */
+.chatbox-message-row {
+  display: flex;
+  align-items: flex-end; /* Alinea los elementos al final para que los íconos queden en la parte inferior */
+  margin-bottom: 15px; /* Más espacio entre mensajes */
+}
+
+/* Burbuja del bot */
+.chatbox-message-row.bot .chatbox-bubble {
+  background-color: #f0f0f0; /* Un gris claro para el bot */
+  border-radius: 18px 18px 18px 4px; /* Bordes redondeados con la esquina inferior izquierda puntiaguda */
+}
+
+/* Burbuja del usuario */
+.chatbox-message-row.user .chatbox-bubble {
+  background-color: #38bdf8; /* Un azul brillante para el usuario */
+  color: #fff;
+  border-radius: 18px 18px 4px 18px; /* Bordes redondeados con la esquina inferior derecha puntiaguda */
+}
+
+/* Estilo del texto dentro de las burbujas */
+.chatbox-bubble {
+  padding: 12px 18px; /* Más padding para que la burbuja se vea más grande */
+  font-size: 1rem;
+  line-height: 1.4;
+  word-wrap: break-word; /* Evita que el texto se salga de la burbuja */
+  max-width: 80%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil para un efecto 3D */
+}
