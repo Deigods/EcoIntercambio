@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{% block title %}EcoIntercambio{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="{% static 'css/cssbase.css' %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100..700&display=swap" rel="stylesheet">
+
+    {% block extra_css %}{% endblock %}
+
+    <script>
+        // evita pantallas cacheadas al volver atrás
+        window.onpageshow = function(e){ if(e.persisted){ location.reload(); } };
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color:#5de080">
+        <div class="container-fluid">
+            <a class="navbar-brand d-lg-none" href="#"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll mx-auto" style="--bs-scroll-height:100px;">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Contacto</a></li>
+
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'agregar_producto' %}">Agregar Producto</a></li>
+                    {% endif %}
+
+                    <a class="navbar-brand d-none d-lg-block" href="#"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
+
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'listar-productos' %}">Listar Productos</a></li>
+                    {% endif %}
+
+                    <li class="nav-item"><a class="nav-link" href="#">Consejos</a></li>
+
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Opciones</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'inbox' %}">
+                                        <i class="bi bi-envelope me-1"></i>Inbox {{ user.username }}
+                                        {% if notificaciones_no_leidas > 0 %}
+                                            <span class="badge bg-danger" id="notification-badge">{{ notificaciones_no_leidas }}</span>
+                                        {% endif %}
+                                    </a>
+                                </li>
+                                <li>
+                                    <form id="logout-form" method="post" action="{% url 'logout' %}">{% csrf_token %}
+                                        <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <div class="modal fade" id="premiumModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title">Suscripción Premium</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <p class="mb-1">Accede a funciones avanzadas y soporte prioritario.</p>
+                        <div class="d-flex align-items-baseline justify-content-between">
+                            <span class="text-muted">Total</span>
+                            <strong>{{ SUBSCRIPTION_PRICE }} {{ SUBSCRIPTION_CURRENCY }}</strong>
+                        </div>
+                    </div>
+                    {% if user.is_authenticated %}
+                        <div id="paypal-button-container-modal"></div>
+                        <div id="premiumMsg" class="mt-3 small text-muted"></div>
+                    {% else %}
+                        <div class="alert alert-warning m-0">Debes iniciar sesión para suscribirte.</div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="btn btn-success">Ir a Iniciar sesión</a>
+                    {% endif %}
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success chatbot-fab" data-bs-toggle="modal" data-bs-target="#chatbotModal" aria-label="Abrir chatbot">
+        <i class="bi bi-chat-dots" style="font-size:1.7rem;"></i>
+    </button>
+
+    <div class="modal fade" id="chatbotModal" tabindex="-1" aria-labelledby="chatbotModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="justify-content:center; background:#5de080;">
+                    <h2 class="fw-bold text-center d-flex m-0" id="chatbotModalLabel">Chatbot</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body p-0" style="background:#f6f8fa;">
+                    <div id="chatbox-messages" style="height:320px; overflow-y:auto; padding:24px 16px 8px 16px; background:#f6f8fa;"></div>
+                    <form id="chatbox-form" class="d-flex gap-2 p-3 border-top justify-content-center" style="background:#f9fafb;">
+                        <input type="text" id="chatbox-input" class="form-control" placeholder="Escribe tu mensaje..." autocomplete="off" style="border-radius:12px; max-width:70%; margin:0 auto;">
+                        <button type="submit" class="btn btn-success px-4" style="border-radius:12px;">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    {% block sobre_nosotros %}{% endblock %}
+
+    <section class="container-waves">
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+        <div class="wave wave3"></div>
+        <div class="wave wave4"></div>
+    </section>
+
+    <div class="text-center p-4" style="background:#5de080;">
+        © 2024 Copyright:
+        <a class="text-reset fw-bold" href="https://mdbootstrap.com/">EcoIntercambio.com</a>
+    </div>
+
+    <form id="csrf-form" style="display:none">{% csrf_token %}</form>
+    <script src="https://www.paypal.com/sdk/js?client-id={{ PAYPAL_CLIENT_ID }}&currency={{ SUBSCRIPTION_CURRENCY }}"></script>
+
+    {% block extra_js %}{% endblock %}
+
+    <script>
+        // ==== CHATBOT simple (no interfiere con PayPal) ====
+        (function () {
+            const chatboxMessages = document.getElementById('chatbox-messages');
+            const chatboxForm = document.getElementById('chatbox-form');
+            const chatboxInput = document.getElementById('chatbox-input');
+
+            function appendChatMessage(sender, text) {
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.gap = '8px';
+                row.style.margin = '8px 0';
+                row.style.alignItems = 'flex-start';
+                row.style.justifyContent = sender === 'Bot' ? 'flex-start' : 'flex-end';
+
+                const bubble = document.createElement('div');
+                bubble.style.maxWidth = '80%';
+                bubble.style.padding = '10px 12px';
+                bubble.style.borderRadius = '12px';
+                bubble.style.whiteSpace = 'pre-wrap';
+                bubble.textContent = text;
+
+                if (sender === 'Bot') {
+                    bubble.style.background = '#fff';
+                    bubble.style.border = '1px solid #e5e7eb';
+                    row.appendChild(bubble);
+                } else {
+                    bubble.style.background = '#22c55e';
+                    bubble.style.color = '#fff';
+                    row.appendChild(bubble);
+                }
+
+                chatboxMessages.appendChild(row);
+                chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+            }
+
+            appendChatMessage('Bot', '¡Hola! ¿Cómo puedo ayudarte?');
+
+            if (chatboxForm) {
+                chatboxForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const message = (chatboxInput.value || '').trim();
+                    if (!message) return;
+
+                    appendChatMessage('Tú', message);
+                    chatboxInput.value = '';
+
+                    try {
+                        const res = await fetch('/chatbot/response/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ message })
+                        });
+                        const data = await res.json();
+                        appendChatMessage('Bot', data.response || '…');
+                    } catch (err) {
+                        appendChatMessage('Bot', 'Ups, hubo un error al responder.');
+                        console.error('Chatbot error:', err);
+                    }
+                });
+            }
+        })();
+
+        // ==== PAYPAL ====
+        function getCookie(name){
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        (function(){
+            let rendered = false;
+            const modalEl = document.getElementById('premiumModal');
+            if(!modalEl) return;
+
+            modalEl.addEventListener('shown.bs.modal', function(){
+                {% if not user.is_authenticated %} return; {% endif %}
+                if(rendered) return;
+
+                paypal.Buttons({
+                    style:{ layout:'vertical', shape:'rect' },
+
+                    createOrder: function(){
+                        return fetch("{% url 'paypal-create' %}", {
+                            method:"POST",
+                            headers:{ "X-CSRFToken": csrftoken }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if(!data || !data.id) throw new Error('No llegó orderID desde /paypal/create/');
+                            return data.id;
+                        });
+                    },
+
+                    onApprove: function(data){
+                        const msg = document.getElementById('premiumMsg');
+                        if(msg) msg.innerText = "Confirmando pago...";
+
+                        return fetch("{% url 'paypal-capture' %}", {
+                            method: "POST",
+                            headers: { "Content-Type":"application/json", "X-CSRFToken": csrftoken },
+                            body: JSON.stringify({ orderID: data.orderID })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if(data.status === "COMPLETED"){
+                                window.location.href = "{% url 'subscription-success' %}";
+                            }else{
+                                if(msg) msg.innerText = "Pago no completado: " + (data.status || data.error || "desconocido");
+                            }
+                        })

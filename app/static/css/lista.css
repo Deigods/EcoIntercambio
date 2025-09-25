@@ -1,243 +1,102 @@
+/* Estilos generales */
 body {
-    font-family: 'Arial', sans-serif;
     background-color: #e8f5e9;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
 }
 
 .container {
-    width: 100%;
-    max-width: 800px;
-    margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-    text-align: center;
     color: #4CAF50;
-    margin-bottom: 20px;
-}
-.search-bar button.btn-success {
-    background-color: #28a745; /* Ajusta el tono de verde aquí */
-    border-color: #28a745;
+    text-align: center;
+    margin-bottom: 2rem;
 }
 
-.search-bar button.btn-success:hover {
-    background-color: #218838; /* Color para el hover */
-    border-color: #1e7e34;
-}
-
-/* Barra de búsqueda y filtros responsivos y mejor distribuidos */
+/* Estilos para la barra de búsqueda y filtros */
 .search-bar-container {
     width: 100%;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
+    margin-bottom: 2rem;
 }
 
-.search-bar.input-group {
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-}
-
-.search-bar.input-group form.d-flex {
-    width: 100%;
+.search-bar-container form {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
     align-items: center;
+    justify-content: center; /* Centra los elementos */
 }
 
-.search-bar.input-group .form-control,
-.search-bar.input-group .form-select {
-    min-width: 180px;
-    flex: 1 1 180px;
+.search-bar-container .form-control,
+.search-bar-container .form-select {
+    flex: 1 1 200px; /* Permite que los campos crezcan y se encojan */
+    min-width: 150px;
     max-width: 250px;
-    margin-bottom: 0;
 }
 
-.search-bar.input-group .btn-success {
-    min-width: 48px;
-    flex: 0 0 auto;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.search-bar-container .btn {
+    flex-shrink: 0; /* Evita que los botones se encojan */
 }
 
-/* Responsive: en pantallas medianas, los filtros se acomodan en dos filas */
-@media (max-width: 900px) {
-    .search-bar.input-group form.d-flex {
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    .search-bar.input-group .form-control,
-    .search-bar.input-group .form-select {
-        min-width: 120px;
-        max-width: 100%;
-        flex: 1 1 120px;
-    }
+/* Estilos de las tarjetas de producto */
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
 }
 
-/* Responsive: en móviles, los filtros se apilan verticalmente */
-@media (max-width: 600px) {
-    .search-bar.input-group {
-        max-width: 100%;
-        padding: 0 5px;
-    }
-    .search-bar.input-group form.d-flex {
-        flex-direction: column;
-        align-items: stretch;
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-body p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Estilos para los botones de acción de las tarjetas */
+.card .btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.card .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.card .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.card .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+/* Estilos para los botones de abajo */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    .search-bar-container form {
         gap: 8px;
     }
-    .search-bar.input-group .form-control,
-    .search-bar.input-group .form-select,
-    .search-bar.input-group .btn-success {
-        width: 100%;
-        min-width: 0;
+
+    .search-bar-container .form-control,
+    .search-bar-container .form-select {
+        flex: 1 1 100%; /* Los campos se apilan en pantallas pequeñas */
         max-width: 100%;
-        margin-bottom: 0;
-    }
-}
-
-/* Ajustes para la lista de productos y tarjetas responsivas */
-.product-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.product-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f9f9f9;
-    margin-bottom: 10px;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    flex-wrap: wrap;
-}
-
-.product-info {
-    flex: 2 1 300px;
-    min-width: 0;
-}
-
-.product-actions {
-    display: flex;
-    gap: 10px;
-    flex: 1 1 120px;
-    justify-content: flex-end;
-}
-
-.btn-edit, .btn-delete {
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    color: white;
-}
-
-.btn-edit {
-    background-color: #4CAF50;
-}
-
-.btn-edit:hover {
-    background-color: #45a049;
-}
-
-.btn-delete {
-    background-color: #e74c3c;
-}
-
-.btn-delete:hover {
-    background-color: #c0392b;
-}
-
-.btn-home {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    display: block;
-    margin-top: 10px;
-    margin-right: 10px;
-}
-
-.btn-home:hover {
-    background-color: #45a049;
-}
-
-/* Media Queries */
-@media screen and (max-width: 768px) {
-    .container {
-        max-width: 95%;
-        padding: 15px;
-    }
-
-    .product-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .product-actions {
-        margin-top: 10px;
-        justify-content: center;
-    }
-}
-
-@media screen and (max-width: 900px) {
-    .container {
-        max-width: 98%;
-        padding: 10px;
-    }
-    .product-item {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 12px;
-    }
-    .product-actions {
-        margin-top: 10px;
-        justify-content: flex-start;
-    }
-}
-
-@media screen and (max-width: 600px) {
-    .container {
-        max-width: 100%;
-        padding: 5px;
-        margin: 10px auto;
-    }
-    .product-item {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 8px;
-    }
-    .product-info h3 {
-        font-size: 18px;
-    }
-    .product-info p {
-        font-size: 14px;
-    }
-    .btn-edit, .btn-delete, .btn-home {
-        padding: 8px;
-        font-size: 14px;
-    }
-    .product-actions {
-        flex-direction: column;
-        gap: 6px;
-        align-items: stretch;
     }
 }
