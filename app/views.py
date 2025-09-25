@@ -283,21 +283,25 @@ def listar_productos(request):
     return render(request, 'app/producto/listar.html', context)
 
 
+from django.urls import reverse
+
 @login_required
 def modificar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
 
+    # Verificar si el usuario actual es el dueño del producto o es un superusuario
     if request.user != producto.usuario and not request.user.is_superuser:
         raise PermissionDenied("No tienes permiso para modificar este producto.")
 
     data = {
         'form': ProductoForm(instance=producto),
-        'entidad': producto
+        'entidad': producto  # Para pasar los valores de latitud y longitud al template
     }
 
     if request.method == 'POST':
         formulario = ProductoForm(data=request.POST, instance=producto, files=request.FILES)
         if formulario.is_valid():
+            # Obtener y limpiar latitud y longitud
             latitude = request.POST.get('latitude', '').strip()
             longitude = request.POST.get('longitude', '').strip()
 
@@ -312,9 +316,17 @@ def modificar_producto(request, id):
                 return render(request, 'app/producto/modificar.html', data)
 
             formulario.save()
-            page = request.GET.get("page", 1)  # <-- aquí
             messages.success(request, "Modificado correctamente")
+
+            # ⬇️ Mantener la página actual
+            page = request.GET.get("page", 1)
             return redirect(f"{reverse('listar-productos')}?page={page}")
+        else:
+            data["form"] = formulario
+
+    # ⬇️ Este return asegura que siempre devolvemos un HttpResponse
+    return render(request, 'app/producto/modificar.html', data)
+
 
 
 @login_required
