@@ -1,115 +1,106 @@
-{% extends 'app/index.html' %}
-
 {% load static %}
+{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="es">
-
-{% block contenido %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Producto</title>
-    <link rel="stylesheet" href="{% static 'css/agregar.css' %}">
-    <!-- Mapbox CSS -->
-    <link href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet' />
-    <link href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css' rel='stylesheet' />
-    <script src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js'></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js'></script>
-    <!-- SWEET ALERT -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modificar producto</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+ <!-- CSS propio -->
+  <link rel="stylesheet" href="{% static 'css/cssbase.css' %}">
+  <link rel="stylesheet" href="{% static 'css/lista.css' %}">
 </head>
+<body class="bg-light">
 
-<body>
-    {% load crispy_forms_tags %}
-    <div class="container">
-        <h2>Editar Producto</h2>
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form | crispy }}
+<!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg" style="background-color:#5de080">
+    <div class="container-fluid">
+      <a class="navbar-brand d-lg-none" href="#"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarScroll">
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll mx-auto" style="--bs-scroll-height:100px;">
+          <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Contacto</a></li>
 
-            <!-- Barra de búsqueda -->
-            <div id="geocoder" class="geocoder"></div>
-            <div id="map" style="width: 100%; height: 400px;"></div>
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'agregar_producto' %}">Agregar Producto</a></li>
+          {% endif %}
 
-            <!-- Inputs ocultos para latitud y longitud -->
-            <input type="hidden" id="latitude" name="latitud" value="{{ entidad.latitud }}">
-            <input type="hidden" id="longitude" name="longitud" value="{{ entidad.longitud }}">
-            <p>Latitud: {{ entidad.latitud }}</p>
-            <p>Longitud: {{ entidad.longitud }}</p>
+          <a class="navbar-brand d-none d-lg-block" href="#"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
 
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn-submit">Modificar Producto</button>
-                <a href="{% url 'home' %}" class="btn-home">Volver al Home</a>
-            </div>
-        </form>
-        {{mensaje}}
+          {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'listar-productos' %}">Listar Productos</a></li>
+          {% endif %}
+
+          <li class="nav-item"><a class="nav-link" href="#">Consejos</a></li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Opciones</a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'inbox' %}">
+                    <i class="bi bi-envelope me-1"></i>Inbox {{ user.username }}
+                    {% if notificaciones_no_leidas > 0 %}
+                      <span class="badge bg-danger" id="notification-badge">{{ notificaciones_no_leidas }}</span>
+                    {% endif %}
+                  </a>
+                </li>
+                <li>
+                  <form id="logout-form" method="post" action="{% url 'logout' %}">{% csrf_token %}
+                    <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </div>
-    <section class="container-waves">
-        <div class="wave wave1"></div>
-        <div class="wave wave2"></div>
-        <div class="wave wave3"></div>
-        <div class="wave wave4"></div>
-    </section>
+  </nav>
 
-    <!-- Mapbox Script -->
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiZGVpZ28wMSIsImEiOiJjbTJmNW9hYTMwNXE2Mm1vbXJ4eWptY3NjIn0.mV36MUpkaaMXHZgv1_bDug';
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-white">
+          <h4 class="m-0">Modificar producto</h4>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="d-flex gap-2 mt-3">
+              <button type="submit" class="btn btn-success">Guardar cambios</button>
+              <a href="{% url 'listar-productos' %}" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<!-- ===== Olas + Copyright verde (estilos de olas están en cssbase.css) ===== -->
+  <section class="container-waves">
+    <div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+    <div class="wave wave4"></div>
+  </section>
 
-        // Obtener las coordenadas del input
-        const latitudeStr = document.getElementById('latitude').value.trim().replace(',', '.');
-        const longitudeStr = document.getElementById('longitude').value.trim().replace(',', '.');
+  <div class="text-center p-4" style="background:#5de080;">
+    © 2024 Copyright:
+    <a class="text-reset fw-bold" href="https://mdbootstrap.com/">EcoIntercambio.com</a>
+  </div>
 
-        // Convertir las coordenadas a números
-        const latitude = parseFloat(latitudeStr);
-        const longitude = parseFloat(longitudeStr);
-
-        // Verifica que las coordenadas sean válidas
-        if (isNaN(latitude) || isNaN(longitude)) {
-            console.error("Las coordenadas no son válidas");
-        } else {
-            const coordinates = [longitude, latitude];
-
-            // Crear el mapa
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/deigo01/cm2gk8sve000901pebrgx74cy',
-                center: coordinates,
-                zoom: 10
-            });        
-
-            // Añadir marcador y hacerlo arrastrable
-            var marker = new mapboxgl.Marker({
-                draggable: true
-            })
-            .setLngLat(coordinates)
-            .addTo(map);
-
-            // Actualiza los campos ocultos al mover el marcador
-            marker.on('dragend', function () {
-                var lngLat = marker.getLngLat();
-                document.getElementById('latitude').value = lngLat.lat;
-                document.getElementById('longitude').value = lngLat.lng;
-            });
-
-            // Inicializar el geocoder
-            const geocoder = new MapboxGeocoder({
-                accessToken: mapboxgl.accessToken,
-                mapboxgl: mapboxgl,
-                marker: false, // Evita el marcador por defecto
-            });
-
-            // Añadir la barra de búsqueda al mapa
-            map.addControl(geocoder);
-
-            // Al seleccionar una dirección, actualizar el marcador y las coordenadas
-            geocoder.on('result', function(ev) {
-                const coords = ev.result.geometry.coordinates;
-                marker.setLngLat(coords);
-                document.getElementById('latitude').value = coords[1]; // Latitud
-                document.getElementById('longitude').value = coords[0]; // Longitud
-            });
-        }
-    </script>
-{% endblock %}
 </body>
 </html>

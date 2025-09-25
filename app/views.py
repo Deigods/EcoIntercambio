@@ -349,84 +349,90 @@ def mensajes_privados(request, username, *args, **kwargs):
 
 
 
+# --- PayPal / Suscripciones ---
 import json
 from decimal import Decimal
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
 from django.utils import timezone
 
-from .models import SubscriptionPayment
-from .paypal_client import create_order, capture_order
+from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
+from .paypal_client import get_paypal_client
+from .models import SubscriptionPayment  # Asegúrate de que existe este modelo
 
-
-# ================================
-#   ENDPOINT: Crear orden PayPal
-# ================================
-@require_POST
 @login_required
 def paypal_create_order(request):
-    """
-    Crea la orden en PayPal (usa app/paypal_client.py).
-    Devuelve JSON con 'id' para que el SDK continúe.
-    """
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    client = get_paypal_client()
+    create_request = OrdersCreateRequest()
+    create_request.prefer("return=representation")
+    create_request.request_body({
+        "intent": "CAPTURE",
+        "purchase_units": [{
+            "amount": {
+                "currency_code": settings.SUBSCRIPTION_CURRENCY,
+                "value": str(settings.SUBSCRIPTION_PRICE.quantize(Decimal('1.00'))),
+            },
+            "description": settings.SUBSCRIPTION_DESCRIPTION,
+        }]
+    })
+
     try:
-        order = create_order()
-        return JsonResponse(order, status=201)
+        response = client.execute(create_request)
+        order = response.result
+        return JsonResponse({"id": order.id})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-
-# ================================
-#   ENDPOINT: Capturar orden PayPal
-# ================================
-@require_POST
 @login_required
 def paypal_capture_order(request):
-    """
-    Captura la orden aprobada por el usuario en PayPal.
-    Espera body JSON: {"orderID": "<id>"}.
-    """
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
     try:
         body = json.loads(request.body.decode("utf-8"))
-        order_id = body.get("orderID")
-        if not order_id:
-            return JsonResponse({"error": "Missing orderID"}, status=400)
+    except Exception:
+        body = {}
 
-        capture = capture_order(order_id)
-        status = capture.get("status", "")
+    order_id = body.get("orderID")
+    if not order_id:
+        return JsonResponse({"error": "Missing orderID"}, status=400)
 
-        # Guardar el pago en DB
+    client = get_paypal_client()
+    capture_request = OrdersCaptureRequest(order_id)
+    capture_request.request_body({})
+
+    try:
+        response = client.execute(capture_request)
+        result = response.result
+        status = getattr(result, "status", "")
+
+        # Guarda registro del pago
         SubscriptionPayment.objects.create(
             user=request.user,
             order_id=order_id,
             status=status,
-            amount=1500,       # Fijo, en CLP
-            currency="CLP",
-            raw=capture
+            amount=settings.SUBSCRIPTION_PRICE,
+            currency=settings.SUBSCRIPTION_CURRENCY,
+            raw=json.loads(result.json()),
         )
 
+        # Marca premium si se completó
         if status == "COMPLETED":
-            profile = request.user.profile
+            profile = request.user.profile  # asumiendo modelo Profile OneToOne
             profile.is_premium = True
             profile.premium_since = timezone.now()
             profile.save()
             return JsonResponse({"status": "COMPLETED"})
-        else:
-            return JsonResponse({"status": status})
 
+        return JsonResponse({"status": status})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-
-# ================================
-#   SUCCESS VIEW
-# ================================
 @login_required
 def subscription_success(request):
-    """
-    Vista a mostrar cuando PayPal confirma pago.
-    """
     return render(request, "app/subscription_success.html")

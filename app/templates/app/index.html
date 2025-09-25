@@ -1,151 +1,114 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="es">
-
-{% block contenido %}
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EcoIntercambio</title>
 
   <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-          crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-  <!-- ICONS -->
+  <!-- Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-  <!-- CSS -->
+  <!-- CSS propio -->
   <link rel="stylesheet" href="{% static 'css/cssbase.css' %}">
 
-  <!-- JS -->
-  <script src="{% static 'js/jsbase.js' %}"></script>
-
-  <!-- FONTS -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100..700&display=swap" rel="stylesheet">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-        rel="stylesheet">
-
-  <!-- Mapbox GL JS -->
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet" />
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
-
-  <!-- Mapbox Geocoder -->
-  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
-  <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-
-  <!-- SWEET ALERT -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-  <!-- Pequeño fix por si algo tapa el modal -->
+  <!-- Z-index modales -->
   <style>
-    .modal { z-index: 2000; }
-    .modal-backdrop { z-index: 1990; }
+    /* Asegura que PayPal quede por encima del backdrop y que nada “congele” el clic */
+    .modal { z-index: 2050; }
+    .modal-backdrop { z-index: 2000; }
+    #premiumModal { z-index: 2100; }
+
+    /* Botón flotante chatbot SIEMPRE encima, pero sin abrirse solo */
+    .chatbot-fab{
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+      z-index: 3000;
+    }
   </style>
 
   <script>
-    // Este script recargará la página al volver (cache del navegador)
-    window.onpageshow = function(event) {
-      if (event.persisted) {
-        window.location.reload();
-      }
-    };
+    // evita pantallas cacheadas al volver atrás
+    window.onpageshow = function(e){ if(e.persisted){ location.reload(); } };
   </script>
 </head>
 
 <body>
 
-  <!-- ============================================ NAVBAR ==================================================== -->
-  <nav class="navbar navbar-expand-lg" style="background-color: #5de080">
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg" style="background-color:#5de080">
     <div class="container-fluid">
-
-      <a class="navbar-brand d-lg-none" href="#">
-        <img src="{% static 'images/Logo.png' %}" style="border-radius: 20px; height: 120px;" alt="">
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
-              aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand d-lg-none" href="#"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse" id="navbarScroll">
-        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll mx-auto" style="--bs-scroll-height: 100px;">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Contacto</a>
-          </li>
+        <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll mx-auto" style="--bs-scroll-height:100px;">
+          <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Contacto</a></li>
 
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'agregar_producto' %}">Agregar Producto</a>
-          </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'agregar_producto' %}">Agregar Producto</a></li>
           {% endif %}
 
-          <a class="navbar-brand d-none d-lg-block" href="#">
-            <img src="{% static 'images/Logo.png' %}" style="border-radius: 20px; height: 120px;" alt="">
-          </a>
+          <a class="navbar-brand d-none d-lg-block" href="#"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
 
           {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'listar-productos' %}">Listar Productos</a>
-          </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'listar-productos' %}">Listar Productos</a></li>
           {% endif %}
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">Consejos</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="#">Consejos</a></li>
 
           {% if user.is_authenticated %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Opciones
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="dropdown-item" href="{% url 'inbox' %}" class="dropdown-item-custom">
-                  <i class="bi bi-envelope" style="margin-right: 5px;"></i>
-                  Inbox {{ user.username }}
-                  {% if notificaciones_no_leidas > 0 %}
-                    <span class="badge bg-danger" id="notification-badge">{{ notificaciones_no_leidas }}</span>
-                  {% endif %}
-                </a>
-              </li>
-              <li>
-                <form id="logout-form" method="post" action="{% url 'logout' %}">
-                  {% csrf_token %}
-                  <button type="submit" class="dropdown-item dropdown-item-custom logout-button" style="border: none; background: none; padding: 0;">
-                    Cerrar sesión
-                  </button>
-                </form>
-              </li>
-            </ul>
-          </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Opciones</a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'inbox' %}">
+                    <i class="bi bi-envelope me-1"></i>Inbox {{ user.username }}
+                    {% if notificaciones_no_leidas > 0 %}
+                      <span class="badge bg-danger" id="notification-badge">{{ notificaciones_no_leidas }}</span>
+                    {% endif %}
+                  </a>
+                </li>
+                <li>
+                  <form id="logout-form" method="post" action="{% url 'logout' %}">{% csrf_token %}
+                    <button type="submit" class="dropdown-item">Cerrar sesión</button>
+                  </form>
+                </li>
+              </ul>
+            </li>
           {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
-          </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a></li>
           {% endif %}
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- ============================================ BARRA DE BÚSQUEDA ========================================== -->
-  <div class="search-bar-container" style="margin-top: 25px;">
+  <!-- BUSCADOR -->
+  <div class="search-bar-container mt-4">
     <div class="search-bar">
-      <form class="d-flex flex-wrap gap-2 align-items-center" method="GET" action="{% url 'home' %}" role="search">
-        <input class="form-control" style="min-width: 200px;" type="search" name="query" placeholder="Buscar" aria-label="Search" value="{{ query|default_if_none:'' }}">
+      <form class="d-flex flex-wrap gap-2 align-items-center" method="GET" action="{% url 'home' %}">
+        <input class="form-control" style="min-width:200px" type="search" name="query" placeholder="Buscar" value="{{ query|default_if_none:'' }}">
         <select class="form-select" name="tipo">
           <option value="">Todos los tipos</option>
           {% for t in tipos %}
@@ -158,54 +121,95 @@
             <option value="{{ u.id }}" {% if u.id|stringformat:"s" == ubicacion_seleccionada %}selected{% endif %}>{{ u.ubicacion_name }}</option>
           {% endfor %}
         </select>
-
-        <!-- Botón Buscar -->
         <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
-
-        <!-- Botón Premium que abre el modal (para cualquier usuario) -->
-        <button class="btn btn-warning fw-semibold ms-2" type="button" data-bs-toggle="modal" data-bs-target="#premiumModal">
-          Hazte Premium
-        </button>
+        <button class="btn btn-warning fw-semibold ms-2" type="button" data-bs-toggle="modal" data-bs-target="#premiumModal">Hazte Premium</button>
       </form>
     </div>
   </div>
 
-  <!-- ============================================ PRODUCT SECTION ============================================== -->
   {% load humanize %}
-
   <div class="container my-5">
     <div class="row container-cards">
       {% if entity %}
         {% for p in entity %}
-        <!-- Tarjeta de producto -->
-        <div class="col-md-4 media-card">
-          <div class="card mb-3">
-            {% if p.imagen %}
-              <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">
-            {% endif %}
-            <div class="card-body">
-              <h5 class="card-title text-center">{{ p.nombre | title }}</h5>
-              <p class="text-muted text-center">Ubicación: {{ p.ubicacion.ubicacion_name }}</p>
-              <p class="text-muted text-center">Fecha de publicación: {{ p.fecha_publicacion }}</p>
-              <p class="text-muted text-center">Estado: {{ p.estado }}</p>
-              <a href="{% url 'producto' id=p.id %}" class="btn btn-success">Ver</a>
+          <div class="col-md-4 media-card">
+            <div class="card mb-3">
+              {% if p.imagen %}<img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">{% endif %}
+              <div class="card-body">
+                <h5 class="card-title text-center">{{ p.nombre|title }}</h5>
+                <p class="text-muted text-center">Ubicación: {{ p.ubicacion.ubicacion_name }}</p>
+                <p class="text-muted text-center">Fecha de publicación: {{ p.fecha_publicacion }}</p>
+                <p class="text-muted text-center">Estado: {{ p.estado }}</p>
+                <a href="{% url 'producto' id=p.id %}" class="btn btn-success">Ver</a>
+              </div>
             </div>
           </div>
-        </div>
         {% endfor %}
       {% else %}
-        <div class="col-12 text-center">
-          <p class="text-muted">No hay productos disponibles en este momento.</p>
-        </div>
+        <div class="col-12 text-center"><p class="text-muted">No hay productos disponibles en este momento.</p></div>
       {% endif %}
     </div>
   </div>
 
-  <div>
-    {% include 'app/paginator.html' %}
+  <div>{% include 'app/paginator.html' %}</div>
+
+  <!-- ===== Modal Premium + PayPal ===== -->
+  <div class="modal fade" id="premiumModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header">
+          <h5 class="modal-title">Suscripción Premium</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <p class="mb-1">Accede a funciones avanzadas y soporte prioritario.</p>
+            <div class="d-flex align-items-baseline justify-content-between">
+              <span class="text-muted">Total</span>
+              <strong>{{ SUBSCRIPTION_PRICE }} {{ SUBSCRIPTION_CURRENCY }}</strong>
+            </div>
+          </div>
+          {% if user.is_authenticated %}
+            <div id="paypal-button-container-modal"></div>
+            <div id="premiumMsg" class="mt-3 small text-muted"></div>
+          {% else %}
+            <div class="alert alert-warning m-0">Debes iniciar sesión para suscribirte.</div>
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+          {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}" class="btn btn-success">Ir a Iniciar sesión</a>
+          {% endif %}
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- =================================================== ABOUT US ============================================== -->
+  <!-- ===== Chatbot: botón flotante + modal ===== -->
+  <button type="button" class="btn btn-success chatbot-fab" data-bs-toggle="modal" data-bs-target="#chatbotModal" aria-label="Abrir chatbot">
+    <i class="bi bi-chat-dots" style="font-size:1.7rem;"></i>
+  </button>
+
+  <div class="modal fade" id="chatbotModal" tabindex="-1" aria-labelledby="chatbotModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header" style="justify-content:center; background:#5de080;">
+          <h2 class="fw-bold text-center d-flex m-0" id="chatbotModalLabel">Chatbot</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body p-0" style="background:#f6f8fa;">
+          <div id="chatbox-messages" style="height:320px; overflow-y:auto; padding:24px 16px 8px 16px; background:#f6f8fa;"></div>
+          <form id="chatbox-form" class="d-flex gap-2 p-3 border-top justify-content-center" style="background:#f9fafb;">
+            <input type="text" id="chatbox-input" class="form-control" placeholder="Escribe tu mensaje..." autocomplete="off" style="border-radius:12px; max-width:70%; margin:0 auto;">
+            <button type="submit" class="btn btn-success px-4" style="border-radius:12px;">Enviar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SOBRE NOSOTROS (texto largo + imagen a la derecha) ===== -->
   <section>
     <div class="container text-center">
       <h1 class="sobre-nosotros">SOBRE NOSOTROS</h1>
@@ -236,7 +240,7 @@
     </div>
   </section>
 
-  <!-- =================================================== FOOTER ================================================ -->
+  <!-- ===== Olas + Copyright verde (estilos de olas están en cssbase.css) ===== -->
   <section class="container-waves">
     <div class="wave wave1"></div>
     <div class="wave wave2"></div>
@@ -244,197 +248,141 @@
     <div class="wave wave4"></div>
   </section>
 
-  <div class="text-center p-4">
+  <div class="text-center p-4" style="background:#5de080;">
     © 2024 Copyright:
     <a class="text-reset fw-bold" href="https://mdbootstrap.com/">EcoIntercambio.com</a>
   </div>
 
-  {% endblock %}
+  <!-- CSRF y SDK PayPal (UNA sola vez) -->
+  <form id="csrf-form" style="display:none">{% csrf_token %}</form>
+  <script src="https://www.paypal.com/sdk/js?client-id={{ PAYPAL_CLIENT_ID }}&currency={{ SUBSCRIPTION_CURRENCY }}"></script>
 
-  {% if messages %}
-    {% for m in messages %}
-      <script>
-        Swal.fire({
-          "title": "Felicitaciones",
-          "text": "{{ m }}",
-          "icon": "success"
-        });
-      </script>
-    {% endfor %}
-  {% endif %}
-
-  <!-- Botón flotante para abrir el chatbot -->
-  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#chatbotModal"
-          style="position: fixed; bottom: 30px; right: 30px; z-index: 1050; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-    <i class="bi bi-chat-dots" style="font-size: 1.7rem;"></i>
-  </button>
-
-  <!-- Modal Chatbot -->
-  <div class="modal fade" id="chatbotModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header" style="justify-content: center; background: #5de080;">
-          <h2 class="fw-bold text-center d-flex" id="chatbotModalLabel">Chatbot</h2>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body p-0" style="background: #f6f8fa; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
-          <div id="chatbox-messages" style="height: 320px; overflow-y: auto; padding: 24px 16px 8px 16px; background: #f6f8fa;"></div>
-          <form id="chatbox-form" class="d-flex gap-2 p-3 border-top justify-content-center" style="background: #f9fafb; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
-            <input type="text" id="chatbox-input" class="form-control" placeholder="Escribe tu mensaje..." autocomplete="off" style="border-radius: 12px; max-width: 70%; margin: 0 auto;" />
-            <button type="submit" class="btn btn-success px-4" style="border-radius: 12px;">Enviar</button>
-          </form>
-        </div>
-      </div>
-    </div>
-    <script>
+  <script>
+    // ==== CHATBOT simple (no interfiere con PayPal) ====
+    (function () {
       const chatboxMessages = document.getElementById('chatbox-messages');
       const chatboxForm = document.getElementById('chatbox-form');
       const chatboxInput = document.getElementById('chatbox-input');
 
       function appendChatMessage(sender, text) {
         const row = document.createElement('div');
-        row.className = 'bubble-row ' + (sender === 'Bot' ? 'bot' : 'user');
-
-        const avatar = document.createElement('div');
-        avatar.className = 'bubble-avatar';
-        avatar.innerHTML = sender === 'Bot' ? '<i class="bi bi-robot"></i>' : '<i class="bi bi-person"></i>';
+        row.style.display = 'flex';
+        row.style.gap = '8px';
+        row.style.margin = '8px 0';
+        row.style.alignItems = 'flex-start';
+        row.style.justifyContent = sender === 'Bot' ? 'flex-start' : 'flex-end';
 
         const bubble = document.createElement('div');
-        bubble.className = 'bubble ' + (sender === 'Bot' ? 'bot' : 'user');
-        bubble.innerText = text;
+        bubble.style.maxWidth = '80%';
+        bubble.style.padding = '10px 12px';
+        bubble.style.borderRadius = '12px';
+        bubble.style.whiteSpace = 'pre-wrap';
+        bubble.textContent = text;
 
         if (sender === 'Bot') {
-          row.appendChild(avatar); row.appendChild(bubble);
+          bubble.style.background = '#fff';
+          bubble.style.border = '1px solid #e5e7eb';
+          row.appendChild(bubble);
         } else {
-          row.appendChild(bubble); row.appendChild(avatar);
+          bubble.style.background = '#22c55e';
+          bubble.style.color = '#fff';
+          row.appendChild(bubble);
         }
+
         chatboxMessages.appendChild(row);
         chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
       }
 
-      // Mensaje de bienvenida
       appendChatMessage('Bot', '¡Hola! ¿Cómo puedo ayudarte?');
 
-      chatboxForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const message = chatboxInput.value.trim();
-        if (!message) return;
-        appendChatMessage('Tú', message);
-        chatboxInput.value = '';
-        const response = await fetch('/chatbot/response/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message })
+      if (chatboxForm) {
+        chatboxForm.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const message = (chatboxInput.value || '').trim();
+          if (!message) return;
+
+          appendChatMessage('Tú', message);
+          chatboxInput.value = '';
+
+          try {
+            const res = await fetch('/chatbot/response/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message })
+            });
+            const data = await res.json();
+            appendChatMessage('Bot', data.response || '…');
+          } catch (err) {
+            appendChatMessage('Bot', 'Ups, hubo un error al responder.');
+            console.error('Chatbot error:', err);
+          }
         });
-        const data = await response.json();
-        appendChatMessage('Bot', data.response);
-      });
-    </script>
-  </div>
+      }
+    })();
 
-  <!-- ========================== MODAL PREMIUM + PAYPAL (FUNCIONA PARA CUALQUIER USUARIO) ======================= -->
-  <div class="modal fade" id="premiumModal" tabindex="-1" aria-labelledby="premiumModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0 shadow">
-        <div class="modal-header">
-          <h5 class="modal-title" id="premiumModalLabel">Suscripción Premium</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-
-        <div class="modal-body">
-          <div class="mb-3">
-            <p class="mb-1">Accede a funciones avanzadas y soporte prioritario.</p>
-            <div class="d-flex align-items-baseline justify-content-between">
-              <span class="text-muted">Total</span>
-              <strong>{{ SUBSCRIPTION_PRICE }} {{ SUBSCRIPTION_CURRENCY }}</strong>
-            </div>
-          </div>
-
-          {% if user.is_authenticated %}
-            <div id="paypal-button-container-modal"></div>
-            <div id="premiumMsg" class="mt-3 small text-muted"></div>
-          {% else %}
-            <div class="alert alert-warning m-0">
-              Debes iniciar sesión para suscribirte.
-            </div>
-          {% endif %}
-        </div>
-
-        <div class="modal-footer">
-          {% if not user.is_authenticated %}
-            <a href="{% url 'login' %}" class="btn btn-success">Ir a Iniciar sesión</a>
-          {% endif %}
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- =============================== SCRIPTS: CSRF + SDK PAYPAL + RENDER EN MODAL ============================== -->
-  <!-- CSRF para Django (una sola vez) -->
-  <form id="csrf-form" style="display:none;">{% csrf_token %}</form>
-
-  <!-- SDK de PayPal (una sola vez) -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AbXfmAS2trfOMc3o4tvD2IlFkHt7rQUh81BcSGuIaxXv3KNYCIjprHDiIvYBt2QZZ60xrrWvA3ScbfbD&currency=CLP"></script>
-
-
-  <script>
-    // === CSRF helper ===
-    function getCookie(name) {
+    // ==== PAYPAL ====
+    function getCookie(name){
       const value = `; ${document.cookie}`;
       const parts = value.split(`; ${name}=`);
       if (parts.length === 2) return parts.pop().split(';').shift();
     }
     const csrftoken = getCookie('csrftoken');
 
-    // Render del botón de PayPal cuando el modal se abra (solo una vez y solo logueado)
     (function(){
-      var rendered = false;
-      var modalEl = document.getElementById('premiumModal');
-      if (!modalEl) return;
+      let rendered = false;
+      const modalEl = document.getElementById('premiumModal');
+      if(!modalEl) return;
 
-      modalEl.addEventListener('shown.bs.modal', function () {
-        {% if not user.is_authenticated %}
-          // Si no está logueado, no renderizamos PayPal.
-          return;
-        {% endif %}
-
-        if (rendered) return;
-        var container = document.getElementById('paypal-button-container-modal');
-        if (!container) return;
+      modalEl.addEventListener('shown.bs.modal', function(){
+        {% if not user.is_authenticated %} return; {% endif %}
+        if(rendered) return;
 
         paypal.Buttons({
-          style: { layout: 'vertical', shape: 'rect' },
-          createOrder: function() {
+          style:{ layout:'vertical', shape:'rect' },
+
+          createOrder: function(){
             return fetch("{% url 'paypal-create' %}", {
-              method: "POST",
-              headers: { "X-CSRFToken": csrftoken }
+              method:"POST",
+              headers:{ "X-CSRFToken": csrftoken }
             })
             .then(res => res.json())
-            .then(data => data.id);
+            .then(data => {
+              if(!data || !data.id) throw new Error('No llegó orderID desde /paypal/create/');
+              return data.id;
+            });
           },
-          onApprove: function(data) {
-            var msg = document.getElementById('premiumMsg');
-            if (msg) msg.innerText = "Confirmando pago...";
+
+          onApprove: function(data){
+            const msg = document.getElementById('premiumMsg');
+            if(msg) msg.innerText = "Confirmando pago...";
+
             return fetch("{% url 'paypal-capture' %}", {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrftoken
-              },
+              headers: { "Content-Type":"application/json", "X-CSRFToken": csrftoken },
               body: JSON.stringify({ orderID: data.orderID })
             })
             .then(res => res.json())
             .then(data => {
-              if (data.status === "COMPLETED") {
+              if(data.status === "COMPLETED"){
                 window.location.href = "{% url 'subscription-success' %}";
-              } else {
-                if (msg) msg.innerText = "Pago no completado: " + (data.status || data.error || "desconocido");
+              }else{
+                if(msg) msg.innerText = "Pago no completado: " + (data.status || data.error || "desconocido");
               }
             })
             .catch(err => {
-              if (msg) msg.innerText = "Error: " + err;
+              if(msg) msg.innerText = "Error: " + err;
             });
+          },
+
+          onCancel: function(){
+            const msg = document.getElementById('premiumMsg');
+            if(msg) msg.innerText = "Pago cancelado por el usuario.";
+          },
+
+          onError: function(err){
+            const msg = document.getElementById('premiumMsg');
+            if(msg) msg.innerText = "No se pudo iniciar el pago. Revisa la consola del navegador.";
+            console.error('[PayPal] onError:', err);
           }
         }).render('#paypal-button-container-modal');
 
@@ -442,6 +390,5 @@
       });
     })();
   </script>
-
 </body>
 </html>

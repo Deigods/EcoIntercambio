@@ -121,16 +121,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # =====================  PAYPAL / SUSCRIPCIÓN  (SANDBOX)  =====================
 
-# Tu Client ID sandbox (el que me pasaste)
-PAYPAL_CLIENT_ID = "AbXfmAS2trfOMc3o4tvD2IlFkHt7rQUh81BcSGuIaxXv3KNYCIjprHDiIvYBt2QZZ60xrrWvA3ScbfbD"
+from decimal import Decimal
 
-# Tu Secret sandbox (el que me pasaste)
+# ===== PayPal SANDBOX =====
+PAYPAL_ENV = "sandbox"  # "live" al pasar a producción
+PAYPAL_CLIENT_ID = "AbXfmAS2trfOMc3o4tvD2IlFkHt7rQUh81BcSGuIaxXv3KNYCIjprHDiIvYBt2QZZ60xrrWvA3ScbfbD"
 PAYPAL_CLIENT_SECRET = "EOtrpFdlZRnoC-rLb_P86VrHvSK_SIJpQCJkcVCtKQrtszb6pX0YkDD0z1fQVuUfXe1bOwm9c4DV-v4W"
 
-# Ambiente sandbox (para producción será "live")
-PAYPAL_ENV = "sandbox"
-from decimal import Decimal
-# Precio y moneda: en sandbox usa USD para evitar popup en blanco
-SUBSCRIPTION_PRICE = Decimal("1.58")   # 2000 USD de prueba (solo sandbox)
+# ===== Suscripción =====
+SUBSCRIPTION_PRICE = Decimal("1.58")       # ≈ 1500 CLP a USD
 SUBSCRIPTION_CURRENCY = "USD"
-SUBSCRIPTION_DESCRIPTION = "Suscripción mensual a EcoIntercambio"
+SUBSCRIPTION_DESCRIPTION = "Suscripción Premium EcoIntercambio"
+
