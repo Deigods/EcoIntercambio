@@ -500,3 +500,21 @@ h1::after {
   max-width: 80%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil para un efecto 3D */
 }
+.username-premium {
+  font-weight: 700;
+  background: linear-gradient(90deg, #ffd700, #ffb300, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;       /* hace visible el gradiente */
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.35);
+}
+
+.username-normal {
+  font-weight: 600;
+  color: #333;
+}
+.premium-username {
+  color: #f5c542;       /* dorado */
+  font-weight: 700;
+  text-shadow: 0 0 6px rgba(245,197,66,.35);
+}

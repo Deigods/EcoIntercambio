@@ -1,0 +1,33 @@
+{% extends "app/index.html" %}
+{% load static %}
+
+{% block title %}¡Suscripción exitosa! · EcoIntercambio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="alert alert-success d-flex align-items-center" role="alert" style="font-size:1.05rem">
+        <i class="bi bi-check-circle-fill me-3" style="font-size:1.6rem"></i>
+        <div>
+          <strong>¡Listo!</strong> Tu suscripción <span class="fw-semibold">Premium</span> está activa.
+          <br>
+          Si no ves el nombre en dorado aún, refresca la página.
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title mb-3">¿Qué sigue?</h5>
+          <ul class="mb-4">
+            <li>Accede a funciones avanzadas y soporte prioritario.</li>
+            <li>Puedes volver al inicio o seguir navegando.</li>
+          </ul>
+
+          <a href="{% url 'home' %}" class="btn btn-success">Volver al inicio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

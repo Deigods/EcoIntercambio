@@ -10,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <link rel="stylesheet" href="{% static 'css/cssbase.css' %}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,6 +18,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100..700&display=swap" rel="stylesheet">
 
     {% block extra_css %}{% endblock %}
+
+    <!-- Estilos mínimos para el nombre dorado Premium -->
+    <style>
+      .username-premium{
+        font-weight:700;
+        background:linear-gradient(90deg,#ffd700,#ffb300,#ffd700);
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+        text-shadow:0 0 8px rgba(255,215,0,.35);
+        white-space:nowrap;
+      }
+      .username-normal{
+        font-weight:600;
+        color:#333;
+        white-space:nowrap;
+      }
+    </style>
 
     <script>
         // Evita pantallas cacheadas al volver atrás
@@ -30,9 +47,10 @@
     <nav class="navbar navbar-expand-lg" style="background-color:#5de080">
         <div class="container-fluid">
             <a class="navbar-brand d-lg-none" href="{% url 'home' %}"><img src="{% static 'images/Logo.png' %}" style="border-radius:20px;height:120px;" alt=""></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll mx-auto" style="--bs-scroll-height:100px;">
                     <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Inicio</a></li>
@@ -52,16 +70,19 @@
 
                     {% if user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Opciones</a>
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Opciones</a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="dropdown-item" href="{% url 'inbox' %}">
-                                        <i class="bi bi-envelope me-1"></i>Inbox {{ user.username }}
+                                    <!-- "Inbox {{ user.username }}" SIN estilo dorado -->
+                                    <a class="dropdown-item d-flex align-items-center gap-2" href="{% url 'inbox' %}">
+                                        <i class="bi bi-envelope"></i>
+                                        <span>Inbox {{ user.username }}</span>
                                         {% if notificaciones_no_leidas > 0 %}
-                                            <span class="badge bg-danger" id="notification-badge">{{ notificaciones_no_leidas }}</span>
+                                          <span class="badge bg-danger ms-auto" id="notification-badge">{{ notificaciones_no_leidas }}</span>
                                         {% endif %}
                                     </a>
                                 </li>
+                                <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form id="logout-form" method="post" action="{% url 'logout' %}">{% csrf_token %}
                                         <button type="submit" class="dropdown-item">Cerrar sesión</button>
@@ -69,6 +90,16 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- Nombre + corona como item del navbar (pegado a “Opciones”) -->
+                        {% with is_premium=IS_PREMIUM|default:user.profile.is_premium %}
+                        <li class="nav-item d-flex align-items-center">
+                          <span class="{% if is_premium %}username-premium{% else %}username-normal{% endif %}" style="display:inline-block; padding:0.5rem 1rem;">
+                            {% if is_premium %}👑{% endif %} {{ user.username }}
+                        </span>
+
+                        </li>
+                        {% endwith %}
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a></li>
                     {% endif %}
@@ -132,7 +163,6 @@
             </div>
         </div>
     </div>
-    
 
     <section class="container-waves">
         <div class="wave wave1"></div>
@@ -152,8 +182,7 @@
     {% block extra_js %}{% endblock %}
 
     <script>
-        // === FUNCIONES DE UTILIDAD ===
-        // Definimos la función getCookie y el token CSRF una sola vez y al principio.
+        // === CSRF ===
         function getCookie(name){
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
@@ -161,38 +190,37 @@
         }
         const csrftoken = getCookie('csrftoken');
 
-
-        // ==== SCRIPT DEL CHATBOT ====
+        // ==== CHATBOT ====
         (function () {
             const chatboxMessages = document.getElementById('chatbox-messages');
             const chatboxForm = document.getElementById('chatbox-form');
             const chatboxInput = document.getElementById('chatbox-input');
 
-        function appendChatMessage(sender, text) {
-            const row = document.createElement('div');
-            row.classList.add('chatbox-message-row');
-            row.classList.add(sender === 'Bot' ? 'bot' : 'user');
+            function appendChatMessage(sender, text) {
+                const row = document.createElement('div');
+                row.classList.add('chatbox-message-row');
+                row.classList.add(sender === 'Bot' ? 'bot' : 'user');
 
-            const bubble = document.createElement('div');
-            bubble.classList.add('chatbox-bubble');
-            bubble.textContent = text;
-            
-            const icon = document.createElement('i');
-            icon.classList.add('bi');
+                const bubble = document.createElement('div');
+                bubble.classList.add('chatbox-bubble');
+                bubble.textContent = text;
 
-            if (sender === 'Bot') {
-                row.style.justifyContent = 'flex-start';
-                row.appendChild(icon);
-                row.appendChild(bubble);
-            } else {
-                row.style.justifyContent = 'flex-end';
-                row.appendChild(bubble);
-                row.appendChild(icon);
+                const icon = document.createElement('i');
+                icon.classList.add('bi');
+
+                if (sender === 'Bot') {
+                    row.style.justifyContent = 'flex-start';
+                    row.appendChild(icon);
+                    row.appendChild(bubble);
+                } else {
+                    row.style.justifyContent = 'flex-end';
+                    row.appendChild(bubble);
+                    row.appendChild(icon);
+                }
+
+                chatboxMessages.appendChild(row);
+                chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
             }
-
-            chatboxMessages.appendChild(row);
-            chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
-        }
 
             appendChatMessage('Bot', '¡Hola! ¿Cómo puedo ayudarte?');
 
@@ -210,15 +238,11 @@
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRFToken': csrftoken // Ahora usa la variable global
+                                'X-CSRFToken': csrftoken
                             },
                             body: JSON.stringify({ message })
                         });
-                        
-                        if (!res.ok) {
-                            throw new Error(`Server responded with status: ${res.status}`);
-                        }
-
+                        if (!res.ok) throw new Error(`Server responded with status: ${res.status}`);
                         const data = await res.json();
                         appendChatMessage('Bot', data.response || '…');
                     } catch (err) {
@@ -229,8 +253,7 @@
             }
         })();
 
-        // === SCRIPT DE PAYPAL ===
-        // Esta sección también usa la variable csrftoken definida al principio.
+        // === PAYPAL ===
         (function(){
             let rendered = false;
             const modalEl = document.getElementById('premiumModal');
@@ -285,7 +308,7 @@
                     onError: function(err){
                         const msg = document.getElementById('premiumMsg');
                         if(msg) msg.innerText = "No se pudo iniciar el pago. Revisa la consola del navegador.";
-                        console.error('[PayPal] onError:', err);
+                        console.error('[PayPal] onError]:', err);
                     }
                 }).render('#paypal-button-container-modal');
 

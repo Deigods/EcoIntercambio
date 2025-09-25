@@ -3,16 +3,20 @@ import json
 import base64
 import logging
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Tuple
 
 import requests
 from django.conf import settings
 
+# ========= Config & logs =========
 log = logging.getLogger(__name__)
+PAYPAL_BASE = (
+    "https://api-m.sandbox.paypal.com"
+    if getattr(settings, "PAYPAL_ENV", "sandbox") == "sandbox"
+    else "https://api-m.paypal.com"
+)
 
-PAYPAL_BASE = "https://api-m.sandbox.paypal.com" if getattr(settings, "PAYPAL_ENV", "sandbox") == "sandbox" else "https://api-m.paypal.com"
-
-
+# ========= Token (vía REST/requests) =========
 @dataclass
 class PayPalToken:
     access_token: str
@@ -54,7 +58,7 @@ def get_access_token() -> PayPalToken:
 
 
 def create_order(amount: str, currency: str, description: str) -> str:
-    """Crea una orden y devuelve el orderID."""
+    """Crea una orden y devuelve el orderID (vía REST)."""
     token = get_access_token()
 
     url = f"{PAYPAL_BASE}/v2/checkout/orders"
@@ -73,11 +77,7 @@ def create_order(amount: str, currency: str, description: str) -> str:
                 "description": description,
             }
         ],
-        # Puedes habilitar estas URLs si quieres usar redirect (aquí usamos el popup):
-        # "application_context": {
-        #     "return_url": "https://example.com/return",
-        #     "cancel_url": "https://example.com/cancel",
-        # }
+        # "application_context": {"return_url": "...", "cancel_url": "..."}
     }
 
     log.info("[PayPal] Crear orden → %s body=%s", url, json.dumps(body))
@@ -97,7 +97,7 @@ def create_order(amount: str, currency: str, description: str) -> str:
 
 
 def capture_order(order_id: str) -> Tuple[str, dict]:
-    """Captura una orden ya aprobada. Devuelve (status, json_completo)."""
+    """Captura una orden (vía REST). Devuelve (status, json_completo)."""
     token = get_access_token()
 
     url = f"{PAYPAL_BASE}/v2/checkout/orders/{order_id}/capture"
@@ -117,19 +117,27 @@ def capture_order(order_id: str) -> Tuple[str, dict]:
     j = resp.json()
     status = j.get("status", "UNKNOWN")
     return status, j
-import os
-from django.conf import settings
+
+
+# ========= Cliente oficial del SDK (para quien lo necesite) =========
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment, LiveEnvironment
 
-def get_paypal_client() -> PayPalHttpClient:
-    """Devuelve el cliente PayPal en sandbox o live según settings.PAYPAL_ENV."""
+
+def paypal_client() -> PayPalHttpClient:
+    """
+    Devuelve un PayPalHttpClient (SDK) en sandbox o live según settings.PAYPAL_ENV.
+    Nombre preferido para importar.
+    """
     client_id = settings.PAYPAL_CLIENT_ID
     client_secret = settings.PAYPAL_CLIENT_SECRET
-
-    if settings.PAYPAL_ENV.lower() == "live":
-        env = LiveEnvironment(client_id=client_id, client_secret=client_secret)
-    else:
-        env = SandboxEnvironment(client_id=client_id, client_secret=client_secret)
-
+    env = (
+        LiveEnvironment(client_id=client_id, client_secret=client_secret)
+        if str(getattr(settings, "PAYPAL_ENV", "sandbox")).lower() == "live"
+        else SandboxEnvironment(client_id=client_id, client_secret=client_secret)
+    )
     return PayPalHttpClient(env)
 
+
+# Alias para compatibilidad con imports antiguos.
+def get_paypal_client() -> PayPalHttpClient:  # pragma: no cover
+    return paypal_client()

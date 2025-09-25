@@ -354,20 +354,22 @@ import json
 from decimal import Decimal
 from django.conf import settings
 from django.http import JsonResponse
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
-from .paypal_client import get_paypal_client
-from .models import SubscriptionPayment  # Asegúrate de que existe este modelo
+
+from .models import SubscriptionPayment, Profile  # <-- añadimos Profile
 
 @login_required
 def paypal_create_order(request):
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
+    # Cliente PayPal desde tu helper
+    from .paypal_client import get_paypal_client
     client = get_paypal_client()
+
     create_request = OrdersCreateRequest()
     create_request.prefer("return=representation")
     create_request.request_body({
@@ -377,16 +379,14 @@ def paypal_create_order(request):
                 "currency_code": settings.SUBSCRIPTION_CURRENCY,
                 "value": str(settings.SUBSCRIPTION_PRICE.quantize(Decimal('1.00'))),
             },
-            "description": settings.SUBSCRIPTION_DESCRIPTION,
+            "description": settings.SUBSCRIPTION_DESCRIPTION if hasattr(settings, "SUBSCRIPTION_DESCRIPTION") else "Suscripción Premium"
         }]
     })
 
-    try:
-        response = client.execute(create_request)
-        order = response.result
-        return JsonResponse({"id": order.id})
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+    response = client.execute(create_request)
+    order = response.result
+    return JsonResponse({"id": order.id})
+
 
 @login_required
 def paypal_capture_order(request):
@@ -402,36 +402,64 @@ def paypal_capture_order(request):
     if not order_id:
         return JsonResponse({"error": "Missing orderID"}, status=400)
 
+    from .paypal_client import get_paypal_client
     client = get_paypal_client()
+
     capture_request = OrdersCaptureRequest(order_id)
     capture_request.request_body({})
 
     try:
         response = client.execute(capture_request)
-        result = response.result
+        result = response.result  # objeto Python, NO tiene .json()
+
         status = getattr(result, "status", "")
 
-        # Guarda registro del pago
+        # Tomamos datos útiles del objeto para guardar algo legible
+        purchase_units = getattr(result, "purchase_units", []) or []
+        units_slim = []
+        for u in purchase_units:
+            amt = getattr(u, "amount", None)
+            units_slim.append({
+                "reference_id": getattr(u, "reference_id", None),
+                "amount": {
+                    "currency_code": getattr(amt, "currency_code", None) if amt else None,
+                    "value": getattr(amt, "value", None) if amt else None,
+                }
+            })
+
+        raw_payload = {
+            "id": getattr(result, "id", None),
+            "status": status,
+            "payer_email": getattr(getattr(result, "payer", None), "email_address", None),
+            "purchase_units": units_slim
+        }
+
+        # Guarda el pago (asumo que raw es JSONField o TextField)
         SubscriptionPayment.objects.create(
             user=request.user,
             order_id=order_id,
             status=status,
             amount=settings.SUBSCRIPTION_PRICE,
             currency=settings.SUBSCRIPTION_CURRENCY,
-            raw=json.loads(result.json()),
+            raw=raw_payload  # <<--- ya no usamos result.json()
         )
 
-        # Marca premium si se completó
+        # Asegurar que el usuario tenga Profile
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+
         if status == "COMPLETED":
-            profile = request.user.profile  # asumiendo modelo Profile OneToOne
+            # Marcar Premium al usuario
             profile.is_premium = True
             profile.premium_since = timezone.now()
             profile.save()
             return JsonResponse({"status": "COMPLETED"})
+        else:
+            return JsonResponse({"status": status})
 
-        return JsonResponse({"status": status})
     except Exception as e:
+        # Devuelve mensaje para verlo en la consola del navegador
         return JsonResponse({"error": str(e)}, status=500)
+
 
 @login_required
 def subscription_success(request):
