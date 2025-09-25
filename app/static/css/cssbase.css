@@ -95,6 +95,12 @@ nav {
   padding-top: 50px;
 }
 
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+
 .btn-success {
   background-color: #4caf50;
   border: none;
@@ -217,6 +223,29 @@ h1::after {
     padding-bottom: 80px;
     font-size: 23px;
   }
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse {
+        display: flex !important;
+        justify-content: space-between; /* Distribuye los elementos a los extremos */
+        width: 100%;
+    }
+
+    /* Oculta los elementos del menú en el colapso para pantallas grandes */
+    .d-lg-none {
+        display: none !important;
+    }
+}
+
+/* Estilo para el elemento de "Suscripción Premium" en el menú desplegable móvil */
+.premium-item-mobile {
+  background-color: #ffe066; /* Un amarillo brillante, similar al botón flotante */
+}
+
+.premium-item-mobile a {
+  font-weight: bold;
+  color: #333; /* Color de texto oscuro para mayor contraste */
 }
 
 .nav-item.dropdown {

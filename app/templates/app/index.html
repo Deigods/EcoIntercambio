@@ -21,7 +21,6 @@
                 {% endfor %}
             </select>
             <button class="btn btn-success" type="submit"><i class="bi bi-search"></i></button>
-            <button class="btn btn-warning fw-semibold ms-2" type="button" data-bs-toggle="modal" data-bs-target="#premiumModal">Hazte Premium</button>
         </form>
     </div>
 </div>
@@ -47,6 +46,7 @@
             <div class="col-12 text-center"><p class="text-muted">No hay productos disponibles en este momento.</p></div>
         {% endif %}
     </div>
+    <div>{% include 'app/paginator.html' %}</div>
 </div>
 
 {% block sobre_nosotros %}
@@ -81,5 +81,4 @@
 </section>
 {% endblock %}
 
-<div>{% include 'app/paginator.html' %}</div>
 {% endblock %}

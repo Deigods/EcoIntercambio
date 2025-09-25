@@ -51,10 +51,10 @@
                             <p class="mb-3 text-muted"><strong>Fecha de Publicación:</strong> {{ producto.fecha_publicacion }}</p>
 
                             <div class="mt-auto d-flex gap-2">
-                                <a href="{% url 'modificar-producto' producto.id %}" class="btn btn-outline-secondary flex-fill">
+                                <a href="{% url 'modificar-producto' producto.id %}?page={{ entity.number }}" class="btn btn-outline-secondary flex-fill">
                                     <i class="bi bi-pencil-square me-1"></i>Editar
                                 </a>
-                                <button class="btn btn-outline-danger flex-fill" onclick="eliminarProducto({{ producto.id }})">
+                                <button class="btn btn-outline-danger flex-fill" onclick="eliminarProducto({{ producto.id }}, {{ entity.number }})">
                                     <i class="bi bi-trash me-1"></i>Eliminar
                                 </button>
                             </div>
@@ -70,7 +70,10 @@
     <div class="mt-4">{% include 'app/paginator.html' %}</div>
 
     <div class="d-flex justify-content-center gap-2 mt-3">
-        <a href="{% url 'agregar_producto' %}" class="btn btn-success">Agregar Producto</a>
+        <a href="{% url 'agregar_producto' %}?page={{ entity.number }}" 
+        class="btn btn-success">
+        <i class="bi bi-plus-circle"></i> Agregar producto
+        </a>
         <a href="{% url 'home' %}" class="btn btn-outline-secondary">Volver al Home</a>
     </div>
 </div>
@@ -78,20 +81,22 @@
 
 {% block extra_js %}
 <script>
-    function eliminarProducto(id){
+    function eliminarProducto(id, page) {
         Swal.fire({
             title: "¿Estás seguro?",
-            text: "Esta acción no se puede deshacer",
+            text: "No podrás revertir esta acción",
             icon: "warning",
             showCancelButton: true,
-            cancelButtonText: "No, cancelar",
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c757d",
             confirmButtonText: "Sí, eliminar",
-            confirmButtonColor: "#dc3545"
-        }).then(function(result){
-            if(result.isConfirmed){
-                window.location.href = "/eliminar-producto/" + id + "/";
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/eliminar-producto/${id}/?page=${page}`;
             }
         });
     }
 </script>
+
 {% endblock %}

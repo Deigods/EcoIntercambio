@@ -24,6 +24,8 @@ from .models import Notificacion
 from django.http import Http404
 from .models import Producto, Tipo
 
+from django.urls import reverse
+
 class Inbox(View):
     def get(self, request):
         # Marcar notificaciones como leídas al acceder al inbox
@@ -210,22 +212,29 @@ def agregar_producto(request):
         if formulario.is_valid():
             formulario.instance.usuario = request.user
 
-            # Obtener y limpiar latitud y longitud
+            # Obtener latitud y longitud
             latitude = request.POST.get('latitude', '').strip()
             longitude = request.POST.get('longitude', '').strip()
 
-            # Verificar si los valores son válidos y convertir a float
-            try:
-                formulario.instance.latitud = float(latitude)
-                formulario.instance.longitud = float(longitude)
-            except ValueError:
-                messages.error(request, "Latitud y longitud deben ser números válidos.")
-                data['form'] = formulario
-                return render(request, 'app/producto/agregar.html', data)
+            if latitude and longitude:
+                try:
+                    formulario.instance.latitud = float(latitude)
+                    formulario.instance.longitud = float(longitude)
+                except ValueError:
+                    messages.error(request, "Latitud y longitud deben ser números válidos.")
+                    data['form'] = formulario
+                    return render(request, 'app/producto/agregar.html', data)
+            else:
+                formulario.instance.latitud = None
+                formulario.instance.longitud = None
 
             formulario.save()
             messages.success(request, "Agregado correctamente")
-            return redirect('listar-productos')
+
+            # ⬇️ Cambio aquí: redirigimos con la página actual
+            page = request.GET.get("page", 1)
+            return redirect(f"{reverse('listar-productos')}?page={page}")
+
         else:
             data["form"] = formulario
 
@@ -257,7 +266,7 @@ def listar_productos(request):
     page = request.GET.get('page', 1)
 
     try:
-        paginator = Paginator(productos, 5)
+        paginator = Paginator(productos, 6)
         productos = paginator.page(page)
     except:
         raise Http404
@@ -278,23 +287,20 @@ def listar_productos(request):
 def modificar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
 
-    # Verificar si el usuario actual es el dueño del producto o es un superusuario
     if request.user != producto.usuario and not request.user.is_superuser:
         raise PermissionDenied("No tienes permiso para modificar este producto.")
 
     data = {
         'form': ProductoForm(instance=producto),
-        'entidad': producto  # Para pasar los valores de latitud y longitud al template
+        'entidad': producto
     }
 
     if request.method == 'POST':
         formulario = ProductoForm(data=request.POST, instance=producto, files=request.FILES)
         if formulario.is_valid():
-            # Obtener y limpiar latitud y longitud
             latitude = request.POST.get('latitude', '').strip()
             longitude = request.POST.get('longitude', '').strip()
 
-            # Verificar si los valores son válidos y convertir a float
             try:
                 if latitude:
                     producto.latitud = float(latitude)
@@ -306,23 +312,22 @@ def modificar_producto(request, id):
                 return render(request, 'app/producto/modificar.html', data)
 
             formulario.save()
+            page = request.GET.get("page", 1)  # <-- aquí
             messages.success(request, "Modificado correctamente")
-            return redirect('listar-productos')
-        else:
-            data["form"] = formulario
+            return redirect(f"{reverse('listar-productos')}?page={page}")
 
-    return render(request, 'app/producto/modificar.html', data)
 
 @login_required
 def eliminar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
-    # Verificar si el usuario tiene permiso para eliminar
+
     if request.user != producto.usuario and not request.user.is_superuser:
         raise PermissionDenied("No tienes permiso para eliminar este producto.")
     
     producto.delete()
+    page = request.GET.get("page", 1)  # capturamos la página actual
     messages.success(request, "Producto eliminado correctamente")
-    return redirect('listar-productos')
+    return redirect(f"{reverse('listar-productos')}?page={page}")
 
 
 @login_required
