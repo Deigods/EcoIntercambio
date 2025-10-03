@@ -4,11 +4,18 @@ from django.contrib.auth.models import User
 from .models import Producto
 import datetime
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if username.lower() == 'invitado':  # bloquea "invitado" sin importar mayúsculas/minúsculas
+            raise ValidationError("Este nombre de usuario no está permitido.")
+        return username
 
 class ProductoForm(forms.ModelForm):
     class Meta:

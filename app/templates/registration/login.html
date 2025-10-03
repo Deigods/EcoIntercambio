@@ -71,8 +71,11 @@
                             <button type="submit" value="ingresar" class="btn btn-primary">Iniciar sesión</button>
                             <a href="{% url 'registro' %}" class="btn btn-primary btn-register">Registrarse</a>
                         </div>
-                        
                     </form>
+
+                    <div class="form-group-guest text-center mt-3 justify-content-center">
+                        <a href="{% url 'login-invitado' %}" class="btn btn-secondary btn-guest">Ingresar como invitado</a>
+                    </div>
                 </div>
             </div>
         </div>

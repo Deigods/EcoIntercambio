@@ -33,10 +33,12 @@
                     <div class="card mb-3">
                         {% if p.imagen %}<img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">{% endif %}
                         <div class="card-body">
-                            <h5 class="card-title text-center">{{ p.nombre|title }}</h5>
-                            <p class="text-muted text-center">Ubicación: {{ p.ubicacion.ubicacion_name }}</p>
-                            <p class="text-muted text-center">Fecha de publicación: {{ p.fecha_publicacion }}</p>
-                            <p class="text-muted text-center">Estado: {{ p.estado }}</p>
+                            <h5 class="card-title text-center"><strong>{{ p.nombre }}</strong></h5>
+                            <p class="mb-1 text-muted text-center"><strong>Estado:</strong> {{ p.estado }}</p>
+                            <p class="mb-1 text-muted text-center"><strong>Color:</strong> {{ p.color }}</p>
+                            <p class="mb-1 text-muted text-center"><strong>Tipo:</strong> {{ p.tipo }}</p>
+                            <p class="mb-1 text-muted text-center"><strong>Ubicación:</strong> {{ p.ubicacion }}</p>
+                            <p class="mb-3 text-muted text-center"><strong>Fecha de Publicación:</strong> {{ p.fecha_publicacion }}</p>
                             <a href="{% url 'producto' id=p.id %}" class="btn btn-success">Ver</a>
                         </div>
                     </div>

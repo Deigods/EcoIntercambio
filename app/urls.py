@@ -29,6 +29,7 @@ urlpatterns = [
     path("listar-productos/", listar_productos, name="listar-productos"),
     path("modificar-producto/<int:id>/", modificar_producto, name="modificar-producto"),
     path("eliminar-producto/<int:id>/", eliminar_producto, name="eliminar_producto"),
+    path('login-invitado/', views.login_invitado, name='login-invitado'),
 
     # Mensajes / canales
     path("dm/<str:username>", mensajes_privados),

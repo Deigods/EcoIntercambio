@@ -24,7 +24,20 @@ from .models import Notificacion
 from django.http import Http404
 from .models import Producto, Tipo
 
+from .decorators import user_no_invitado
+
 from django.urls import reverse
+
+def login_invitado(request):
+    user = authenticate(username='invitado', password='pass_invitado')
+    if user is not None:
+        login(request, user)
+        messages.info(request, "Has ingresado como invitado.")
+        return redirect('home')
+    else:
+        messages.error(request, "No se pudo iniciar sesión como invitado.")
+        return redirect('login')
+
 
 class Inbox(View):
     def get(self, request):
@@ -127,7 +140,6 @@ class DetailMs(LoginRequiredMixin, CanalFormMixin, DetailView):
         return context
 
 
-
 @login_required
 def home(request):
     query = request.GET.get('query', '')
@@ -171,6 +183,7 @@ def home(request):
 def register(request):
     return render(request, 'app/register.html');
 
+@user_no_invitado
 @login_required
 def producto(request, id):
     entidad = get_object_or_404(Producto, id=id)
@@ -200,6 +213,7 @@ def registro(request):
 
     return render(request, 'registration/register.html', data);
 
+@user_no_invitado
 @login_required
 def agregar_producto(request):
     data = {
@@ -240,7 +254,7 @@ def agregar_producto(request):
 
     return render(request, 'app/producto/agregar.html', data)
 
-
+@user_no_invitado
 @login_required
 def listar_productos(request):
     # Filtrar los productos según el usuario
@@ -285,6 +299,7 @@ def listar_productos(request):
 
 from django.urls import reverse
 
+@user_no_invitado
 @login_required
 def modificar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
@@ -328,7 +343,7 @@ def modificar_producto(request, id):
     return render(request, 'app/producto/modificar.html', data)
 
 
-
+@user_no_invitado
 @login_required
 def eliminar_producto(request, id):
     producto = get_object_or_404(Producto, id=id)
@@ -341,7 +356,7 @@ def eliminar_producto(request, id):
     messages.success(request, "Producto eliminado correctamente")
     return redirect(f"{reverse('listar-productos')}?page={page}")
 
-
+@user_no_invitado
 @login_required
 def mensajes_privados(request, username, *args, **kwargs):
     if not request.user.is_authenticated:
@@ -372,12 +387,12 @@ from decimal import Decimal
 from django.conf import settings
 from django.http import JsonResponse
 from django.utils import timezone
-from django.contrib.auth.decorators import login_required
 
 from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
 
 from .models import SubscriptionPayment, Profile  # <-- añadimos Profile
 
+@user_no_invitado
 @login_required
 def paypal_create_order(request):
     if request.method != "POST":
@@ -404,7 +419,7 @@ def paypal_create_order(request):
     order = response.result
     return JsonResponse({"id": order.id})
 
-
+@user_no_invitado
 @login_required
 def paypal_capture_order(request):
     if request.method != "POST":
@@ -477,7 +492,7 @@ def paypal_capture_order(request):
         # Devuelve mensaje para verlo en la consola del navegador
         return JsonResponse({"error": str(e)}, status=500)
 
-
+@user_no_invitado
 @login_required
 def subscription_success(request):
     return render(request, "app/subscription_success.html")
