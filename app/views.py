@@ -40,6 +40,15 @@ def login_invitado(request):
 
 
 class Inbox(View):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.username == 'invitado':
+            # Si es invitado, redirige a una página de error o a home
+            messages.error(request, "Los usuarios invitados no pueden acceder a esta función.")
+            return redirect(reverse('home')) # Asume que 'home' es la URL de tu página principal
+        
+        # Llama al dispatch del padre (FormMixin) para continuar con el procesamiento normal
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request):
         # Marcar notificaciones como leídas al acceder al inbox
         Notificacion.objects.filter(usuario=request.user, leido=False).update(leido=True)
@@ -55,6 +64,15 @@ class Inbox(View):
 
 class CanalFormMixin(FormMixin):
     form_class = FormMensajes
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.username == 'invitado':
+            # Si es invitado, redirige a una página de error o a home
+            messages.error(request, "Los usuarios invitados no pueden acceder a esta función.")
+            return redirect(reverse('home')) # Asume que 'home' es la URL de tu página principal
+        
+        # Llama al dispatch del padre (FormMixin) para continuar con el procesamiento normal
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return self.request.path
@@ -89,6 +107,15 @@ class CanalFormMixin(FormMixin):
 
 
 class CanalDetailView(LoginRequiredMixin, CanalFormMixin, DetailView):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.username == 'invitado':
+            # Si es invitado, redirige a una página de error o a home
+            messages.error(request, "Los usuarios invitados no pueden acceder a esta función.")
+            return redirect(reverse('home')) # Asume que 'home' es la URL de tu página principal
+        
+        # Llama al dispatch del padre (FormMixin) para continuar con el procesamiento normal
+        return super().dispatch(request, *args, **kwargs)
+
     template_name = 'mensajes/detail.html'
     queryset = Canal.objects.all()
 
@@ -208,7 +235,7 @@ def registro(request):
                 messages.success(request, "Te has registrado correctamente")
                 return redirect(to="home")
             else:
-                messages.error(request, "Error en la autenticacion. Por favor, intentalo de nuevo.")
+                messages.error(request, "Error en la autenticacion. Por favor, intentalo de nuevo.") 
         data['form'] = formulario
 
     return render(request, 'registration/register.html', data);

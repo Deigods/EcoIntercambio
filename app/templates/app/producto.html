@@ -87,7 +87,7 @@
                                 {{entidad.fecha_publicacion}} </li>
                         </ul>
                     </div>
-                    {% if entidad.usuario != request.user and user.username != "invitado" %}%}
+                    {% if entidad.usuario != request.user and user.username != "invitado" %}
                     <button class="btn btn-primary contact-button mt-3"
                         onclick="window.location.href='{% url 'detailms' entidad.usuario.username %}'" style="width: 100%;">
                         Contactar al Ofertante
