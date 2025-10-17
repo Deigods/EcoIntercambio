@@ -27,8 +27,11 @@ from .models import Producto, Tipo
 from .models import Producto, Estado, Ubicacion, Tipo
 from openpyxl import Workbook
 
-from .decorators import user_no_invitado
+import pandas as pd
+from django.shortcuts import render
+from django.db.models import Count
 
+from .decorators import user_no_invitado
 from django.urls import reverse
 
 def export_to_excel_model(request):
@@ -148,6 +151,48 @@ def export_to_excel_friendly(request):
     wb.save(response)
     return response
 
+import pandas as pd
+from django.shortcuts import render
+from django.db.models import Count
+
+def analisis_distribucion_tipos(request):
+    # 1. CONSULTA DE DJANGO ORM
+    data = (
+        Producto.objects
+        
+        # 💡 CORRECCIÓN FINAL: Usamos 'tipo' (la FK) y 'tipo_objeto' (el campo legible en el modelo Tipo)
+        .values('tipo__tipo_objeto') 
+        
+        .annotate(count=Count('id')) 
+        
+        # Filtra registros donde el tipo sea nulo
+        .exclude(tipo__tipo_objeto__isnull=True)
+        
+        .order_by('-count')
+    )
+    
+    # 2. PREPARACIÓN DE DATOS (Pandas)
+    df = pd.DataFrame(list(data))
+    
+    if df.empty:
+        context = {'error_message': 'No hay datos de productos para analizar.'}
+        return render(request, 'app/exportar.html', context)
+    
+    # Extraemos las etiquetas y los datos del DataFrame
+    # 💡 La columna generada por .values() se llama 'tipo__tipo_objeto'
+    chart_labels = df['tipo__tipo_objeto'].tolist()
+    chart_data = df['count'].tolist()
+
+    context = {
+        'labels': chart_labels,
+        'data': chart_data,
+        'titulo': "Distribución de Productos por Tipo",
+        'chart_type': 'pie'
+    }
+    
+    return render(request, 'app/analisis_base.html', context)
+
+
 def login_invitado(request):
     user = authenticate(username='invitado', password='pass_invitado')
     if user is not None:
@@ -158,6 +203,47 @@ def login_invitado(request):
         messages.error(request, "No se pudo iniciar sesión como invitado.")
         return redirect('login')
 
+import pandas as pd
+from django.shortcuts import render
+from django.db.models import Count
+from .models import Producto 
+
+def analisis_distribucion_ubicaciones(request):
+    # 1. CONSULTA DE DJANGO ORM
+    data = (
+        Producto.objects
+        
+        # 💡 CORRECCIÓN: Usamos 'ubicacion' (la FK) y 'ubicacion_name' (el campo legible)
+        .values('ubicacion__ubicacion_name') 
+        
+        .annotate(count=Count('id')) 
+        
+        # Filtra registros donde la ubicación sea nula
+        .exclude(ubicacion__ubicacion_name__isnull=True)
+        
+        .order_by('-count')
+    )
+    
+    # 2. PREPARACIÓN DE DATOS (Pandas)
+    df = pd.DataFrame(list(data))
+    
+    if df.empty:
+        context = {'error_message': 'No hay datos de productos por ubicación para analizar.'}
+        return render(request, 'app/exportar.html', context)
+    
+    # Extraemos las etiquetas y los datos del DataFrame
+    # 💡 La columna generada por .values() se llama 'ubicacion__ubicacion_name'
+    chart_labels = df['ubicacion__ubicacion_name'].tolist()
+    chart_data = df['count'].tolist()
+
+    context = {
+        'labels': chart_labels,
+        'data': chart_data,
+        'titulo': "Distribución de Productos por Ubicación",
+        'chart_type': 'bar' # Usamos barras para mejor visualización de categorías
+    }
+    
+    return render(request, 'app/analisis_base.html', context)
 
 class Inbox(View):
     def dispatch(self, request, *args, **kwargs):

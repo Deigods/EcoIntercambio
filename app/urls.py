@@ -19,6 +19,8 @@ from .views import (
     export_to_excel_location,
     export_to_excel_friendly,
     export_to_excel,
+    analisis_distribucion_tipos,
+    analisis_distribucion_ubicaciones,
 )
 from .chatbot_view import chatbot_view, chatbot_response
 
@@ -58,6 +60,9 @@ urlpatterns = [
     path('exportar/tipos/', export_to_excel_type, name='export_to_excel_type'),
     path('exportar/ubicaciones/', export_to_excel_location, name='export_to_excel_location'),    
     path('exportar/nombres/', export_to_excel_friendly, name='export_to_excel_friendly'),
-
     path('exportar/',export_to_excel, name='export_options'),
+
+    # Dashboards
+    path('analisis/tipos/', analisis_distribucion_tipos, name='analisis_tipos'),
+    path('analisis/ubicaciones/', analisis_distribucion_ubicaciones, name='analisis_ubicaciones')
 ]

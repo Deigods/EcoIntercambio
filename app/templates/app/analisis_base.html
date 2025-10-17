@@ -1,0 +1,69 @@
+{% extends "app/base.html" %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">{{ titulo }}</h2>
+    
+    <div class="card shadow p-4">
+        {% if error_message %}
+            <p class="text-danger">{{ error_message }}</p>
+        {% else %}
+                        <div class="chart-wrapper" style="position: relative; height: 40vh; max-height: 500px;">
+                                <canvas id="mainChart"></canvas> 
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // Variables genéricas inyectadas desde la vista de Django
+    const chartType = "{{ chart_type }}"; 
+    const chartTitle = "{{ titulo }}";
+    const labels = {{ labels|safe }};
+    const data = {{ data|safe }};
+
+    const ctx = document.getElementById('mainChart').getContext('2d');
+    
+    new Chart(ctx, {
+        // Usa la variable chartType para cambiar entre 'bar', 'pie', 'doughnut', etc.
+        type: chartType, 
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Cantidad',
+                data: data,
+                backgroundColor: chartType === 'pie' ? [
+                    // Colores específicos para gráficos circulares
+                    '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', 
+                    '#ff9800', '#f44336'
+                ] : '#4caf50',
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, 
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: chartTitle 
+                }
+            },
+            scales: chartType === 'bar' ? {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            } : {}
+        }
+    });
+</script>
+{% endblock %}
