@@ -1,0 +1,90 @@
+/* ======================================================= */
+/* 1. ESTILOS GENERALES Y LAYOUT (Asegura el centrado)    */
+/* ======================================================= */
+
+body {
+    min-height: 100vh;
+}
+
+.container-export-page { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Ajusta la altura para ocupar el espacio entre la nav y el footer */
+    min-height: calc(100vh - 350px); 
+    width: 100%;
+    padding-top: 50px; /* Añadir un poco de espacio superior */
+    padding-bottom: 50px; /* Añadir un poco de espacio inferior */
+}
+
+/* ======================================================= */
+/* 2. CONTENEDOR Y TÍTULO                                  */
+/* ======================================================= */
+
+.container {
+    background-color: #ffffff;
+    border-radius: 12px; /* Ligeramente menos redondeado */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    padding: 40px; /* Más espacio interior */
+    width: 100%;
+    max-width: 600px; /* Limita el ancho del contenedor */
+    z-index: 10;
+    text-align: center;
+}
+
+h2 {
+    color: #689f38; /* Verde oscuro */
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* ======================================================= */
+/* 3. ESTILO DE LOS BOTONES DE EXPORTACIÓN                 */
+/* ======================================================= */
+
+.list-group {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.list-group-item-action {
+    /* Estilo del botón (enlace) */
+    display: block;
+    text-align: left; /* Alinea el texto a la izquierda */
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333; /* Texto oscuro por defecto */
+    padding: 15px 25px;
+    margin-bottom: 0px;
+    margin-top: 10px;
+    border: 2px solid #8bc34a; 
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+}
+
+.list-group-item-action:hover {
+    /* Efecto al pasar el ratón */
+    background-color: #e8f5e9; /* Fondo verde muy claro */
+    border-color: #558b2f; /* Borde verde más oscuro */
+    color: #558b2f; /* Texto a verde más oscuro */
+    transform: translateY(-2px); /* Efecto 3D de levantamiento */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.list-group .list-group-item-action:not(:last-child) {
+    /* Esto solo aplica margen inferior a todos EXCEPTO al último */
+    margin-bottom: 10px; 
+}
+
+/* Estilo para el ícono de Excel o Descarga */
+.list-group-item-action::before {
+    font-weight: bold;
+    margin-right: 15px;
+    color: #4caf50;
+    font-size: 1.2em;
+}

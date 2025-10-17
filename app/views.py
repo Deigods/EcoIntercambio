@@ -24,9 +24,129 @@ from .models import Notificacion
 from django.http import Http404
 from .models import Producto, Tipo
 
+from .models import Producto, Estado, Ubicacion, Tipo
+from openpyxl import Workbook
+
 from .decorators import user_no_invitado
 
 from django.urls import reverse
+
+def export_to_excel_model(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="productos_exportados.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Products"
+
+    headers = ["id_producto", "id_tipo", "id_estado", "id_ubicacion", "fecha_publicacion", 'id_usuario']
+    ws.append(headers)
+
+    products = Producto.objects.all()
+    for product in products:
+        ws.append([
+                product.id,  # Agregando el ID real
+                product.tipo_id,
+                product.estado_id,
+                product.ubicacion_id,
+                product.fecha_publicacion,
+                product.usuario_id # Esto es correcto para FK directas
+                ])
+
+    wb.save(response)
+    return response
+
+def export_to_excel_estate(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="estados_exportados.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Estates"
+
+    headers = ["id_estado", "estado_nombre"]
+    ws.append(headers)
+
+    estates = Estado.objects.all()
+    for estate in estates:
+        ws.append([
+                estate.id,  # Agregando el ID real
+                estate.estado_name,
+                ])
+
+    wb.save(response)
+    return response
+
+def export_to_excel_location(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="ubicaciones_exportados.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Locations"
+
+    headers = ["id_ubicacion", "ubicacion_nombre"]
+    ws.append(headers)
+
+    locations = Ubicacion.objects.all()
+    for location in locations:
+        ws.append([
+                location.id,  # Agregando el ID real
+                location.ubicacion_name,
+                ])
+
+    wb.save(response)
+    return response
+
+def export_to_excel_type(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="tipos_exportados.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Types"
+
+    headers = ["id_tipo", "tipo_objeto"]
+    ws.append(headers)
+
+    types = Tipo.objects.all()
+    for tipo in types:
+        ws.append([
+                tipo.id,  # Agregando el ID real
+                tipo.tipo_objeto,
+                ])
+
+    wb.save(response)
+    return response
+
+def export_to_excel_friendly(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="productos_amigable.xlsx"'
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Productos_Legibles"
+
+    # Encabezados legibles
+    headers = ["id_producto", "producto","tipo_nombre", "estado", "ubicacion_nombre", "fecha_publicacion", 'usuario']
+    ws.append(headers)
+
+    # 1. OPTIMIZACIÓN: Usar select_related para traer los datos relacionados
+    productos = Producto.objects.all().select_related('tipo', 'ubicacion', 'usuario')
+    
+    for product in productos:
+        ws.append([
+            product.id,
+            product.nombre,
+            product.tipo.tipo_objeto if product.tipo else "N/A",  
+            product.estado.estado_name if product.estado else "N/A",  
+            product.ubicacion.ubicacion_name if product.ubicacion else "N/A",
+            product.fecha_publicacion, 
+            product.usuario.username
+        ])
+
+    wb.save(response)
+    return response
 
 def login_invitado(request):
     user = authenticate(username='invitado', password='pass_invitado')
@@ -523,3 +643,7 @@ def paypal_capture_order(request):
 @login_required
 def subscription_success(request):
     return render(request, "app/subscription_success.html")
+
+def export_to_excel(request):
+    # Esta vista puede redirigir o mostrar una página con enlaces a las diferentes exportaciones
+    return render(request, 'app/exportar.html')

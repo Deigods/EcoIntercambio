@@ -1,0 +1,42 @@
+{% extends "app/base.html" %}
+{% load static humanize %}
+
+{% block title %}Exportar - EcoIntercambio{% endblock %}
+
+{% block content %}
+
+{% block extra_css %} 
+    <link rel="stylesheet" href="{% static 'css/cssexportar.css' %}"> 
+{% endblock %}
+
+<div class="container-export-page"> 
+    <div class="container my-5">
+        <h2 class="mb-4">Exportar Datos de Productos</h2>
+        <div class="list-group">
+            <a href="{% url 'export_to_excel_product' %}" class="list-group-item list-group-item-action">
+                <i class="bi bi-download" style="margin-right: 10px; color: #4caf50;"></i> Exportar Modelo de Productos
+            </a>
+
+            <a href="{% url 'export_to_excel_estate' %}" class="list-group-item list-group-item-action">
+                <i class="bi bi-download" style="margin-right: 10px; color: #4caf50;"></i>
+                Exportar Tabla de Estados
+            </a>
+
+            <a href="{% url 'export_to_excel_type' %}" class="list-group-item list-group-item-action">
+                <i class="bi bi-download" style="margin-right: 10px; color: #4caf50;"></i>
+                Exportar Tabla de Tipos
+            </a>
+
+            <a href="{% url 'export_to_excel_location' %}" class="list-group-item list-group-item-action">
+                <i class="bi bi-download" style="margin-right: 10px; color: #4caf50;"></i>
+                Exportar Tabla de Ubicaciones
+            </a>
+
+            <a href="{% url 'export_to_excel_friendly' %}" class="list-group-item list-group-item-action">
+                <i class="bi bi-download" style="margin-right: 10px; color: #4caf50;"></i>
+                Exportar Tabla de Modelos Amigables
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

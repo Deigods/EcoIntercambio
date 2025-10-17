@@ -13,6 +13,12 @@ from .views import (
     DetailMs,
     CanalDetailView,
     Inbox,
+    export_to_excel_model,
+    export_to_excel_estate,
+    export_to_excel_type,
+    export_to_excel_location,
+    export_to_excel_friendly,
+    export_to_excel,
 )
 from .chatbot_view import chatbot_view, chatbot_response
 
@@ -29,7 +35,7 @@ urlpatterns = [
     path("listar-productos/", listar_productos, name="listar-productos"),
     path("modificar-producto/<int:id>/", modificar_producto, name="modificar-producto"),
     path("eliminar-producto/<int:id>/", eliminar_producto, name="eliminar_producto"),
-    path('login-invitado/', views.login_invitado, name='login-invitado'),
+    path('login-invitado/', views.login_invitado, name='login-invitado'), 
 
     # Mensajes / canales
     path("dm/<str:username>", mensajes_privados),
@@ -45,4 +51,13 @@ urlpatterns = [
     path("paypal/create/", views.paypal_create_order, name="paypal-create"),
     path("paypal/capture/", views.paypal_capture_order, name="paypal-capture"),
     path("suscripcion/exito/", views.subscription_success, name="subscription-success"),
+
+    # Exportar productos a Excel
+    path('exportar/ids/', export_to_excel_model, name='export_to_excel_product'),
+    path('exportar/estados/', export_to_excel_estate, name='export_to_excel_estate'),
+    path('exportar/tipos/', export_to_excel_type, name='export_to_excel_type'),
+    path('exportar/ubicaciones/', export_to_excel_location, name='export_to_excel_location'),    
+    path('exportar/nombres/', export_to_excel_friendly, name='export_to_excel_friendly'),
+
+    path('exportar/',export_to_excel, name='export_options'),
 ]
