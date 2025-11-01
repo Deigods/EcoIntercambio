@@ -334,19 +334,10 @@
                         .then(res => res.json())
                         .then(data => {
                             if(data.status === "COMPLETED"){
-                                try{
-                                    const exp = data.expires_at ? new Date(data.expires_at) : null;
-                                    const fechaStr = exp
-                                      ? exp.toLocaleDateString('es-CL', { year:'numeric', month:'2-digit', day:'2-digit' })
-                                      : '30 días desde hoy';
-                                    alert(`¡Listo! Tu suscripción Premium dura 30 días.\nVence el: ${fechaStr}.`);
-                                }catch(e){
-                                    alert("¡Listo! Tu suscripción Premium dura 30 días.");
+                                    // (sin alertas) redirige directo a la pantalla de éxito
+                                    window.location.href = "{% url 'subscription-success' %}";
                                 }
-                                window.location.href = "{% url 'subscription-success' %}";
-                            }else{
-                                if(msg) msg.innerText = "Pago no completado: " + (data.status || data.error || "desconocido");
-                            }
+
                         })
                         .catch(err => {
                             if(msg) msg.innerText = "Error: " + err;
