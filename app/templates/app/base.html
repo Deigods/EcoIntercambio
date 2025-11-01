@@ -144,7 +144,7 @@
 
     {% block content %}{% endblock %}
 
-    {% if user.is_authenticated and user.username != "invitado" %}
+    {% if user.is_authenticated and user.username != "invitado" and not user.profile.is_premium %}
         <a class="btn btn-warning fw-semibold position-fixed bottom-0 start-0 m-3 d-none d-lg-block"
         href="#" 
         data-bs-toggle="modal" 
