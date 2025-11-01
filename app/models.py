@@ -168,7 +168,7 @@ class Profile(models.Model):
         return (
             self.is_premium
             and self.premium_since is not None
-            and timezone.now() < (self.premium_since + timedelta(days=30))
+            and timezone.now() < (self.premium_since + timedelta(seconds=10))
         )
 
 
