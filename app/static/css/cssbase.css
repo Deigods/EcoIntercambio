@@ -547,3 +547,41 @@ h1::after {
   font-weight: 700;
   text-shadow: 0 0 6px rgba(245,197,66,.35);
 }
+/* ==== ESTILOS PREMIUM (marco + cintillo + fondo) ==== */
+.premium-card {
+  border: 3px solid #ffd700 !important;
+  border-radius: 14px;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.45);
+  animation: premiumGlow 3s infinite alternate;
+  overflow: hidden; /* para que el brillo no se salga */
+}
+
+@keyframes premiumGlow {
+  from { box-shadow: 0 0 8px rgba(255, 215, 0, 0.35); }
+  to   { box-shadow: 0 0 22px rgba(255, 215, 0, 0.85); }
+}
+
+.premium-badge {
+  font-weight: 600;
+  border: 1px solid rgba(255, 193, 7, 0.7);
+  background: linear-gradient(90deg, #ffd700, #ffbe0b);
+  color: #5a4400 !important;
+  border-radius: 8px;
+  text-shadow: 0 0 2px rgba(255,255,255,0.6);
+}
+
+.premium-body {
+  background: linear-gradient(135deg, #fffbe6, #ffffff);
+  border-top: 2px solid #ffd700;
+}
+
+/* Título con “dorado” similar al username */
+.premium-title {
+  font-weight: 700;
+  background: linear-gradient(90deg, #ffd700, #ffb300, #ffd700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.25);
+}
+
