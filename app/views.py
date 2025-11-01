@@ -652,6 +652,43 @@ def paypal_create_order(request):
     order = response.result
     return JsonResponse({"id": order.id})
 
+import json
+from decimal import Decimal
+from django.conf import settings
+from django.http import JsonResponse
+from django.utils import timezone
+from datetime import timedelta
+
+from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
+
+from .models import SubscriptionPayment, Profile  # <-- añadimos Profile
+
+@user_no_invitado
+@login_required
+def paypal_create_order(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    from .paypal_client import get_paypal_client
+    client = get_paypal_client()
+
+    create_request = OrdersCreateRequest()
+    create_request.prefer("return=representation")
+    create_request.request_body({
+        "intent": "CAPTURE",
+        "purchase_units": [{
+            "amount": {
+                "currency_code": settings.SUBSCRIPTION_CURRENCY,
+                "value": str(settings.SUBSCRIPTION_PRICE.quantize(Decimal('1.00'))),
+            },
+            "description": getattr(settings, "SUBSCRIPTION_DESCRIPTION", "Suscripción Premium"),
+        }]
+    })
+
+    response = client.execute(create_request)
+    order = response.result
+    return JsonResponse({"id": order.id})
+
 @user_no_invitado
 @login_required
 def paypal_capture_order(request):
@@ -675,11 +712,10 @@ def paypal_capture_order(request):
 
     try:
         response = client.execute(capture_request)
-        result = response.result  # objeto Python, NO tiene .json()
+        result = response.result
 
         status = getattr(result, "status", "")
 
-        # Tomamos datos útiles del objeto para guardar algo legible
         purchase_units = getattr(result, "purchase_units", []) or []
         units_slim = []
         for u in purchase_units:
@@ -699,30 +735,34 @@ def paypal_capture_order(request):
             "purchase_units": units_slim
         }
 
-        # Guarda el pago (asumo que raw es JSONField o TextField)
         SubscriptionPayment.objects.create(
             user=request.user,
             order_id=order_id,
             status=status,
             amount=settings.SUBSCRIPTION_PRICE,
             currency=settings.SUBSCRIPTION_CURRENCY,
-            raw=raw_payload  # <<--- ya no usamos result.json()
+            raw=raw_payload
         )
 
-        # Asegurar que el usuario tenga Profile
         profile, _ = Profile.objects.get_or_create(user=request.user)
 
         if status == "COMPLETED":
-            # Marcar Premium al usuario
+            now = timezone.now()
             profile.is_premium = True
-            profile.premium_since = timezone.now()
-            profile.save()
-            return JsonResponse({"status": "COMPLETED"})
+            profile.premium_since = now
+            profile.save(update_fields=["is_premium", "premium_since"])
+
+            expires_at = now + timedelta(days=30)
+            # Devolvemos la fecha de expiración para mostrarla en la alerta del front
+            return JsonResponse({
+                "status": "COMPLETED",
+                "expires_at": expires_at.isoformat()
+            })
+
         else:
             return JsonResponse({"status": status})
 
     except Exception as e:
-        # Devuelve mensaje para verlo en la consola del navegador
         return JsonResponse({"error": str(e)}, status=500)
 
 @user_no_invitado

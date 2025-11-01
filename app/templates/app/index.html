@@ -30,10 +30,10 @@
         {% if entity %}
             {% for p in entity %}
                 <div class="col-md-4 media-card">
-                    <div class="card h-100 position-relative {% if p.usuario.profile.is_premium %}premium-card{% endif %}">
+                    <div class="card h-100 position-relative {% if p.usuario.profile.is_premium_active %}premium-card{% endif %}">
                         
-                        {% if p.usuario.profile.is_premium %}
-                            <!-- Cintillo Premium -->
+                        {% if p.usuario.profile.is_premium_active %}
+                            <!-- Cintillo Premium (visible para todos) -->
                             <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2 shadow-sm premium-badge">
                                 👑 Premium
                             </span>
@@ -43,8 +43,8 @@
                             <img src="{{ p.imagen.url }}" class="card-img-top" alt="{{ p.nombre }}">
                         {% endif %}
                         
-                        <div class="card-body d-flex flex-column {% if p.usuario.profile.is_premium %}premium-body{% endif %}">
-                            <h5 class="card-title text-center {% if p.usuario.profile.is_premium %}premium-title{% endif %}">
+                        <div class="card-body d-flex flex-column {% if p.usuario.profile.is_premium_active %}premium-body{% endif %}">
+                            <h5 class="card-title text-center {% if p.usuario.profile.is_premium_active %}premium-title{% endif %}">
                                 <strong>{{ p.nombre }}</strong>
                             </h5>
                             <p class="mb-1 text-muted text-center"><strong>Estado:</strong> {{ p.estado }}</p>

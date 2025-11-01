@@ -7,7 +7,6 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
 # ---------------------------
 # Notificaciones / catálogo
 # ---------------------------
@@ -114,7 +113,6 @@ class CanalManager(models.Manager):
         )
 
     def obtener_o_crear_canal_usuario_actual(self, user):
-        # << FIX: aquí antes usabas User.username (clase), debe ser user.username (instancia)
         qs = self.get_queryset().solo_uno().filtrar_por_username(user.username)
         if qs.exists():
             return qs.order_by("tiempo").first(), False
@@ -154,6 +152,9 @@ class Canal(ChatModel):
 # ---------------------------
 # Suscripción / Perfil
 # ---------------------------
+from datetime import timedelta
+from django.utils import timezone
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     is_premium = models.BooleanField(default=False)
@@ -161,6 +162,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Perfil de {self.user.username}"
+
+    @property
+    def is_premium_active(self):
+        return (
+            self.is_premium
+            and self.premium_since is not None
+            and timezone.now() < (self.premium_since + timedelta(days=30))
+        )
 
 
 class SubscriptionPayment(models.Model):

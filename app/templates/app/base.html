@@ -51,7 +51,7 @@
                 </a>
                 {% if user.is_authenticated %}
                     <div class="mt-2 text-center">
-                        {% with is_premium=user.profile.is_premium %}
+                        {% with is_premium=user.profile.is_premium_active %}
                             <span class="fs-6 fw-bold {% if user.username == 'invitado' %}username-guest{% elif is_premium %}username-premium{% else %}username-normal{% endif %}">
                                 {% if user.username != 'invitado' and is_premium %}👑{% endif %} {{ user.username }}
                             </span>
@@ -84,7 +84,7 @@
                         </a>
                     {% if user.is_authenticated %}
                         <div class="mt-2 text-center">
-                            {% with is_premium=user.profile.is_premium %}
+                            {% with is_premium=user.profile.is_premium_active %}
                                 <span class="fs-6 fw-bold {% if user.username == 'invitado' %}username-guest{% elif is_premium %}username-premium{% else %}username-normal{% endif %}">
                                     {% if user.username != 'invitado' and is_premium %}👑{% endif %} {{ user.username }}
                                 </span>
@@ -144,7 +144,7 @@
 
     {% block content %}{% endblock %}
 
-    {% if user.is_authenticated and user.username != "invitado" and not user.profile.is_premium %}
+    {% if user.is_authenticated and user.username != "invitado" and not user.profile.is_premium_active %}
         <a class="btn btn-warning fw-semibold position-fixed bottom-0 start-0 m-3 d-none d-lg-block"
         href="#" 
         data-bs-toggle="modal" 
@@ -334,6 +334,15 @@
                         .then(res => res.json())
                         .then(data => {
                             if(data.status === "COMPLETED"){
+                                try{
+                                    const exp = data.expires_at ? new Date(data.expires_at) : null;
+                                    const fechaStr = exp
+                                      ? exp.toLocaleDateString('es-CL', { year:'numeric', month:'2-digit', day:'2-digit' })
+                                      : '30 días desde hoy';
+                                    alert(`¡Listo! Tu suscripción Premium dura 30 días.\nVence el: ${fechaStr}.`);
+                                }catch(e){
+                                    alert("¡Listo! Tu suscripción Premium dura 30 días.");
+                                }
                                 window.location.href = "{% url 'subscription-success' %}";
                             }else{
                                 if(msg) msg.innerText = "Pago no completado: " + (data.status || data.error || "desconocido");
@@ -359,7 +368,6 @@
                 rendered = true;
             });
         })();
-        
     </script>
 
     {% if messages %}
