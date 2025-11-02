@@ -19,7 +19,7 @@ SECRET_KEY = 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd2yb8ba^7^5oc5qofip^yj7s1
 DEBUG = True
 
 # Para desarrollo/local
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "ecointercambio.azurewebsites.net"]
 
 # Evita ventanas en blanco con el popup de PayPal en algunos navegadores
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
