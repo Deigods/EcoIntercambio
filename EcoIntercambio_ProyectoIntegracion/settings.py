@@ -13,13 +13,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd2yb8ba^7^5oc5qofip^yj7s1'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd2yb8ba^7^5oc5qofip^yj7s1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Obtiene el valor de DEBUG de Azure; si no existe, asume 'False' por seguridad.
+# Usamos 'True' para desarrollo local (si no se define la variable)
+DEBUG = os.environ.get('DEBUG_VALUE', 'True') == 'True'
 
 # Para desarrollo/local
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "ecointercambio.azurewebsites.net", "ecointercambio-docker.azurewebsites.net", "*"]
 
 # Evita ventanas en blanco con el popup de PayPal en algunos navegadores
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
@@ -87,14 +89,38 @@ CHANNEL_LAYERS = {
 }
 
 # Database
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'DB_Eco',
         'USER': 'root',
         'PASSWORD': '',
     }
-}
+} """
+
+
+USE_AZURE_DB = os.environ.get('USE_AZURE_DB', 'False') == 'True'
+
+if USE_AZURE_DB:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('AZURE_MYSQL_NAME'),
+            'USER': os.environ.get('AZURE_MYSQL_USER'),
+            'PASSWORD': os.environ.get('AZURE_MYSQL_PASSWORD'),
+            'HOST': os.environ.get('AZURE_MYSQL_HOST'),
+            'PORT': '3306',
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,6 +142,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
