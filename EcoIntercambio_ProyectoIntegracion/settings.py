@@ -13,10 +13,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd2yb8ba^7^5oc5qofip^yj7s1'
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd2yb8ba^7^5oc5qofip^yj7s1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Obtiene el valor de DEBUG de Azure; si no existe, asume 'False' por seguridad.
+# Usamos 'True' para desarrollo local (si no se define la variable)
+DEBUG = os.environ.get('DEBUG_VALUE', 'False') == 'True'
 
 # Para desarrollo/local
 ALLOWED_HOSTS = ["127.0.0.1", "localhost", "ecointercambio.azurewebsites.net"]
@@ -87,14 +89,29 @@ CHANNEL_LAYERS = {
 }
 
 # Database
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'DB_Eco',
         'USER': 'root',
         'PASSWORD': '',
     }
+} """
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
