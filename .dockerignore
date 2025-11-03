@@ -1,0 +1,14 @@
+# Archivos de caché y bases de datos locales
+.git
+.gitignore
+__pycache__/
+*.pyc
+*.log
+db.sqlite3
+/media
+/static
+.venv
+.vscode
+
+# Entornos y logs específicos
+venv/

@@ -21,7 +21,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd
 DEBUG = os.environ.get('DEBUG_VALUE', 'True') == 'True'
 
 # Para desarrollo/local
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "ecointercambio.azurewebsites.net"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "ecointercambio.azurewebsites.net", "ecointercambio-docker.azurewebsites.net", "*"]
 
 # Evita ventanas en blanco con el popup de PayPal en algunos navegadores
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
@@ -101,13 +101,16 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT', '3306'),
+        'NAME': os.environ.get('AZURE_MYSQL_NAME', 'tu_nombre_local'),
+        'USER': os.environ.get('AZURE_MYSQL_USER', 'tu_usuario_local'),
+        'PASSWORD': os.environ.get('AZURE_MYSQL_PASSWORD', 'tu_pass_local'),
+        'HOST': os.environ.get('AZURE_MYSQL_HOST', '127.0.0.1'),
+        'PORT': '3306',
+        # Agrega estas opciones para PyMySQL:
         'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            'ssl': {
+                'ca': '/path/to/tu/cert.pem', # Reemplaza por la ruta de tu certificado si lo usas
+            }
         }
     }
 }
