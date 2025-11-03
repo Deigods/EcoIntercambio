@@ -1,28 +1,30 @@
-# 1. Usa una imagen base de Python oficial, compatible con tus librerías
+# 1. Imagen base
 FROM python:3.12-slim
 
-# 2. Instala dependencias de sistema (requeridas por PyMySQL, Scipy, etc.)
+# 2. Instala dependencias del sistema
 RUN apt-get update && apt-get install -y \
     gcc \
     python3-dev \
     default-libmysqlclient-dev \
-    # Dependencias generales (para librerías pesadas)
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Establece el directorio de trabajo dentro del contenedor
+# 3. Directorio de trabajo
 WORKDIR /app
+ENV PYTHONPATH=/app
 
-# 4. Copia el archivo requirements.txt e instala todas las librerías
+# 4. Instala dependencias
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copia el resto del código
+# 5. Copia el código
 COPY . .
 
-# 6. Prepara los archivos estáticos de Django para el servidor
+# 6. Recolecta archivos estáticos
 RUN python manage.py collectstatic --noinput
 
-# 7. Define el comando de inicio (lo que Azure ejecutará)
-ENV PYTHONUNBUFFERED 1
-# Usa el puerto 8000, estándar para Azure App Services con Docker
-CMD gunicorn --bind 0.0.0.0:8000 --workers 4 Ecointercambio_ProyectoIntegracion.wsgi:application
+# 7. Expone puerto (opcional)
+EXPOSE 8000
+
+# 8. Arranca con Daphne (ASGI compatible)
+ENV PYTHONUNBUFFERED=1
+CMD ["daphne", "-b", "0.0.0.0", "-p", "$PORT", "EcoIntercambio_ProyectoIntegracion.asgi:application"]

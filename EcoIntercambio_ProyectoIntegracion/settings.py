@@ -98,22 +98,28 @@ CHANNEL_LAYERS = {
     }
 } """
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('AZURE_MYSQL_NAME', 'tu_nombre_local'),
-        'USER': os.environ.get('AZURE_MYSQL_USER', 'tu_usuario_local'),
-        'PASSWORD': os.environ.get('AZURE_MYSQL_PASSWORD', 'tu_pass_local'),
-        'HOST': os.environ.get('AZURE_MYSQL_HOST', '127.0.0.1'),
-        'PORT': '3306',
-        # Agrega estas opciones para PyMySQL:
-        'OPTIONS': {
-            'ssl': {
-                'ca': '/path/to/tu/cert.pem', # Reemplaza por la ruta de tu certificado si lo usas
-            }
+
+USE_AZURE_DB = os.environ.get('USE_AZURE_DB', 'False') == 'True'
+
+if USE_AZURE_DB:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('AZURE_MYSQL_NAME'),
+            'USER': os.environ.get('AZURE_MYSQL_USER'),
+            'PASSWORD': os.environ.get('AZURE_MYSQL_PASSWORD'),
+            'HOST': os.environ.get('AZURE_MYSQL_HOST'),
+            'PORT': '3306',
         }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 
 
 # Password validation
@@ -136,6 +142,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
