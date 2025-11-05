@@ -60,9 +60,11 @@
 <script>
     const canalId = "{{ object.id }}";
     const usuarioActual = "{{ request.user.username }}";
+    const protocolo = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     const chatSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/chat/' + canalId + '/'
+        protocolo + window.location.host + '/ws/chat/' + canalId + '/'
     );
+
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
