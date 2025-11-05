@@ -1,7 +1,7 @@
-# Imagen base
+# Imagen base ligera
 FROM python:3.12-slim
 
-# Dependencias del sistema
+# Instala dependencias del sistema
 RUN apt-get update && apt-get install -y \
     gcc \
     python3-dev \
@@ -12,26 +12,22 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 ENV PYTHONPATH=/app
 
-# Instala dependencias
+# Copia e instala dependencias de Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia el código
+# Copia el código del proyecto
 COPY . .
 
-# Archivos estáticos
+# Recolecta estáticos y migra la base de datos (Render lo hace automáticamente, pero se puede dejar)
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate --noinput
 
-# Descargar datos NLTK (opcional)
+# Descarga datos opcionales de NLTK
 RUN python -m nltk.downloader wordnet omw-1.4
 
 # Variables de entorno
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
-# Servidor Gunicorn con Uvicorn
-CMD gunicorn EcoIntercambio_ProyectoIntegracion.asgi:application \
-    -k uvicorn.workers.UvicornWorker \
-    --bind 0.0.0.0:${PORT:-8000} \
-    --workers 1 \
-    --timeout 120
+# Usa Daphne (servidor oficial de Django Channels)
+CMD daphne -b 0.0.0.0 -p ${PORT:-8000} EcoIntercambio_ProyectoIntegracion.asgi:application
