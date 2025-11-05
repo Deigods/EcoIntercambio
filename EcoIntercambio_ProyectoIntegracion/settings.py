@@ -199,5 +199,6 @@ SUBSCRIPTION_CURRENCY = "USD"
 SUBSCRIPTION_DESCRIPTION = "Suscripción Premium EcoIntercambio"
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://eco-intercambio.onrender.com'
+    'https://ecointercambio.onrender.com',
+    'https://' + os.environ.get('RENDER_EXTERNAL_HOSTNAME', ''),
 ]
