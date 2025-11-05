@@ -198,3 +198,6 @@ SUBSCRIPTION_PRICE = Decimal("1.58")       # ≈ 1500 CLP a USD
 SUBSCRIPTION_CURRENCY = "USD"
 SUBSCRIPTION_DESCRIPTION = "Suscripción Premium EcoIntercambio"
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://eco-intercambio.onrender.com'
+]
