@@ -83,11 +83,29 @@ TEMPLATES = [
     },
 ]
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
-    },
-}
+# Detecta si estás en Render o local
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
+IS_RENDER = os.environ.get("RENDER", None) is not None
+
+REDIS_URL = os.environ.get("REDIS_URL", "rediss://default:6cdhZNG0hS63PMod4U84gIpq1qAIYakz@redis-11399.c241.us-east-1-4.ec2.redns.redis-cloud.com:11399")
+
+if IS_RENDER or not DEBUG:
+    # 🌐 Producción (Render)
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels_redis.core.RedisChannelLayer",
+            "CONFIG": {
+                "hosts": [os.environ.get("REDIS_URL")],
+            },
+        },
+    }
+else:
+    # 💻 Desarrollo local
+    CHANNEL_LAYERS = {
+        "default": {
+            "BACKEND": "channels.layers.InMemoryChannelLayer"
+        },
+    }
 
 # Database
 """ DATABASES = {
