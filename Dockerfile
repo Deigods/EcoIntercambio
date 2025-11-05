@@ -27,4 +27,4 @@ RUN python manage.py collectstatic --noinput
 # 7. Define el comando de inicio
 ENV PYTHONUNBUFFERED 1
 # ¡CRÍTICO! Corregimos la capitalización: EcoIntercambio_ProyectoIntegracion
-CMD ["/bin/sh", "-c", "gunicorn EcoIntercambio_ProyectoIntegracion.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000}"]
+CMD gunicorn EcoIntercambio_ProyectoIntegracion.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
