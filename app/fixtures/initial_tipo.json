@@ -1,0 +1,142 @@
+[
+  {
+    "model": "app.tipo",
+    "pk": 1,
+    "fields": {
+      "tipo_objeto": "Electrónica"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 2,
+    "fields": {
+      "tipo_objeto": "Electrodomésticos"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 3,
+    "fields": {
+      "tipo_objeto": "Celulares"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 4,
+    "fields": {
+      "tipo_objeto": "Computadores"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 5,
+    "fields": {
+      "tipo_objeto": "Accesorios tecnológicos"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 6,
+    "fields": {
+      "tipo_objeto": "Ropa"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 7,
+    "fields": {
+      "tipo_objeto": "Calzado"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 8,
+    "fields": {
+      "tipo_objeto": "Muebles"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 9,
+    "fields": {
+      "tipo_objeto": "Decoración"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 10,
+    "fields": {
+      "tipo_objeto": "Libros"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 11,
+    "fields": {
+      "tipo_objeto": "Juguetes"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 12,
+    "fields": {
+      "tipo_objeto": "Instrumentos musicales"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 13,
+    "fields": {
+      "tipo_objeto": "Herramientas"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 14,
+    "fields": {
+      "tipo_objeto": "Artículos deportivos"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 15,
+    "fields": {
+      "tipo_objeto": "Vehículos"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 16,
+    "fields": {
+      "tipo_objeto": "Bicicletas"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 17,
+    "fields": {
+      "tipo_objeto": "Videojuegos"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 18,
+    "fields": {
+      "tipo_objeto": "Cámaras y fotografía"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 19,
+    "fields": {
+      "tipo_objeto": "Artículos para el hogar"
+    }
+  },
+  {
+    "model": "app.tipo",
+    "pk": 20,
+    "fields": {
+      "tipo_objeto": "Mascotas y accesorios"
+    }
+  }
+]

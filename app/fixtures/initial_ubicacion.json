@@ -1,0 +1,114 @@
+[
+  {
+    "model": "app.ubicacion",
+    "pk": 1,
+    "fields": {
+      "ubicacion_name": "Región de Arica y Parinacota"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 2,
+    "fields": {
+      "ubicacion_name": "Región de Tarapacá"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 3,
+    "fields": {
+      "ubicacion_name": "Región de Antofagasta"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 4,
+    "fields": {
+      "ubicacion_name": "Región de Atacama"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 5,
+    "fields": {
+      "ubicacion_name": "Región de Coquimbo"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 6,
+    "fields": {
+      "ubicacion_name": "Región de Valparaíso"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 7,
+    "fields": {
+      "ubicacion_name": "Región Metropolitana de Santiago"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 8,
+    "fields": {
+      "ubicacion_name": "Región del Libertador General Bernardo O’Higgins"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 9,
+    "fields": {
+      "ubicacion_name": "Región del Maule"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 10,
+    "fields": {
+      "ubicacion_name": "Región de Ñuble"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 11,
+    "fields": {
+      "ubicacion_name": "Región del Biobío"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 12,
+    "fields": {
+      "ubicacion_name": "Región de La Araucanía"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 13,
+    "fields": {
+      "ubicacion_name": "Región de Los Ríos"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 14,
+    "fields": {
+      "ubicacion_name": "Región de Los Lagos"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 15,
+    "fields": {
+      "ubicacion_name": "Región de Aysén del General Carlos Ibáñez del Campo"
+    }
+  },
+  {
+    "model": "app.ubicacion",
+    "pk": 16,
+    "fields": {
+      "ubicacion_name": "Región de Magallanes y de la Antártica Chilena"
+    }
+  }
+]

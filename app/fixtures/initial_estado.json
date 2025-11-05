@@ -1,0 +1,44 @@
+[
+  {
+    "model": "app.estado",
+    "pk": 1,
+    "fields": {
+      "estado_name": "Nuevo"
+    }
+  },
+  {
+    "model": "app.estado",
+    "pk": 2,
+    "fields": {
+      "estado_name": "Como nuevo"
+    }
+  },
+  {
+    "model": "app.estado",
+    "pk": 3,
+    "fields": {
+      "estado_name": "Usado"
+    }
+  },
+  {
+    "model": "app.estado",
+    "pk": 4,
+    "fields": {
+      "estado_name": "Reacondicionado"
+    }
+  },
+  {
+    "model": "app.estado",
+    "pk": 5,
+    "fields": {
+      "estado_name": "Dañado"
+    }
+  },
+  {
+    "model": "app.estado",
+    "pk": 6,
+    "fields": {
+      "estado_name": "Para repuestos"
+    }
+  }
+]
