@@ -198,7 +198,12 @@ SUBSCRIPTION_PRICE = Decimal("1.58")       # ≈ 1500 CLP a USD
 SUBSCRIPTION_CURRENCY = "USD"
 SUBSCRIPTION_DESCRIPTION = "Suscripción Premium EcoIntercambio"
 
+# ✅ CSRF y dominios confiables
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')
+
 CSRF_TRUSTED_ORIGINS = [
     'https://ecointercambio.onrender.com',
-    'https://' + os.environ.get('RENDER_EXTERNAL_HOSTNAME', ''),
 ]
+
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
