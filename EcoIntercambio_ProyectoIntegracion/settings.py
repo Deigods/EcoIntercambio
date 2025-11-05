@@ -98,8 +98,13 @@ CHANNEL_LAYERS = {
     }
 } """
 
+import dj_database_url
 
-USE_AZURE_DB = os.environ.get('USE_AZURE_DB', 'False') == 'True'
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+USE_AZURE_DB = os.environ.get('USE_AZURE_DB') == 'True'
+USE_RENDER_DB = os.environ.get('USE_RENDER_DB') == 'True'
+
 
 if USE_AZURE_DB:
     DATABASES = {
@@ -112,6 +117,16 @@ if USE_AZURE_DB:
             'PORT': '3306',
         }
     }
+
+elif USE_RENDER_DB:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+
 else:
     DATABASES = {
         'default': {
