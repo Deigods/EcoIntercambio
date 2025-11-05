@@ -1,30 +1,30 @@
-# 1. Imagen base
+# 1. Usa una imagen base de Python oficial, compatible con tus librerías
 FROM python:3.12-slim
 
-# 2. Instala dependencias del sistema
+# 2. Instala dependencias de sistema (requeridas por PyMySQL, Scipy, etc.)
 RUN apt-get update && apt-get install -y \
     gcc \
     python3-dev \
     default-libmysqlclient-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Directorio de trabajo
+# 3. Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
+
+# ** LÍNEA CRÍTICA 1 **: Asegura la ruta base
 ENV PYTHONPATH=/app
 
-# 4. Instala dependencias
+# 4. Copia el archivo requirements.txt e instala todas las librerías
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copia el código
+# 5. Copia el resto del código
 COPY . .
 
-# 6. Recolecta archivos estáticos
+# 6. Prepara los archivos estáticos de Django para el servidor
 RUN python manage.py collectstatic --noinput
 
-# 7. Expone puerto (opcional)
-EXPOSE 8000
-
-# 8. Arranca con Daphne (ASGI compatible)
-ENV PYTHONUNBUFFERED=1
-CMD ["daphne", "-b", "0.0.0.0", "-p", "$PORT", "EcoIntercambio_ProyectoIntegracion.asgi:application"]
+# 7. Define el comando de inicio
+ENV PYTHONUNBUFFERED 1
+# ¡CRÍTICO! Corregimos la capitalización: EcoIntercambio_ProyectoIntegracion
+CMD ["/bin/sh", "-c", "gunicorn EcoIntercambio_ProyectoIntegracion.asgi:application -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000}"]

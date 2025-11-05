@@ -1,0 +1,51 @@
+[33m3e662b5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mpruebas-deploy[m[33m, [m[1;31morigin/pruebas-deploy[m[33m)[m Fix: PYTHONPATH en Dockerfile para resolver Module Not Found, sol 7
+[33maacd03b[m Fix: PYTHONPATH en Dockerfile para resolver Module Not Found, sol 6
+[33m28e9c74[m Fix: PYTHONPATH en Dockerfile para resolver Module Not Found, sol 5
+[33ma450c3a[m Fix: PYTHONPATH en Dockerfile para resolver Module Not Found, sol 4
+[33ma99d3c6[m Fix: PYTHONPATH en Dockerfile para resolver Module Not Found, sol 3
+[33m615dcf6[m Fix: PYTHONPATH en Dockerfile para resolver Module Not Found, sol 2
+[33mb917f2e[m Fix: PYTHONPATH en Dockerfile para resolver Module Not Found
+[33mcad6208[m Finalizando la fusion de GitHub con Azure DevOps, modificado el Docker
+[33m08ff4cd[m Finalizando la fusion de GitHub con Azure DevOps, agregado gunicorn
+[33ma76c437[m Initial commit
+[33ma3e74aa[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Sincronizando el proyecto para agregar remoto GitHub
+[33mfb9efb0[m Cambios en settings para azure apps service, ultimo commit ante de limpieza
+[33m717d564[m Cambios en settings para azure apps service, se eliminaron librerias incompatibles con el host
+[33mc9ecff4[m Cambios en settings para azure apps service, se eliminó pymysql
+[33mb445d45[m Cambios en settings para azure apps service
+[33m25e0ee7[m Allowed_Hosts
+[33m2e5fce1[m Eliminacion alert paypal
+[33ma0dc102[m Fix 30 dias
+[33m202daef[m Duracion de 30 dias Premium agregada
+[33medef48c[m desaparece el hazte premium si ya pagaste
+[33m8edd640[m Marco dorado + corona+ corona  en inicio
+[33me431ada[m Marco dorado lista premium
+[33mbecad54[m Cambios menores
+[33me5e34b0[m Se agregó el signals.py para crear usuario invitado al momento de crear la bd
+[33m24bc6c8[m Se agregó opción de ver gráficos sencillos
+[33mc1dd72a[m Se agregó la opción de exportar a excel solo para los administradores
+[33m0bacd5f[m Se agregaron restricciones al usuario invitado
+[33meab0b61[m Se creó el usuario invitado
+[33mb522fb4[m Arreglado caida al modificar producto
+[33m785e1be[m Seguimos con la corrección de errores
+[33m1f791c0[m Ecommerce Premium Corona/beneficios en construccion
+[33me773d66[m Se arreglaron errores
+[33m4f05be4[m Se agregó la lógica de extend para los HTML
+[33mc5a84e2[m Premium PaypalSandbox Funcional
+[33mba13566[m Modal Paypal avance
+[33m40cdd98[m Se entrenó el chatbot con el diccionario
+[33m7f67bc5[m Se entrenó el chatbot con el diccionario
+[33m7eb7d66[m Más diccionario Chatbot
+[33m7019abd[m Se corrigió la portabilidad del chatbot
+[33me8a24c2[m Ecommerce Premium Avance
+[33m928e132[m Prueba commit con chatbot
+[33md90daab[m Se arreglaron los sweet alert
+[33m51660f1[m Cambios mayores en el chat y filtro de busqueda
+[33m6f2a3ba[m Validaciones por url agregadas, errores de seguridad corregidos
+[33mae2f978[m Filtrado de busqueda para administrador en la lista de productos
+[33md8f4ef5[m Se agregó la opción de modificar el mapa, ahora si, sprint 5 listo
+[33m3aae4c2[m Se agregó librerías necesarias al requirements.txt y al __init__.py
+[33mc18215a[m Geolocalización agregada, Sprint 5 Completo
+[33m47ff0ff[m sprint 5 notificaciones
+[33m7350e2f[m Requirements.txt
+[33mf9a3655[m Sprint4_ChatCreado
