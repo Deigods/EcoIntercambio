@@ -1,0 +1,149 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h3 {
+    text-align: center;
+    color: #4CAF50;
+    margin-top: 20px;
+}
+
+/* Contenedor de mensajes */
+#contenedor_ms {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: calc(70vh);
+    overflow-y: auto;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+/* Estilos para los mensajes */
+.div_ms {
+    margin: 1.2rem auto;
+    padding: 10px;
+    width: 80%;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+.mis_mensajes {
+    background-color: #d4edda; /* Verde */
+    color: #155724; /* Texto oscuro */
+    border-bottom-left-radius: 16px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    text-align: right;
+    margin-right: 5px;
+}
+
+.tus_mensajes {
+    background-color: #f8d7da; /* Rojo */
+    color: #721c24; /* Texto oscuro */
+    border-bottom-right-radius: 16px;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    text-align: left;
+    margin-left: 5px;
+}
+
+.div_ms small {
+    font-size: 12px;
+    color: #666;
+}
+
+.div_ms p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+/* Estilos para el formulario */
+.div_form_ms {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#id_mensaje {
+    display: block;
+    padding: 10px;
+    width: 100%;
+    height: 70px;
+    font-size: 14px;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+/* Botón de enviar */
+.btn_enviar {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 150px;
+    margin: 0 auto;
+    display: block;
+}
+
+.btn_enviar:hover {
+    background-color: #45a049;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    color: #4caf50;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: color 0.3s ease-in-out;
+    margin-left: 10%; /* Cambiado a un porcentaje */
+}
+
+.back-button svg {
+    margin-right: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.back-button:hover {
+    color: #388e3c;
+}
+
+.back-button:hover svg {
+    transform: translateX(-5px);
+}
+
+/* Responsividad */
+@media (max-width: 770px) {
+    #contenedor_ms, .div_form_ms {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .div_ms {
+        width: 90%;
+    }
+
+    .btn_enviar {
+        width: 100%;
+    }
+}

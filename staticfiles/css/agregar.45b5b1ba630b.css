@@ -1,0 +1,253 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e8f5e9;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+/* Estilos generales para los campos del formulario */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form div {
+    margin-bottom: 10px; /* Espacio entre los campos */
+}
+
+label {
+    color: #264653;
+    font-size: 16px;
+}
+
+input[type="text"], input[type="number"], textarea {
+    width: 93%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+.btn-home {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    display: block;
+    margin-top: 10px;
+}
+
+.btn-home:hover {
+    background-color: #45a049;
+}
+
+/* Estilo de olas */
+.container-waves {
+    position: relative;
+    width: 100%;
+    height: 20vh;
+    background: #e8f5e9;
+    overflow: hidden;
+    bottom: 0;
+}
+
+.container-waves .wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url("../images/wave.2553535d4082.png"); /* Ruta relativa al archivo CSS */
+    background-size: 1000px 100px;
+}
+
+.container-waves .wave.wave1 {
+    animation: animate 30s linear infinite;
+    z-index: 1000;
+    opacity: 1;
+    animation-delay: 0s;
+    bottom: 0;
+}
+
+.container-waves .wave.wave2 {
+    animation: animate2 15s linear infinite;
+    z-index: 999;
+    opacity: 0.5;
+    animation-delay: -5s;
+    bottom: 10px;
+}
+
+.container-waves .wave.wave3 {
+    animation: animate3 30s linear infinite;
+    z-index: 998;
+    opacity: 0.2;
+    animation-delay: -2s;
+    bottom: 15px;
+}
+
+.container-waves .wave.wave4 {
+    animation: animate3 5s linear infinite;
+    z-index: 997;
+    opacity: 0.7;
+    animation-delay: -5s;
+    bottom: 15px;
+}
+
+@keyframes animate {
+    0% {
+        background-position-x: 0;
+    }
+
+    100% {
+        background-position-x: 1000px;
+    }
+}
+
+@keyframes animate2 {
+    0% {
+        background-position-x: 0;
+    }
+
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+@keyframes animate3 {
+    0% {
+        background-position-x: 0;
+    }
+
+    100% {
+        background-position-x: -1000px;
+    }
+}
+
+/* Media queries para dispositivos móviles */
+@media (max-width: 767px) {
+    .container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    .btn-submit, .btn-home {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+        width: 93%;
+    }
+    
+    .container-waves {
+        height: 15vh;
+    }
+
+    .container-waves .wave {
+        height: 80px;
+    }
+}
+
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .btn-submit, .btn-home {
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    input[type="text"], input[type="number"], textarea {
+        padding: 8px;
+    }
+
+    .container-waves {
+        height: 10vh;
+    }
+
+    .container-waves .wave {
+        height: 60px;
+    }
+}
+
+.mapboxgl-ctrl-geocoder {
+    width: 100% !important;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.mapboxgl-ctrl-geocoder input[type="text"] {
+    padding-left: 40px;
+    margin-left: 7px;
+}
+
+.mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--icon {
+    position: absolute;
+    left: 10px;
+    top: 30%;
+    max-width: 20px;
+    max-height: 20px;
+}
+
+.mapboxgl-ctrl-geocoder mapboxgl-ctrl{
+    max-width: 250px !important;
+    max-height: 52px !important;
+}
+
+.mapboxgl-ctrl-geocoder--input{
+    max-height: 14px;
+    font-size: 15px !important;
+}
