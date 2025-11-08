@@ -10,6 +10,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    permissions:
+      id-token: write       # ✅ Necesario para la autenticación OIDC con Azure
+      contents: read        # ✅ Permite clonar el repo
+
     steps:
       - uses: actions/checkout@v4
 
@@ -26,13 +30,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # ✅ Instalar dependencias solo para pruebas básicas, no para build completo
       - name: Install dependencies
         run: pip install -r requirements.txt
 
       - name: Run Django collectstatic
-        run: |
-          python manage.py collectstatic --noinput
+        run: python manage.py collectstatic --noinput
 
       - name: Login to Azure
         uses: azure/login@v2
