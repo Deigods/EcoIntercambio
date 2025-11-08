@@ -211,14 +211,12 @@ SUBSCRIPTION_DESCRIPTION = "Suscripción Premium EcoIntercambio"
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ecointercambio.onrender.com',
-]
-
-# Dominios de confianza para solicitudes HTTPS (Azure, Render, etc.)
-CSRF_TRUSTED_ORIGINS = [
+    "https://ecointercambio.onrender.com",
     "https://ecointercambio.azurewebsites.net",
     "https://ecointercambio-docker.azurewebsites.net",
 ]
 
+# Agrega dinámicamente si estás en Render
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
