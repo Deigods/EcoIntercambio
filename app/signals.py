@@ -57,5 +57,5 @@ def create_default_data(sender, **kwargs):
         Ubicacion.objects.get_or_create(id=12, ubicacion_name='Región de La Araucanía')
         Ubicacion.objects.get_or_create(id=13, ubicacion_name='Región de Los Ríos')
         Ubicacion.objects.get_or_create(id=14, ubicacion_name='Región de Los Lagos')
-        Ubicacion.objects.get_or_create(id=15, ubicacion_name='Región de Aysén del General Carlos Ibáñez del Campo')
-        Ubicacion.objects.get_or_create(id=16, ubicacion_name='Región de Magallanes y de la Antártica Chilena')
+        Ubicacion.objects.get_or_create(id=15, ubicacion_name='Región de Aysén y Gral. Carlos Ibáñez del Campo')
+        Ubicacion.objects.get_or_create(id=16, ubicacion_name='Región de Magallanes y Antártica Chilena')
