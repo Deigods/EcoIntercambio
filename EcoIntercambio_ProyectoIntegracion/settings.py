@@ -17,8 +17,6 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Obtiene el valor de DEBUG de Azure; si no existe, asume 'False' por seguridad.
-# Usamos 'True' para desarrollo local (si no se define la variable)
-DEBUG = os.environ.get('DEBUG_VALUE', 'True') == 'True'
 
 # Para desarrollo/local
 ALLOWED_HOSTS = [
