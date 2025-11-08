@@ -141,6 +141,11 @@ if USE_AZURE_DB:
             'PASSWORD': os.environ.get('AZURE_MYSQL_PASSWORD'),
             'HOST': os.environ.get('AZURE_MYSQL_HOST'),
             'PORT': '3306',
+            'OPTIONS': {
+                'ssl': {
+                    'ca': os.path.join(BASE_DIR, 'DigiCertGlobalRootG2.crt.pem') 
+                }
+            }
         }
     }
 
