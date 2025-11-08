@@ -21,7 +21,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-!ge_o@w7tp4yvir#bs-b5^^xmd
 DEBUG = os.environ.get('DEBUG_VALUE', 'True') == 'True'
 
 # Para desarrollo/local
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "ecointercambio.azurewebsites.net", "ecointercambio-docker.azurewebsites.net", "*"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "ecointercambio.azurewebsites.net",
+    "ecointercambio-docker.azurewebsites.net",
+    "*",
+]
+
 
 # Evita ventanas en blanco con el popup de PayPal en algunos navegadores
 SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
@@ -205,6 +212,12 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')
 
 CSRF_TRUSTED_ORIGINS = [
     'https://ecointercambio.onrender.com',
+]
+
+# Dominios de confianza para solicitudes HTTPS (Azure, Render, etc.)
+CSRF_TRUSTED_ORIGINS = [
+    "https://ecointercambio.azurewebsites.net",
+    "https://ecointercambio-docker.azurewebsites.net",
 ]
 
 if RENDER_EXTERNAL_HOSTNAME:
