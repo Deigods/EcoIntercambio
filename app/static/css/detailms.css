@@ -1,6 +1,6 @@
 /* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f0f0;
     color: #333;
     margin: 0;
@@ -10,35 +10,44 @@ body {
 h1, h3 {
     text-align: center;
     color: #4CAF50;
-    margin-top: 20px;
+    margin: 20px 0;
+    font-weight: 600;
 }
 
 /* Contenedor de mensajes */
 #contenedor_ms {
     max-width: 800px;
     margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: calc(70vh);
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    height: 70vh;
     overflow-y: auto;
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 /* Estilos para los mensajes */
 .div_ms {
-    margin: 1.2rem auto;
-    padding: 10px;
+    margin: 1rem auto;
+    padding: 12px 16px;
     width: 80%;
     border-radius: 16px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    font-size: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.div_ms:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .mis_mensajes {
-    background-color: #d4edda; /* Verde */
-    color: #155724; /* Texto oscuro */
+    background-color: #d4edda;
+    color: #155724;
     border-bottom-left-radius: 16px;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -47,8 +56,8 @@ h1, h3 {
 }
 
 .tus_mensajes {
-    background-color: #f8d7da; /* Rojo */
-    color: #721c24; /* Texto oscuro */
+    background-color: #f8d7da;
+    color: #721c24;
     border-bottom-right-radius: 16px;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -58,70 +67,81 @@ h1, h3 {
 
 .div_ms small {
     font-size: 12px;
-    color: #666;
+    color: #777;
+    display: block;
+    margin-top: 5px;
 }
 
 .div_ms p {
-    font-size: 16px;
-    margin: 5px 0;
+    margin: 6px 0;
 }
 
 /* Estilos para el formulario */
 .div_form_ms {
     max-width: 800px;
     margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    background-color: #fafafa;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 #id_mensaje {
     display: block;
-    padding: 10px;
+    padding: 12px;
     width: 100%;
-    height: 70px;
-    font-size: 14px;
+    height: 80px;
+    font-size: 15px;
     color: #333;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
     box-sizing: border-box;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     resize: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#id_mensaje:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    outline: none;
 }
 
 /* Botón de enviar */
 .btn_enviar {
     background-color: #4CAF50;
     color: #fff;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
     width: 150px;
     margin: 0 auto;
     display: block;
+    font-weight: 600;
 }
 
 .btn_enviar:hover {
     background-color: #45a049;
+    transform: translateY(-2px);
 }
 
+/* Botón de volver */
 .back-button {
     display: flex;
     align-items: center;
     color: #4caf50;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 20px;
-    transition: color 0.3s ease-in-out;
-    margin-left: 10%; /* Cambiado a un porcentaje */
+    margin-left: 10%;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .back-button svg {
     margin-right: 8px;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease;
 }
 
 .back-button:hover {

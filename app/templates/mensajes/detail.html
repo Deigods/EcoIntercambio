@@ -60,14 +60,11 @@
 <script>
     const canalId = "{{ object.id }}";
     const usuarioActual = "{{ request.user.username }}";
-    const protocolo = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
     const chatSocket = new WebSocket(
         (window.location.protocol === "https:" ? "wss://" : "ws://") +
         window.location.host +
         "/ws/chat/" + canalId + "/"
     );
-
-
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
@@ -86,28 +83,43 @@
             <small>${data.timestamp || ''}</small>
         `;
 
-        document.querySelector('#contenedor_ms').appendChild(divMs);
+        const contenedor = document.querySelector('#contenedor_ms');
+        contenedor.appendChild(divMs);
+        contenedor.scrollTop = contenedor.scrollHeight; // autoscroll al último mensaje
     };
 
     chatSocket.onclose = function(e) {
         console.error('Chat cerrado inesperadamente');
     };
 
-    // Evitar el envío clásico y usar WebSocket
-    document.querySelector('#form_submit').addEventListener('submit', function(e) {
+    const form = document.querySelector('#form_submit');
+    const inputField = document.querySelector('#id_mensaje');
+
+    // Enviar mensaje al hacer submit
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
-        const inputField = document.querySelector('#id_mensaje');
+        enviarMensaje();
+    });
 
-        const mensaje = inputField.value;
+    // Enviar mensaje al presionar Enter
+    inputField.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) { // Enter sin Shift
+            e.preventDefault();
+            enviarMensaje();
+        }
+    });
 
-        if (mensaje.trim() !== '') {
+    function enviarMensaje() {
+        const mensaje = inputField.value.trim();
+        if (mensaje !== '') {
             chatSocket.send(JSON.stringify({
                 'mensaje': mensaje
             }));
             inputField.value = '';
         }
-    });
+    }
 </script>
+
 
 
 </html>
