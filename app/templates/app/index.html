@@ -29,7 +29,7 @@
     <div class="row container-cards">
         {% if entity %}
             {% for p in entity %}
-                <div class="col-md-4 media-card">
+                <div class="col-md-4 mb-4 media-card">
                     <div class="card h-100 position-relative {% if p.usuario.profile.is_premium_active %}premium-card{% endif %}">
                         
                         {% if p.usuario.profile.is_premium_active %}

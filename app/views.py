@@ -416,7 +416,6 @@ def home(request):
 def register(request):
     return render(request, 'app/register.html');
 
-@user_no_invitado
 @login_required
 def producto(request, id):
     entidad = get_object_or_404(Producto, id=id)

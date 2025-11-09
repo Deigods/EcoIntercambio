@@ -107,22 +107,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-""" # 💻 Desarrollo local
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    },
-} """
-
-# Database
-""" DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DB_Eco',
-        'USER': 'root',
-        'PASSWORD': '',
-    }
-} """
 
 import dj_database_url
 
@@ -130,9 +114,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 USE_AZURE_DB = os.environ.get('USE_AZURE_DB') == 'True'
 USE_RENDER_DB = os.environ.get('USE_RENDER_DB') == 'True'
+USE_LOCAL_MYSQL = os.environ.get('USE_LOCAL_MYSQL') == 'True'
+
+
+# Variables de entorno para activar la base correspondiente
+USE_AZURE_DB = os.environ.get('USE_AZURE_DB') == 'True'
+USE_RENDER_DB = os.environ.get('USE_RENDER_DB') == 'True'
+USE_LOCAL_MYSQL = os.environ.get('USE_LOCAL_MYSQL') == 'True'
 
 
 if USE_AZURE_DB:
+    print("✅ Usando base de datos: Azure MySQL")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -143,13 +135,14 @@ if USE_AZURE_DB:
             'PORT': '3306',
             'OPTIONS': {
                 'ssl': {
-                    'ca': os.path.join(BASE_DIR, 'DigiCertGlobalRootG2.crt.pem') 
+                    'ca': os.path.join(BASE_DIR, 'DigiCertGlobalRootG2.crt.pem')
                 }
             }
         }
     }
 
 elif USE_RENDER_DB:
+    print("✅ Usando base de datos: Render PostgreSQL")
     DATABASES = {
         'default': dj_database_url.config(
             default=os.environ.get('DATABASE_URL'),
@@ -158,14 +151,27 @@ elif USE_RENDER_DB:
         )
     }
 
+elif USE_LOCAL_MYSQL:
+    print("✅ Usando base de datos: MySQL local")
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'DB_Eco',
+            'USER': 'root',
+            'PASSWORD': '',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+        }
+    }
+
 else:
+    print("⚠️ Usando base de datos SQLite (por defecto)")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-
 
 
 # Password validation
@@ -200,10 +206,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 from decimal import Decimal
 
+PAYPAL_ID = "AbXfmAS2trfOMc3o4tvD2IlFkHt7rQUh81BcSGuIaxXv3KNYCIjprHDiIvYBt2QZZ60xrrWvA3ScbfbD"
+PAYPAL_SECRET = "EOtrpFdlZRnoC-rLb_P86VrHvSK_SIJpQCJkcVCtKQrtszb6pX0YkDD0z1fQVuUfXe1bOwm9c4DV-v4W"
+
 # ===== PayPal SANDBOX =====
 PAYPAL_ENV = "sandbox"  # "live" al pasar a producción
-PAYPAL_CLIENT_ID = "AbXfmAS2trfOMc3o4tvD2IlFkHt7rQUh81BcSGuIaxXv3KNYCIjprHDiIvYBt2QZZ60xrrWvA3ScbfbD"
-PAYPAL_CLIENT_SECRET = "EOtrpFdlZRnoC-rLb_P86VrHvSK_SIJpQCJkcVCtKQrtszb6pX0YkDD0z1fQVuUfXe1bOwm9c4DV-v4W"
+PAYPAL_CLIENT_ID = PAYPAL_ID
+PAYPAL_CLIENT_SECRET = PAYPAL_SECRET
 
 # ===== Suscripción =====
 SUBSCRIPTION_PRICE = Decimal("1.58")       # ≈ 1500 CLP a USD

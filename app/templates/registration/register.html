@@ -70,7 +70,7 @@
                         {{ form | crispy }}
                         <div class="button-group">
                             <button type="submit" value="registrar" class="btn btn-primary">Registrarse</button>
-                            <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'login' %}'">Iniciar sesión</button>
+                            <button type="button" class="btn btn-secondary" id="btn-volver">Volver</button>
                         </div>
                     </form>
                 </div>
@@ -78,5 +78,33 @@
         </div>
     </section>
 </body>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const botonInicio = document.getElementById("btn-volver");
+
+  if (botonInicio) {
+    botonInicio.addEventListener("click", function(event) {
+      event.preventDefault(); // Evita que navegue de inmediato
+
+      Swal.fire({
+        title: '¿Volver a inicio de sesión?',
+        text: 'Perderás los datos no guardados del formulario.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, volver',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#4caf50',
+        cancelButtonColor: '#d33'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = location.href='{% url 'login' %}'; // Redirige manualmente
+        }
+      });
+    });
+  }
+});
+
+</script>
 
 </html>
