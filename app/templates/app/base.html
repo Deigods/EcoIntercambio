@@ -72,7 +72,7 @@
                         </li>
                     {% endif %}
                     <li class="nav-item"><a class="nav-link active" href="{% url 'home' %}">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="#">Contacto</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'contacto' %}">Contacto</a></li>
 
                     {% if user.is_authenticated and user.username != "invitado" %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'agregar_producto' %}">Agregar Producto</a></li>

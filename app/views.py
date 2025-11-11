@@ -33,6 +33,13 @@ from django.db.models import Count
 
 from .decorators import user_no_invitado
 from django.urls import reverse
+from django.shortcuts import render
+
+def contacto_view(request):
+    return render(request, 'app/contacto.html')
+
+def consejos_view(request):
+    return render(request, 'app/consejos.html')
 
 def export_to_excel_model(request):
     response = HttpResponse(content_type='application/ms-excel')

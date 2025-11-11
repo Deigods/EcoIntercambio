@@ -1,0 +1,37 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block title %}Contacto - EcoIntercambio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-success">Contáctanos</h2>
+    <p class="text-muted">Si tienes dudas, sugerencias o necesitas ayuda, escríbenos y te responderemos pronto.</p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <form class="p-4 rounded shadow-sm bg-light">
+        <div class="mb-3">
+          <label for="nombre" class="form-label fw-semibold">Nombre</label>
+          <input type="text" class="form-control" id="nombre" placeholder="Tu nombre completo" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label fw-semibold">Correo electrónico</label>
+          <input type="email" class="form-control" id="email" placeholder="ejemplo@correo.com" required>
+        </div>
+        <div class="mb-3">
+          <label for="mensaje" class="form-label fw-semibold">Mensaje</label>
+          <textarea class="form-control" id="mensaje" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-success px-4 fw-semibold">
+            <i class="bi bi-send"></i> Enviar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

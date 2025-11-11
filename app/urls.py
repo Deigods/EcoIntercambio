@@ -38,7 +38,8 @@ urlpatterns = [
     path("modificar-producto/<int:id>/", modificar_producto, name="modificar-producto"),
     path("eliminar-producto/<int:id>/", eliminar_producto, name="eliminar_producto"),
     path('login-invitado/', views.login_invitado, name='login-invitado'), 
-
+    path('contacto/', views.contacto_view, name='contacto'),
+    path('consejos/', views.consejos_view, name='consejos'),
     # Mensajes / canales
     path("dm/<str:username>", mensajes_privados),
     path("ms/<str:username>", DetailMs.as_view(), name="detailms"),
