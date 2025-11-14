@@ -38,6 +38,7 @@ ASGI_APPLICATION = 'EcoIntercambio_ProyectoIntegracion.asgi.application'
 
 # Application definition
 INSTALLED_APPS = [
+    'app.apps.AppConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'daphne',
     'django.contrib.staticfiles',
-    'app.apps.AppConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.humanize',
@@ -57,6 +57,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = '/login/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -201,6 +203,17 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SMTP Gmail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'ecointercambio.reset@gmail.com'
+EMAIL_HOST_PASSWORD = 'wzsiwodkbmqotdax'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 # =====================  PAYPAL / SUSCRIPCIÓN  (SANDBOX)  =====================
 

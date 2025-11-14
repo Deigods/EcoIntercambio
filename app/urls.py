@@ -23,6 +23,7 @@ from .views import (
     analisis_distribucion_ubicaciones,
 )
 from .chatbot_view import chatbot_view, chatbot_response
+from django.contrib.auth import views as auth_views
 
 # UUID v4 para los canales de chat
 UUID_CANAL_REGEX = r'canal/(?P<pk>[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})'
@@ -40,6 +41,7 @@ urlpatterns = [
     path('login-invitado/', views.login_invitado, name='login-invitado'), 
     path('contacto/', views.contacto_view, name='contacto'),
     path('consejos/', views.consejos_view, name='consejos'),
+    
     # Mensajes / canales
     path("dm/<str:username>", mensajes_privados),
     path("ms/<str:username>", DetailMs.as_view(), name="detailms"),
@@ -65,5 +67,14 @@ urlpatterns = [
 
     # Dashboards
     path('analisis/tipos/', analisis_distribucion_tipos, name='analisis_tipos'),
-    path('analisis/ubicaciones/', analisis_distribucion_ubicaciones, name='analisis_ubicaciones')
+    path('analisis/ubicaciones/', analisis_distribucion_ubicaciones, name='analisis_ubicaciones'),
+
+    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
+
+    # Reset de contraseña
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset.html'), name="reset_password"),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_sent.html'), name="password_reset_done"),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name="password_reset_confirm"),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'), name="password_reset_complete"),
 ]

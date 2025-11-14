@@ -11,11 +11,23 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Hacer obligatorio el correo
+        self.fields['email'].required = True
+
     def clean_username(self):
         username = self.cleaned_data.get('username')
-        if username.lower() == 'invitado':  # bloquea "invitado" sin importar mayúsculas/minúsculas
+        if username.lower() == 'invitado':
             raise ValidationError("Este nombre de usuario no está permitido.")
         return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Este correo ya está registrado.")
+        return email
 
 class ProductoForm(forms.ModelForm):
     class Meta:
