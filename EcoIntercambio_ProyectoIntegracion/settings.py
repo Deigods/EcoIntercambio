@@ -207,11 +207,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # SMTP Gmail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465 # Puerto para SSL
+EMAIL_USE_SSL = True # Usar SSL
+EMAIL_USE_TLS = False # Desactivar TLS (incompatible con SSL en 465)
 
-EMAIL_HOST_USER = 'ecointercambio.reset@gmail.com'
-EMAIL_HOST_PASSWORD = 'wzsiwodkbmqotdax'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
