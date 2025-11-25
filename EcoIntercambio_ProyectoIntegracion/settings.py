@@ -187,7 +187,8 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'app/static')]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-# NOTA: La configuración de STORAGE (Whitenoise) y MEDIA se maneja al final del archivo
+# ✅ CORRECCIÓN APLICADA: Evita el error FileNotFoundError con Cloudinary
+WHITENOISE_MANIFEST_STRICT = False
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
