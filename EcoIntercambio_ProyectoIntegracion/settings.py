@@ -241,38 +241,14 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
-if DEBUG:
-    # ---------------------------------------------------------
-    # MODO LOCAL (Tu PC): Usa tu disco duro
-    # ---------------------------------------------------------
-    print("💻 Modo Local detectado: Guardando imágenes en carpeta /media del PC")
-    
-    STORAGES = {
-        "default": {
-            "BACKEND": "django.core.files.storage.FileSystemStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-    }
-    
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
-else:
-    # ---------------------------------------------------------
-    # MODO PRODUCCIÓN (Azure): Usa Cloudinary
-    # ---------------------------------------------------------
-    print("☁️ Modo Producción detectado: Guardando imágenes en Cloudinary")
-    
-    STORAGES = {
-        "default": {
-            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-        },
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-    }
-    
-    # Cloudinary maneja la URL automáticamente
-    MEDIA_URL = '/media/'
+# 3. URLs
+MEDIA_URL = '/media/'
