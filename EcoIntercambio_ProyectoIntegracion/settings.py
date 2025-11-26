@@ -236,24 +236,24 @@ if RENDER_EXTERNAL_HOSTNAME:
 # ===================== CONFIGURACIÓN CLOUDINARY & STORAGE =====================
 
 # STORAGES DE PRODUCCIÓN CON CLOUDINARY (Comentar para trabajar en local)
-# STORAGES = {
-#     "default": {
-#         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-#     },
-#     "staticfiles": {
-#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-#     },
-# }
-
-# --- CONFIGURACIÓN LOCAL (Descomentar para trabajar en local) ---
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",  # Línea clave
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# --- CONFIGURACIÓN LOCAL (Descomentar para trabajar en local) ---
+#STORAGES = {
+#    "default": {
+#        "BACKEND": "django.core.files.storage.FileSystemStorage",  # Línea clave
+#    },
+#    "staticfiles": {
+#        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#    },
+#}
 
 # 3. URLs
 MEDIA_URL = '/media/'

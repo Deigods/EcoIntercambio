@@ -16,17 +16,23 @@ class CustomUserCreationForm(UserCreationForm):
         # Hacer obligatorio el correo
         self.fields['email'].required = True
 
-    # Método para limpiar y convertir a mayúsculas el campo first_name
+    # Método para limpiar y validar first_name
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name')
         if first_name:
+            # Quitamos espacios para validar, así permitimos "Ana Maria" pero no "Ana123"
+            if not first_name.replace(' ', '').isalpha():
+                raise ValidationError("El nombre solo debe contener letras.")
             return first_name.upper()
         return first_name
 
-    # Método para limpiar y convertir a mayúsculas el campo last_name
+    # Método para limpiar y validar last_name
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name')
         if last_name:
+            # Quitamos espacios para validar apellidos compuestos
+            if not last_name.replace(' ', '').isalpha():
+                raise ValidationError("El apellido solo debe contener letras.")
             return last_name.upper()
         return last_name
 
@@ -38,8 +44,6 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        # NOTA: Si quieres que el email también se guarde en mayúsculas,
-        # puedes cambiar la línea de retorno a: return email.upper()
         if email:
              if User.objects.filter(email=email).exists():
                  raise ValidationError("Este correo ya está registrado.")
@@ -54,7 +58,7 @@ class ProductoForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        # Siempre read-only: agregando o modificando, admin o no admin
+        # Siempre read-only: agregando o modificando
         self.fields['fecha_publicacion'].initial = (
             self.instance.fecha_publicacion if self.instance and self.instance.pk
             else timezone.now().date()
@@ -65,17 +69,17 @@ class ProductoForm(forms.ModelForm):
         if user and not user.is_superuser:
             self.fields.pop('usuario', None)
 
-    # Método para limpiar y convertir a MAYÚSCULAS el campo nombre (texto libre)
     def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre')
         if nombre:
             return nombre.upper()
         return nombre
 
-    # Método para limpiar y convertir a MAYÚSCULAS el campo color (texto libre)
     def clean_color(self):
         color = self.cleaned_data.get('color')
         if color:
+            if not color.replace(' ', '').isalpha():
+                raise ValidationError("El color solo debe contener letras (sin números ni símbolos).")
             return color.upper()
         return color
 
