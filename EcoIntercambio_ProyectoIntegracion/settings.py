@@ -235,15 +235,20 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 # ===================== CONFIGURACIÓN CLOUDINARY & STORAGE =====================
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY':    os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
-}
+# STORAGES DE PRODUCCIÓN CON CLOUDINARY (Comentar para trabajar en local)
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
+# --- CONFIGURACIÓN LOCAL (Descomentar para trabajar en local) ---
 STORAGES = {
     "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        "BACKEND": "django.core.files.storage.FileSystemStorage",  # Línea clave
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -252,3 +257,6 @@ STORAGES = {
 
 # 3. URLs
 MEDIA_URL = '/media/'
+
+# Define la ruta local para guardar los archivos
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
