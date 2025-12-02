@@ -21,6 +21,8 @@ from .views import (
     export_to_excel,
     analisis_distribucion_tipos,
     analisis_distribucion_ubicaciones,
+    analisis_distribucion_estados,
+    analisis_distribucion_fechas,
 )
 from .chatbot_view import chatbot_view, chatbot_response
 from django.contrib.auth import views as auth_views
@@ -68,6 +70,8 @@ urlpatterns = [
     # Dashboards
     path('analisis/tipos/', analisis_distribucion_tipos, name='analisis_tipos'),
     path('analisis/ubicaciones/', analisis_distribucion_ubicaciones, name='analisis_ubicaciones'),
+    path('analisis/estados/', analisis_distribucion_estados, name='analisis_estados'),
+    path('analisis/fechas/', analisis_distribucion_fechas, name='analisis_fechas'),
 
     path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),

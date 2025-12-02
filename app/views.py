@@ -35,6 +35,27 @@ from .decorators import user_no_invitado
 from django.urls import reverse
 from django.shortcuts import render
 
+import json
+from decimal import Decimal
+from django.conf import settings
+from django.http import JsonResponse
+from django.utils import timezone
+from datetime import timedelta
+
+from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
+
+from .models import SubscriptionPayment, Profile
+
+def login_invitado(request):
+    user = authenticate(username='invitado', password='pass_invitado')
+    if user is not None:
+        login(request, user)
+        messages.info(request, "Has ingresado como invitado.")
+        return redirect('home')
+    else:
+        messages.error(request, "No se pudo iniciar sesión como invitado.")
+        return redirect('login')
+
 def contacto_view(request):
     return render(request, 'app/contacto.html')
 
@@ -49,7 +70,7 @@ def export_to_excel_model(request):
     ws = wb.active
     ws.title = "Products"
 
-    headers = ["id_producto", "id_tipo", "id_estado", "id_ubicacion", "fecha_publicacion", 'id_usuario']
+    headers = ["id_producto", "id_tipo", "id_estado", "id_ubicacion", "fecha_publicacion", 'id_usuario','usuario_first_name','usuario_last_name','usuario_email', 'usuario_nombre_completo']
     ws.append(headers)
 
     products = Producto.objects.all()
@@ -60,7 +81,11 @@ def export_to_excel_model(request):
                 product.estado_id,
                 product.ubicacion_id,
                 product.fecha_publicacion,
-                product.usuario_id # Esto es correcto para FK directas
+                product.usuario_id, # Esto es correcto para FK directas
+                product.usuario.first_name,
+                product.usuario.last_name,
+                product.usuario.email,
+                product.usuario.first_name + " " + product.usuario.last_name,
                 ])
 
     wb.save(response)
@@ -138,7 +163,7 @@ def export_to_excel_friendly(request):
     ws.title = "Productos_Legibles"
 
     # Encabezados legibles
-    headers = ["id_producto", "producto","tipo_nombre", "estado", "ubicacion_nombre", "fecha_publicacion", 'usuario']
+    headers = ["id_producto", "producto","tipo_nombre", "estado", "ubicacion_nombre", "fecha_publicacion", 'usuario','usuario_nombre', 'usuario_apellido', 'usuario_email' ,'usuario_nombre_completo']
     ws.append(headers)
 
     # 1. OPTIMIZACIÓN: Usar select_related para traer los datos relacionados
@@ -152,15 +177,15 @@ def export_to_excel_friendly(request):
             product.estado.estado_name if product.estado else "N/A",  
             product.ubicacion.ubicacion_name if product.ubicacion else "N/A",
             product.fecha_publicacion, 
-            product.usuario.username
+            product.usuario.username,
+            product.usuario.first_name,
+            product.usuario.last_name,
+            product.usuario.email,
+            product.usuario.first_name + " " + product.usuario.last_name,
         ])
 
     wb.save(response)
     return response
-
-import pandas as pd
-from django.shortcuts import render
-from django.db.models import Count
 
 def analisis_distribucion_tipos(request):
     # 1. CONSULTA DE DJANGO ORM
@@ -199,28 +224,12 @@ def analisis_distribucion_tipos(request):
     
     return render(request, 'app/analisis_base.html', context)
 
-
-def login_invitado(request):
-    user = authenticate(username='invitado', password='pass_invitado')
-    if user is not None:
-        login(request, user)
-        messages.info(request, "Has ingresado como invitado.")
-        return redirect('home')
-    else:
-        messages.error(request, "No se pudo iniciar sesión como invitado.")
-        return redirect('login')
-
-import pandas as pd
-from django.shortcuts import render
-from django.db.models import Count
-from .models import Producto 
-
 def analisis_distribucion_ubicaciones(request):
     # 1. CONSULTA DE DJANGO ORM
     data = (
         Producto.objects
         
-        # 💡 CORRECCIÓN: Usamos 'ubicacion' (la FK) y 'ubicacion_name' (el campo legible)
+        # Usamos 'ubicacion' (la FK) y 'ubicacion_name' (el campo legible)
         .values('ubicacion__ubicacion_name') 
         
         .annotate(count=Count('id')) 
@@ -248,6 +257,76 @@ def analisis_distribucion_ubicaciones(request):
         'data': chart_data,
         'titulo': "Distribución de Productos por Ubicación",
         'chart_type': 'bar' # Usamos barras para mejor visualización de categorías
+    }
+    
+    return render(request, 'app/analisis_base.html', context)
+
+def analisis_distribucion_estados(request):
+    # 1. CONSULTA DE DJANGO ORM
+    data = (
+        Producto.objects
+        
+        # Usamos 'estado' (la FK) y 'estado_name' (el campo legible)
+        .values('estado__estado_name') 
+        
+        .annotate(count=Count('id')) 
+        
+        # Filtra registros donde el estado sea nulo
+        .exclude(estado__estado_name__isnull=True)
+        
+        .order_by('-count')
+    )
+    
+    # 2. PREPARACIÓN DE DATOS (Pandas)
+    df = pd.DataFrame(list(data))
+    
+    if df.empty:
+        context = {'error_message': 'No hay datos de productos por estado para analizar.'}
+        return render(request, 'app/exportar.html', context)
+    
+    # Extraemos las etiquetas y los datos del DataFrame
+    # 💡 La columna generada por .values() se llama 'estado__estado_name'
+    chart_labels = df['estado__estado_name'].tolist()
+    chart_data = df['count'].tolist()
+
+    context = {
+        'labels': chart_labels,
+        'data': chart_data,
+        'titulo': "Distribución de Productos por Estado",
+        'chart_type': 'doughnut'  # Usamos doughnut para variar la visualización
+    }
+    
+    return render(request, 'app/analisis_base.html', context)
+
+def analisis_distribucion_fechas(request):
+    # 1. CONSULTA DE DJANGO ORM
+    data = (
+        Producto.objects
+        
+        # Extraemos la fecha (sin hora) de 'fecha_publicacion'
+        .values('fecha_publicacion') 
+        
+        .annotate(count=Count('id')) 
+        
+        .order_by('fecha_publicacion')
+    )
+    
+    # 2. PREPARACIÓN DE DATOS (Pandas)
+    df = pd.DataFrame(list(data))
+    
+    if df.empty:
+        context = {'error_message': 'No hay datos de productos por fecha para analizar.'}
+        return render(request, 'app/exportar.html', context)
+    
+    # Extraemos las etiquetas y los datos del DataFrame
+    chart_labels = df['fecha_publicacion'].astype(str).tolist()  # Convertimos fechas a string para etiquetas
+    chart_data = df['count'].tolist()
+
+    context = {
+        'labels': chart_labels,
+        'data': chart_data,
+        'titulo': "Distribución de Productos por Fecha de Publicación",
+        'chart_type': 'line'  # Usamos línea para mostrar tendencia en el tiempo
     }
     
     return render(request, 'app/analisis_base.html', context)
@@ -621,16 +700,6 @@ def mensajes_privados(request, username, *args, **kwargs):
 
 
 # --- PayPal / Suscripciones ---
-import json
-from decimal import Decimal
-from django.conf import settings
-from django.http import JsonResponse
-from django.utils import timezone
-
-from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
-
-from .models import SubscriptionPayment, Profile  # <-- añadimos Profile
-
 @user_no_invitado
 @login_required
 def paypal_create_order(request):
@@ -657,17 +726,6 @@ def paypal_create_order(request):
     response = client.execute(create_request)
     order = response.result
     return JsonResponse({"id": order.id})
-
-import json
-from decimal import Decimal
-from django.conf import settings
-from django.http import JsonResponse
-from django.utils import timezone
-from datetime import timedelta
-
-from paypalcheckoutsdk.orders import OrdersCreateRequest, OrdersCaptureRequest
-
-from .models import SubscriptionPayment, Profile  # <-- añadimos Profile
 
 @user_no_invitado
 @login_required

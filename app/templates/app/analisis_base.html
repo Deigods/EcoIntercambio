@@ -22,27 +22,53 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    // Variables genéricas inyectadas desde la vista de Django
+    // 1. Datos desde Django
     const chartType = "{{ chart_type }}"; 
     const chartTitle = "{{ titulo }}";
     const labels = {{ labels|safe }};
     const data = {{ data|safe }};
 
+    // 2. Función para generar colores automáticamente
+    function generarColores(cantidad) {
+        // Paleta base de colores (puedes agregar más si quieres)
+        const paleta = [
+            '#4caf50', '#2196f3', '#ff9800', '#f44336', '#9c27b0', 
+            '#3f51b5', '#00bcd4', '#009688', '#ffc107', '#795548', 
+            '#607d8b', '#e91e63'
+        ];
+        
+        let coloresGenerados = [];
+        for (let i = 0; i < cantidad; i++) {
+            coloresGenerados.push(paleta[i % paleta.length]);
+        }
+        return coloresGenerados;
+    }
+
+    // 3. Determinar configuración según el tipo de gráfico
+    const tiposCirculares = ['pie', 'doughnut', 'polarArea'];
+    const esCircular = tiposCirculares.includes(chartType);
+
+    // Si es circular, generamos un color por dato. Si es barras/línea, usamos el color principal (verde)
+    const bgColors = esCircular ? generarColores(data.length) : '#4caf50';
+    
+    // Ocultar ejes (escalas) si es circular (se ve feo un eje Y en una dona)
+    const opcionesEscalas = esCircular ? {} : {
+        y: { beginAtZero: true, precision: 0 }
+    };
+
+    // 4. Renderizar el gráfico
     const ctx = document.getElementById('mainChart').getContext('2d');
     
     new Chart(ctx, {
-        // Usa la variable chartType para cambiar entre 'bar', 'pie', 'doughnut', etc.
         type: chartType, 
         data: {
             labels: labels,
             datasets: [{
                 label: 'Cantidad',
                 data: data,
-                backgroundColor: chartType === 'pie' ? [
-                    // Colores específicos para gráficos circulares
-                    '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', 
-                    '#ff9800', '#f44336'
-                ] : '#4caf50',
+                backgroundColor: bgColors, // Aquí se asignan los colores dinámicos
+                borderColor: '#000000ff',
+                borderWidth: 1
             }]
         },
         options: {
@@ -50,6 +76,8 @@
             maintainAspectRatio: false, 
             plugins: {
                 legend: {
+                    // Muestra la leyenda solo si es circular (en barras a veces molesta si es una sola serie)
+                    display: true, 
                     position: 'top',
                 },
                 title: {
@@ -57,12 +85,7 @@
                     text: chartTitle 
                 }
             },
-            scales: chartType === 'bar' ? {
-                y: {
-                    beginAtZero: true,
-                    precision: 0
-                }
-            } : {}
+            scales: opcionesEscalas // Se inyecta la configuración dinámica de ejes
         }
     });
 </script>

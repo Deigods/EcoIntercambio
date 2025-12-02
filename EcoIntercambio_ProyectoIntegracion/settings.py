@@ -246,14 +246,14 @@ STORAGES = {
 }
 
 # --- CONFIGURACIÓN LOCAL (Descomentar para trabajar en local) ---
-#STORAGES = {
+# STORAGES = {
 #    "default": {
 #        "BACKEND": "django.core.files.storage.FileSystemStorage",  # Línea clave
 #    },
 #    "staticfiles": {
 #        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
 #    },
-#}
+# }
 
 # 3. URLs
 MEDIA_URL = '/media/'

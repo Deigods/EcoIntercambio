@@ -3,26 +3,7 @@
     {
       "tag": "saludos",
       "patterns": [
-        "Hola",
-        "Hola!",
-        "Holaaa",
-        "Buenos días",
-        "Buenas tardes",
-        "Buenas noches",
-        "Qué tal?",
-        "Hay alguien ahí?",
-        "Saludos",
-        "Hey",
-        "¡Qué tal!",
-        "Qué onda",
-        "Qué hay",
-        "Hola, ¿cómo estás?",
-        "¡Saludos cordiales!",
-        "Holi",
-        "Wenas",
-        "Buenas!",
-        "Buen día",
-        "Qué más?"
+        "Hola", "Hola!", "Holaaa", "Buenos días", "Buenas tardes", "Buenas noches", "Qué tal?", "Hay alguien ahí?", "Saludos", "Hey", "¡Qué tal!", "Qué onda", "Qué hay", "Hola, ¿cómo estás?", "¡Saludos cordiales!", "Holi", "Wenas", "Buenas!", "Buen día", "Qué más?"
       ],
       "responses": [
         "¡Hola! ¿En qué puedo ayudarte hoy?",
@@ -34,11 +15,7 @@
     {
       "tag": "smalltalk_estado",
       "patterns": [
-        "Cómo estás?",
-        "Qué tal tu día?",
-        "Todo bien?",
-        "Cómo va?",
-        "Cómo te encuentras?"
+        "Cómo estás?", "Qué tal tu día?", "Todo bien?", "Cómo va?", "Cómo te encuentras?"
       ],
       "responses": [
         "¡Todo bien por aquí! ¿Y tú? ¿En qué puedo ayudarte en EcoIntercambio?",
@@ -48,12 +25,7 @@
     {
       "tag": "agradecimientos",
       "patterns": [
-        "Gracias",
-        "Muchas gracias",
-        "Te lo agradezco",
-        "Gracias por la ayuda",
-        "Buen soporte",
-        "Bacán, gracias"
+        "Gracias", "Muchas gracias", "Te lo agradezco", "Gracias por la ayuda", "Buen soporte", "Bacán, gracias"
       ],
       "responses": [
         "¡Con gusto! ¿Necesitas algo más?",
@@ -63,17 +35,7 @@
     {
       "tag": "afirmacion",
       "patterns": [
-        "Sí",
-        "Sip",
-        "Sii",
-        "Claro",
-        "Obvio",
-        "De acuerdo",
-        "Vale",
-        "Me parece",
-        "Ok",
-        "Okey",
-        "Dale"
+        "Sí", "Sip", "Sii", "Claro", "Obvio", "De acuerdo", "Vale", "Me parece", "Ok", "Okey", "Dale"
       ],
       "responses": [
         "¡Perfecto! Avancemos. ¿Qué te gustaría hacer ahora?",
@@ -83,12 +45,7 @@
     {
       "tag": "negacion",
       "patterns": [
-        "No",
-        "Nop",
-        "Nel",
-        "No gracias",
-        "Ahora no",
-        "Prefiero que no"
+        "No", "Nop", "Nel", "No gracias", "Ahora no", "Prefiero que no"
       ],
       "responses": [
         "Entendido. Si cambias de idea, aquí estoy.",
@@ -98,17 +55,7 @@
     {
       "tag": "despedidas",
       "patterns": [
-        "Adiós",
-        "Hasta luego",
-        "Nos vemos",
-        "Chao",
-        "Eso es todo",
-        "Me voy",
-        "Hasta pronto",
-        "Nos vemos luego",
-        "Gracias por la ayuda",
-        "Adiós, que estén bien",
-        "Bye"
+        "Adiós", "Hasta luego", "Nos vemos", "Chao", "Eso es todo", "Me voy", "Hasta pronto", "Nos vemos luego", "Gracias por la ayuda", "Adiós, que estén bien", "Bye"
       ],
       "responses": [
         "¡Hasta luego! Si necesitas algo más, aquí estaré.",
@@ -120,15 +67,7 @@
     {
       "tag": "informacion_general",
       "patterns": [
-        "Qué es EcoIntercambio?",
-        "Cómo funciona la plataforma?",
-        "Para qué sirve esta página?",
-        "Me puedes dar información general?",
-        "Qué beneficios ofrece?",
-        "Cuéntame sobre EcoIntercambio",
-        "Explícame cómo funciona",
-        "De qué se trata esto?",
-        "Quiero saber de la plataforma"
+        "Qué es EcoIntercambio?", "Cómo funciona la plataforma?", "Para qué sirve esta página?", "Me puedes dar información general?", "Qué beneficios ofrece?", "Cuéntame sobre EcoIntercambio", "Explícame cómo funciona", "De qué se trata esto?", "Quiero saber de la plataforma"
       ],
       "responses": [
         "EcoIntercambio te permite intercambiar, vender o regalar objetos para fomentar la reutilización y la economía circular.",
@@ -139,15 +78,7 @@
     {
       "tag": "funciones",
       "patterns": [
-        "Qué funciones tiene la app?",
-        "Para qué sirve el plan premium?",
-        "Qué puedo hacer con el plan?",
-        "Hay un chat?",
-        "Tienen geolocalización?",
-        "Qué me ofrece el plan premium?",
-        "Funciones de la plataforma",
-        "Qué incluye el mapa?",
-        "Puedo ver perfiles?"
+        "Qué funciones tiene la app?", "Para qué sirve el plan premium?", "Qué puedo hacer con el plan?", "Hay un chat?", "Tienen geolocalización?", "Qué me ofrece el plan premium?", "Funciones de la plataforma", "Qué incluye el mapa?", "Puedo ver perfiles?"
       ],
       "responses": [
         "Con Premium accedes a geolocalización con Mapbox, chat en tiempo real (Django Channels/WebSockets) y perfiles completos.",
@@ -158,14 +89,7 @@
     {
       "tag": "productos",
       "patterns": [
-        "Qué productos ofrecen?",
-        "Tienen algún plan?",
-        "Qué puedo comprar aquí?",
-        "Venden algo?",
-        "Qué incluye el plan premium?",
-        "Quiero conocer sus servicios",
-        "Qué opciones hay disponibles?",
-        "Háblame del plan premium"
+        "Qué productos ofrecen?", "Tienen algún plan?", "Qué puedo comprar aquí?", "Venden algo?", "Qué incluye el plan premium?", "Quiero conocer sus servicios", "Qué opciones hay disponibles?", "Háblame del plan premium"
       ],
       "responses": [
         "Actualmente ofrecemos un único producto: el plan Premium.",
@@ -176,14 +100,7 @@
     {
       "tag": "precio",
       "patterns": [
-        "Cuánto cuesta el plan premium?",
-        "Cuál es el precio?",
-        "Cuánto tengo que pagar?",
-        "El plan premium es caro?",
-        "Hay algún costo?",
-        "Quiero saber el precio",
-        "Costo del plan",
-        "Precio del premium"
+        "Cuánto cuesta el plan premium?", "Cuál es el precio?", "Cuánto tengo que pagar?", "El plan premium es caro?", "Hay algún costo?", "Quiero saber el precio", "Costo del plan", "Precio del premium"
       ],
       "responses": [
         "El plan Premium cuesta 1500 CLP. Es un pago único con acceso completo.",
@@ -194,11 +111,7 @@
     {
       "tag": "descuentos",
       "patterns": [
-        "Tienen descuentos?",
-        "Hay rebajas?",
-        "Algún cupón?",
-        "Promociones disponibles",
-        "Hay ofertas?"
+        "Tienen descuentos?", "Hay rebajas?", "Algún cupón?", "Promociones disponibles", "Hay ofertas?"
       ],
       "responses": [
         "Por ahora no tenemos descuentos activos. Si se habilitan, los verás en la sección de compra.",
@@ -208,10 +121,7 @@
     {
       "tag": "reembolsos",
       "patterns": [
-        "Puedo pedir reembolso?",
-        "Qué pasa si no me gusta?",
-        "Devolución de dinero",
-        "Reembolso del premium"
+        "Puedo pedir reembolso?", "Qué pasa si no me gusta?", "Devolución de dinero", "Reembolso del premium"
       ],
       "responses": [
         "Si tu compra tuvo un error técnico, contáctanos por soporte con el comprobante para revisar tu caso.",
@@ -221,13 +131,7 @@
     {
       "tag": "metodos_pago",
       "patterns": [
-        "Qué métodos de pago aceptan?",
-        "Puedo pagar con tarjeta?",
-        "Aceptan PayPal?",
-        "Cómo puedo pagar el plan premium?",
-        "Formas de pago",
-        "Opciones de pago disponibles",
-        "Puedo pagar con débito?"
+        "Qué métodos de pago aceptan?", "Puedo pagar con tarjeta?", "Aceptan PayPal?", "Cómo puedo pagar el plan premium?", "Formas de pago", "Opciones de pago disponibles", "Puedo pagar con débito?"
       ],
       "responses": [
         "Aceptamos varios métodos de pago, incluyendo tarjetas de crédito y débito (según disponibilidad en tu país).",
@@ -238,11 +142,7 @@
     {
       "tag": "compra_proceso",
       "patterns": [
-        "Cómo compro el premium?",
-        "Dónde compro el premium?",
-        "Quiero comprar el plan",
-        "Ayuda para pagar",
-        "Paso a paso para comprar"
+        "Cómo compro el premium?", "Dónde compro el premium?", "Quiero comprar el plan", "Ayuda para pagar", "Paso a paso para comprar"
       ],
       "responses": [
         "Ingresa a tu cuenta, ve a la sección de Compra/Premium y sigue los pasos del checkout.",
@@ -252,16 +152,7 @@
     {
       "tag": "soporte",
       "patterns": [
-        "Necesito ayuda",
-        "Cómo puedo contactar soporte?",
-        "Tengo un problema",
-        "Dónde puedo pedir ayuda?",
-        "Tienen atención al cliente?",
-        "Soporte técnico",
-        "Quiero asistencia",
-        "No me funciona el chat",
-        "No se ve el mapa",
-        "Error al pagar"
+        "Necesito ayuda", "Cómo puedo contactar soporte?", "Tengo un problema", "Dónde puedo pedir ayuda?", "Tienen atención al cliente?", "Soporte técnico", "Quiero asistencia", "No me funciona el chat", "No se ve el mapa", "Error al pagar"
       ],
       "responses": [
         "Contáctanos desde la sección de Soporte en el sitio y cuéntanos el problema con capturas si es posible.",
@@ -271,11 +162,7 @@
     {
       "tag": "cuenta_crear",
       "patterns": [
-        "Cómo creo una cuenta?",
-        "Quiero registrarme",
-        "No tengo cuenta",
-        "Registrarse",
-        "Crear perfil"
+        "Cómo creo una cuenta?", "Quiero registrarme", "No tengo cuenta", "Registrarse", "Crear perfil"
       ],
       "responses": [
         "Ve a Registro, completa tus datos y confirma tu correo para activar tu cuenta.",
@@ -285,11 +172,7 @@
     {
       "tag": "cuenta_acceso",
       "patterns": [
-        "No puedo iniciar sesión",
-        "Olvidé mi contraseña",
-        "No me llega el correo",
-        "Problemas para entrar",
-        "No puedo loguearme"
+        "No puedo iniciar sesión", "Olvidé mi contraseña", "No me llega el correo", "Problemas para entrar", "No puedo loguearme"
       ],
       "responses": [
         "Usa la opción '¿Olvidaste tu contraseña?' para restablecerla. Revisa spam si no ves el correo.",
@@ -299,12 +182,7 @@
     {
       "tag": "publicar_objeto",
       "patterns": [
-        "Cómo publico un objeto?",
-        "Quiero vender algo",
-        "Quiero regalar algo",
-        "Subir producto",
-        "Publicar anuncio",
-        "Crear publicación"
+        "Cómo publico un objeto?", "Quiero vender algo", "Quiero regalar algo", "Subir producto", "Publicar anuncio", "Crear publicación"
       ],
       "responses": [
         "Desde tu perfil, pulsa 'Publicar', agrega título, fotos, descripción y categoría. Luego confirma la ubicación.",
@@ -314,11 +192,7 @@
     {
       "tag": "buscar_objetos",
       "patterns": [
-        "Cómo busco objetos?",
-        "Quiero encontrar algo",
-        "Buscar por categoría",
-        "Filtrar resultados",
-        "Hay filtros?"
+        "Cómo busco objetos?", "Quiero encontrar algo", "Buscar por categoría", "Filtrar resultados", "Hay filtros?"
       ],
       "responses": [
         "Usa la barra de búsqueda y los filtros por categoría, estado y distancia.",
@@ -328,11 +202,7 @@
     {
       "tag": "mapa_geolocalizacion",
       "patterns": [
-        "No me carga el mapa",
-        "Cómo activo la ubicación?",
-        "Problemas con el mapa",
-        "No puedo seleccionar ubicación",
-        "Geolocalización no funciona"
+        "No me carga el mapa", "Cómo activo la ubicación?", "Problemas con el mapa", "No puedo seleccionar ubicación", "Geolocalización no funciona"
       ],
       "responses": [
         "Activa los permisos de ubicación del navegador y recarga la página.",
@@ -342,11 +212,7 @@
     {
       "tag": "chat_funciona",
       "patterns": [
-        "Cómo funciona el chat?",
-        "No me llega el mensaje",
-        "El chat no envía",
-        "Puedo hablar con otros?",
-        "Mensajes en tiempo real?"
+        "Cómo funciona el chat?", "No me llega el mensaje", "El chat no envía", "Puedo hablar con otros?", "Mensajes en tiempo real?"
       ],
       "responses": [
         "El chat es en tiempo real. Abre la publicación y usa 'Contactar' para iniciar la conversación.",
@@ -356,11 +222,7 @@
     {
       "tag": "seguridad_privacidad",
       "patterns": [
-        "Es seguro?",
-        "Qué hacen con mis datos?",
-        "Privacidad de la cuenta",
-        "Protegen mi información?",
-        "Datos personales"
+        "Es seguro?", "Qué hacen con mis datos?", "Privacidad de la cuenta", "Protegen mi información?", "Datos personales"
       ],
       "responses": [
         "Cuidamos tu privacidad y seguimos buenas prácticas de seguridad.",
@@ -370,11 +232,7 @@
     {
       "tag": "responsabilidad_legal",
       "patterns": [
-        "Qué hacen si me estafan?",
-        "Se hacen cargo de las transacciones?",
-        "Qué pasa si el otro usuario no cumple?",
-        "Son responsables del intercambio?",
-        "Tienen responsabilidad legal?"
+        "Qué hacen si me estafan?", "Se hacen cargo de las transacciones?", "Qué pasa si el otro usuario no cumple?", "Son responsables del intercambio?", "Tienen responsabilidad legal?"
       ],
       "responses": [
         "No nos hacemos responsables de las transacciones entre usuarios; somos un punto de encuentro.",
@@ -384,11 +242,7 @@
     {
       "tag": "reportes_usuarios",
       "patterns": [
-        "Cómo reporto un usuario?",
-        "Me habló mal alguien",
-        "Publicación sospechosa",
-        "Quiero denunciar",
-        "Reportar abuso"
+        "Cómo reporto un usuario?", "Me habló mal alguien", "Publicación sospechosa", "Quiero denunciar", "Reportar abuso"
       ],
       "responses": [
         "Desde la publicación o el chat, usa 'Reportar' y cuéntanos qué pasó.",
@@ -398,10 +252,7 @@
     {
       "tag": "disponibilidad_paises",
       "patterns": [
-        "Funciona en mi país?",
-        "Está disponible en Chile?",
-        "Puedo usarlo fuera de Chile?",
-        "En qué países operan?"
+        "Funciona en mi país?", "Está disponible en Chile?", "Puedo usarlo fuera de Chile?", "En qué países operan?"
       ],
       "responses": [
         "Puedes usar EcoIntercambio desde cualquier lugar. Algunas funciones pueden variar por región.",
@@ -411,14 +262,7 @@
     {
       "tag": "horarios",
       "patterns": [
-        "Cuál es su horario de atención?",
-        "A qué hora abren?",
-        "Están disponibles las 24 horas?",
-        "Cuándo puedo contactarlos?",
-        "Horario de atención",
-        "Cuándo puedo recibir ayuda?",
-        "Están abiertos?",
-        "A qué hora cierran?"
+        "Cuál es su horario de atención?", "A qué hora abren?", "Están disponibles las 24 horas?", "Cuándo puedo contactarlos?", "Horario de atención", "Cuándo puedo recibir ayuda?", "Están abiertos?", "A qué hora cierran?"
       ],
       "responses": [
         "La plataforma está disponible 24/7.",
@@ -428,13 +272,7 @@
     {
       "tag": "ubicacion",
       "patterns": [
-        "Dónde están ubicados?",
-        "Tienen una tienda física?",
-        "Dónde puedo encontrarlos?",
-        "Tienen dirección?",
-        "Ubicación de EcoIntercambio",
-        "Puedo visitar su oficina?",
-        "Hay sucursales?"
+        "Dónde están ubicados?", "Tienen una tienda física?", "Dónde puedo encontrarlos?", "Tienen dirección?", "Ubicación de EcoIntercambio", "Puedo visitar su oficina?", "Hay sucursales?"
       ],
       "responses": [
         "Somos 100% online y no contamos con tienda física.",
@@ -444,10 +282,7 @@
     {
       "tag": "politicas_objetos",
       "patterns": [
-        "Qué objetos están prohibidos?",
-        "Puedo publicar alimentos?",
-        "Se puede vender electrónica?",
-        "Hay restricciones para publicar?"
+        "Qué objetos están prohibidos?", "Puedo publicar alimentos?", "Se puede vender electrónica?", "Hay restricciones para publicar?"
       ],
       "responses": [
         "No se permiten artículos ilegales, peligrosos o que infrinjan derechos. Revisa la lista en las políticas del sitio.",
@@ -457,10 +292,7 @@
     {
       "tag": "estado_objetos",
       "patterns": [
-        "Puedo publicar objetos usados?",
-        "Debo indicar el estado?",
-        "Qué condición debo elegir?",
-        "Cómo describo el estado?"
+        "Puedo publicar objetos usados?", "Debo indicar el estado?", "Qué condición debo elegir?", "Cómo describo el estado?"
       ],
       "responses": [
         "Sí, puedes publicar objetos usados. Indica su estado (nuevo, como nuevo, usado, para repuestos).",
@@ -470,10 +302,7 @@
     {
       "tag": "costos_envio",
       "patterns": [
-        "Hacen envíos?",
-        "Quién paga el envío?",
-        "Se puede coordinar delivery?",
-        "Cómo se entrega?"
+        "Hacen envíos?", "Quién paga el envío?", "Se puede coordinar delivery?", "Cómo se entrega?"
       ],
       "responses": [
         "La entrega la acuerdan directamente los usuarios (retiro en persona o envío).",
@@ -483,10 +312,7 @@
     {
       "tag": "tiempos_respuesta",
       "patterns": [
-        "Cuánto tardan en responder?",
-        "No me contestan",
-        "El vendedor no responde",
-        "Silencio en el chat"
+        "Cuánto tardan en responder?", "No me contestan", "El vendedor no responde", "Silencio en el chat"
       ],
       "responses": [
         "Los tiempos dependen de cada usuario. Si no te responden, intenta con otras publicaciones.",
@@ -496,11 +322,7 @@
     {
       "tag": "errores_comunes",
       "patterns": [
-        "No carga la página",
-        "Error 500",
-        "Me sale un error",
-        "Se cayó el sitio",
-        "No se guardan los cambios"
+        "No carga la página", "Error 500", "Me sale un error", "Se cayó el sitio", "No se guardan los cambios"
       ],
       "responses": [
         "Prueba recargar, limpiar caché o cambiar de navegador. Si continúa, repórtalo en Soporte con una captura.",
@@ -510,11 +332,7 @@
     {
       "tag": "faq",
       "patterns": [
-        "Preguntas frecuentes",
-        "FAQ",
-        "Dudas comunes",
-        "Ayuda rápida",
-        "No sé por dónde empezar"
+        "Preguntas frecuentes", "FAQ", "Dudas comunes", "Ayuda rápida", "No sé por dónde empezar"
       ],
       "responses": [
         "¿Quieres publicar, buscar o comprar Premium? Dime cuál y te doy los pasos.",
@@ -524,12 +342,7 @@
     {
       "tag": "fallback_pedido_aclaracion",
       "patterns": [
-        "No entiendo",
-        "No se entiende",
-        "Explícate mejor",
-        "Qué?",
-        "Eh?",
-        "No queda claro"
+        "No entiendo", "No se entiende", "Explícate mejor", "Qué?", "Eh?", "No queda claro"
       ],
       "responses": [
         "Creo que no entendí del todo. ¿Puedes contarme con más detalle qué quieres hacer (publicar, buscar, comprar Premium, soporte)?",
@@ -537,13 +350,54 @@
       ]
     },
     {
-      "tag": "fallback_no_entendido",
+      "tag": "ambiguedad_cuenta",
+      "patterns": [
+        "cuenta", "mi perfil", "usuario", "tema cuenta", "problema de cuenta", "acceso", "login", "ingresar"
+      ],
+      "responses": [
+        "Sobre tu cuenta, ¿necesitas ayuda para **registrarte**, **recuperar tu contraseña** o **editar tu perfil**?",
+        "Entiendo que es sobre tu cuenta. ¿No puedes entrar o quieres crear una nueva?"
+      ]
+    },
+    {
+      "tag": "ambiguedad_pagos",
+      "patterns": [
+        "pago", "pagar", "cobro", "dinero", "plata", "cuestiones de pago", "tarjeta", "efectivo"
+      ],
+      "responses": [
+        "Para ayudarte con los pagos: ¿Quieres saber el **precio del Premium**, los **métodos de pago aceptados** o tienes un **problema con un cobro**?",
+        "Hablemos de pagos. ¿Te interesa comprar el plan Premium o necesitas soporte por un pago ya realizado?"
+      ]
+    },
+    {
+      "tag": "ambiguedad_seguridad",
+      "patterns": [
+        "seguridad", "confianza", "es seguro", "proteccion", "miedo", "fiable", "es confiable"
+      ],
+      "responses": [
+        "La seguridad es clave. ¿Te refieres a la **protección de tus datos personales** o a cómo **evitar estafas** al intercambiar objetos?",
+        "¿Tu duda es sobre la seguridad técnica del sitio o sobre la confianza en otros usuarios?"
+      ]
+    },
+    {
+      "tag": "menu_ayuda",
+      "patterns": [
+        "menu", "opciones", "que puedo hacer", "ayuda", "comandos", "lista", "que haces"
+      ],
+      "responses": [
+        "Puedo ayudarte con lo siguiente:\n1. **Publicar** un objeto.\n2. Información del **Plan Premium**.\n3. Recuperar **contraseña**.\n4. Contactar a **Soporte**.\n¿Qué prefieres?",
+        "Soy experto en EcoIntercambio. Pregúntame sobre: Precios, Mapa, Chat, Registro o Seguridad."
+      ]
+    },
+    {
+      "tag": "fallback_mejorado",
       "patterns": [
         "*"
       ],
       "responses": [
-        "Quiero ayudarte, pero no me quedó claro. ¿Puedes decirme si quieres publicar, buscar, usar el mapa, chatear o comprar Premium?",
-        "No entendí del todo. Prueba con una frase breve, por ejemplo: 'publicar un objeto' o 'activar Premium'."
+        "No estoy seguro de haberte entendido. Intenta usar palabras clave como: 'Precio', 'Mapa', 'Publicar' o 'Soporte'.",
+        "Mmm, esa no la me la sé. ¿Podrías reformularlo? Por ejemplo: 'Cómo publicar' o 'Olvidé contraseña'.",
+        "Disculpa, soy un bot en entrenamiento. ¿Me preguntas sobre el **Plan Premium** o sobre cómo **usar la página**?"
       ]
     }
   ]
